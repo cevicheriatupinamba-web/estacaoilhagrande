@@ -16,6 +16,10 @@ import AuthForm from "./pages/AuthForm";
 import Favoritos from "./pages/Favoritos";
 import Perfil from "./pages/Perfil";
 import Admin from "./pages/Admin";
+import Hospedagem from "./pages/Hospedagem";
+import OndeComer from "./pages/OndeComer";
+import Passeios from "./pages/Passeios";
+import Diversao from "./pages/Diversao";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +36,10 @@ const App = () => (
               <Route path="/" element={<Home />} />
               <Route path="/explorar" element={<Explorar />} />
               <Route path="/lugar/:slug" element={<LugarDetalhe />} />
+              <Route path="/hospedagem" element={<Hospedagem />} />
+              <Route path="/onde-comer" element={<OndeComer />} />
+              <Route path="/passeios" element={<Passeios />} />
+              <Route path="/diversao" element={<Diversao />} />
               <Route path="/roteiros" element={<Roteiros />} />
               <Route path="/dicas" element={<Dicas />} />
               <Route path="/nao-fazer" element={<NaoFazer />} />
