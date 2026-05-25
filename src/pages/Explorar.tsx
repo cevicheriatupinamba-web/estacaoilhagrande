@@ -4,6 +4,7 @@ import { Search, Filter } from "lucide-react";
 import { categories, places, CategoryKey } from "@/data/mockData";
 import PlaceCard from "@/components/PlaceCard";
 import { Button } from "@/components/ui/button";
+import Disclaimer from "@/components/Disclaimer";
 import { cn } from "@/lib/utils";
 
 const Explorar = () => {
@@ -29,6 +30,7 @@ const Explorar = () => {
   };
 
   return (
+    <>
     <div className="container py-10">
       <header className="mb-8 animate-fade-up">
         <h1 className="font-display font-bold text-4xl md:text-5xl mb-2">Explorar a ilha</h1>
@@ -73,6 +75,8 @@ const Explorar = () => {
         </>
       )}
     </div>
+    <Disclaimer />
+    </>
   );
 };
 

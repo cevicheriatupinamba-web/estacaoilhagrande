@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom";
-import { Waves, Instagram, Mail } from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
+import logo from "@/assets/ilhago-logo.png";
 
 const Footer = () => (
   <footer className="mt-20 border-t border-border bg-secondary/40">
     <div className="container py-12 grid gap-8 md:grid-cols-4">
       <div>
-        <div className="flex items-center gap-2 font-display font-bold text-xl mb-3">
-          <span className="grid place-items-center w-9 h-9 rounded-xl gradient-ocean text-primary-foreground">
-            <Waves className="w-5 h-5" />
-          </span>
-          Ilha <span className="text-gradient-sunset">Go</span>
-        </div>
+        <img src={logo} alt="Ilha Go" className="h-14 w-auto mb-3" />
         <p className="text-sm text-muted-foreground">Seu guia completo para descobrir Ilha Grande.</p>
       </div>
       <div>

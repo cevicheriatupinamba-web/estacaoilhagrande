@@ -59,9 +59,6 @@ const AuthForm = ({ mode }: Props) => {
             <>Já tem conta? <Link to="/login" className="text-primary font-medium hover:underline">Entrar</Link></>
           )}
         </p>
-        <p className="text-xs text-center text-muted-foreground mt-4">
-          Dica: use <code className="px-1 bg-secondary rounded">admin@ilhago.com</code> para acessar o painel admin.
-        </p>
       </div>
     </div>
   );

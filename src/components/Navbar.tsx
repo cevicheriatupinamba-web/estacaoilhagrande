@@ -1,14 +1,18 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Menu, X, Heart, User, LogOut, Waves } from "lucide-react";
+import { Menu, X, Heart, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
+import logo from "@/assets/ilhago-logo.png";
 
 const navItems = [
   { to: "/explorar", label: "Explorar" },
+  { to: "/hospedagem", label: "Onde se hospedar" },
+  { to: "/onde-comer", label: "Onde comer" },
+  { to: "/passeios", label: "Passeios" },
+  { to: "/diversao", label: "Diversão" },
   { to: "/roteiros", label: "Roteiros" },
   { to: "/dicas", label: "Dicas" },
-  { to: "/nao-fazer", label: "O que não fazer" },
   { to: "/anuncie", label: "Anuncie" },
 ];
 
@@ -18,26 +22,23 @@ const Navbar = () => {
   const nav = useNavigate();
 
   return (
-    <header className="sticky top-0 z-50 bg-background/85 backdrop-blur-lg border-b border-border/60">
-      <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-display font-bold text-xl">
-          <span className="grid place-items-center w-9 h-9 rounded-xl gradient-ocean text-primary-foreground shadow-glow">
-            <Waves className="w-5 h-5" />
-          </span>
-          <span>Ilha <span className="text-gradient-sunset">Go</span></span>
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-border/60">
+      <div className="container flex h-16 items-center justify-between gap-4">
+        <Link to="/" className="flex items-center gap-2 shrink-0">
+          <img src={logo} alt="Ilha Go" className="h-10 w-auto" />
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1">
           {navItems.map(i => (
             <NavLink key={i.to} to={i.to}
               className={({ isActive }) =>
-                `px-3 py-2 rounded-lg text-sm font-medium transition-smooth ${isActive ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary hover:bg-muted"}`}>
+                `px-2.5 py-2 rounded-lg text-sm font-medium transition-smooth ${isActive ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary hover:bg-muted"}`}>
               {i.label}
             </NavLink>
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2 shrink-0">
           {user ? (
             <>
               <Button variant="ghost" size="sm" onClick={() => nav("/favoritos")}>
@@ -61,13 +62,13 @@ const Navbar = () => {
           )}
         </div>
 
-        <button className="md:hidden p-2" onClick={() => setOpen(!open)} aria-label="Menu">
+        <button className="lg:hidden p-2" onClick={() => setOpen(!open)} aria-label="Menu">
           {open ? <X /> : <Menu />}
         </button>
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-border bg-background animate-fade-up">
+        <div className="lg:hidden border-t border-border bg-white animate-fade-up">
           <nav className="container py-4 flex flex-col gap-1">
             {navItems.map(i => (
               <NavLink key={i.to} to={i.to} onClick={() => setOpen(false)}
