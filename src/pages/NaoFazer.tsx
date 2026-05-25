@@ -1,7 +1,9 @@
 import { naoFazer } from "@/data/mockData";
 import { AlertTriangle, X } from "lucide-react";
+import Disclaimer from "@/components/Disclaimer";
 
 const NaoFazer = () => (
+  <>
   <div className="container py-10">
     <header className="mb-10 max-w-2xl">
       <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 text-destructive text-xs font-semibold mb-4">
@@ -26,6 +28,8 @@ const NaoFazer = () => (
       ))}
     </div>
   </div>
+  <Disclaimer />
+  </>
 );
 
 export default NaoFazer;

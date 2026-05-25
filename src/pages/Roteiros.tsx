@@ -1,7 +1,9 @@
 import { roteiros } from "@/data/mockData";
 import { Clock, Sparkles } from "lucide-react";
+import Disclaimer from "@/components/Disclaimer";
 
 const Roteiros = () => (
+  <>
   <div className="container py-10">
     <header className="mb-10 max-w-2xl animate-fade-up">
       <h1 className="font-display font-bold text-4xl md:text-5xl mb-3">Roteiros prontos</h1>
@@ -37,6 +39,8 @@ const Roteiros = () => (
       ))}
     </div>
   </div>
+  <Disclaimer />
+  </>
 );
 
 export default Roteiros;
