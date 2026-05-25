@@ -73,6 +73,8 @@ const Explorar = () => {
         </>
       )}
     </div>
+    <Disclaimer />
+    </>
   );
 };
 
