@@ -84,7 +84,7 @@ const Navbar = () => {
                   <Button variant="outline" onClick={() => { nav("/favoritos"); setOpen(false); }}>
                     <Heart className="w-4 h-4 mr-2" /> Favoritos
                   </Button>
-                  {user.isAdmin && <Button variant="outline" onClick={() => { nav("/admin"); setOpen(false); }}>Admin</Button>}
+                  {isAdmin && <Button variant="outline" onClick={() => { nav("/admin"); setOpen(false); }}>Admin</Button>}
                   <Button variant="ghost" onClick={() => { logout(); setOpen(false); nav("/"); }}>Sair</Button>
                 </>
               ) : (
