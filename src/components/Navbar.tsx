@@ -17,7 +17,8 @@ const navItems = [
 ];
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, isAdmin, logout } = useAuth();
+  const displayName = (user?.user_metadata?.name as string) || user?.email?.split("@")[0] || "";
   const [open, setOpen] = useState(false);
   const nav = useNavigate();
 
@@ -44,11 +45,11 @@ const Navbar = () => {
               <Button variant="ghost" size="sm" onClick={() => nav("/favoritos")}>
                 <Heart className="w-4 h-4 mr-1" /> Favoritos
               </Button>
-              {user.isAdmin && (
+              {isAdmin && (
                 <Button variant="ghost" size="sm" onClick={() => nav("/admin")}>Admin</Button>
               )}
               <Button variant="ghost" size="sm" onClick={() => nav("/perfil")}>
-                <User className="w-4 h-4 mr-1" /> {user.name}
+                <User className="w-4 h-4 mr-1" /> {displayName}
               </Button>
               <Button variant="ghost" size="icon" onClick={() => { logout(); nav("/"); }}>
                 <LogOut className="w-4 h-4" />
@@ -83,7 +84,7 @@ const Navbar = () => {
                   <Button variant="outline" onClick={() => { nav("/favoritos"); setOpen(false); }}>
                     <Heart className="w-4 h-4 mr-2" /> Favoritos
                   </Button>
-                  {user.isAdmin && <Button variant="outline" onClick={() => { nav("/admin"); setOpen(false); }}>Admin</Button>}
+                  {isAdmin && <Button variant="outline" onClick={() => { nav("/admin"); setOpen(false); }}>Admin</Button>}
                   <Button variant="ghost" onClick={() => { logout(); setOpen(false); nav("/"); }}>Sair</Button>
                 </>
               ) : (

@@ -5,20 +5,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Waves } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Props { mode: "login" | "signup" }
 
 const AuthForm = ({ mode }: Props) => {
   const { login, signup } = useAuth();
+  const { toast } = useToast();
   const nav = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [submitting, setSubmitting] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const ok = mode === "login"
-      ? login(form.email, form.password)
-      : signup(form.name, form.email, form.password);
-    if (ok) nav("/");
+    setSubmitting(true);
+    const { error } = mode === "login"
+      ? await login(form.email, form.password)
+      : await signup(form.name, form.email, form.password);
+    setSubmitting(false);
+    if (error) {
+      toast({ title: "Não foi possível continuar", description: error, variant: "destructive" });
+      return;
+    }
+    toast({ title: mode === "login" ? "Bem-vindo!" : "Conta criada!" });
+    nav("/");
   };
 
   return (
@@ -46,10 +56,10 @@ const AuthForm = ({ mode }: Props) => {
           </div>
           <div>
             <Label htmlFor="pw">Senha</Label>
-            <Input id="pw" type="password" required minLength={4} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} />
+            <Input id="pw" type="password" required minLength={6} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} />
           </div>
-          <Button type="submit" variant="hero" className="w-full" size="lg">
-            {mode === "login" ? "Entrar" : "Criar conta"}
+          <Button type="submit" variant="hero" className="w-full" size="lg" disabled={submitting}>
+            {submitting ? "Aguarde…" : mode === "login" ? "Entrar" : "Criar conta"}
           </Button>
         </form>
         <p className="text-sm text-muted-foreground text-center mt-5">
