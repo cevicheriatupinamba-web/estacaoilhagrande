@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 interface AdReq { id: number; name: string; category: string; whatsapp: string; email: string; description: string; status: string; createdAt: string }
 
 const Admin = () => {
-  const { user } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
   const { toast } = useToast();
   const [reqs, setReqs] = useState<AdReq[]>([]);
 
@@ -17,7 +17,8 @@ const Admin = () => {
     setReqs(JSON.parse(localStorage.getItem("ilhago_ad_requests") || "[]"));
   }, []);
 
-  if (!user || !user.isAdmin) return <Navigate to="/" replace />;
+  if (loading) return <div className="container py-20 text-center text-muted-foreground">Carregando…</div>;
+  if (!user || !isAdmin) return <Navigate to="/" replace />;
 
   const updateStatus = (id: number, status: string) => {
     const next = reqs.map(r => r.id === id ? { ...r, status } : r);
