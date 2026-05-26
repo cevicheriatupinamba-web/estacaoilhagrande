@@ -6,7 +6,7 @@ const Footer = () => (
   <footer className="mt-20 border-t border-border bg-secondary/40">
     <div className="container py-12 grid gap-8 md:grid-cols-4">
       <div>
-        <img src={logo} alt="Ilha Go" className="h-14 w-auto mb-3" />
+        <img src={logo} alt="Ilha Grande Oficial" className="h-32 w-32 md:h-40 md:w-40 rounded-full object-contain mb-4 shadow-soft bg-white p-2" />
         <p className="text-sm text-muted-foreground">Seu guia completo para descobrir Ilha Grande.</p>
       </div>
       <div>
