@@ -25,8 +25,8 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-border/60">
       <div className="container flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-2 shrink-0">
-          <img src={logo} alt="Ilha Go" className="h-10 w-auto" />
+        <Link to="/" className="flex items-center gap-2 shrink-0 h-16 py-1">
+          <img src={logo} alt="Ilha Grande Oficial" className="h-full w-auto object-contain" />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
