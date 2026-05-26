@@ -4,20 +4,19 @@ import { useState } from "react";
 import hero from "@/assets/hero-ilha.jpg";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
-
-const img = (seed: string) => `https://picsum.photos/seed/${encodeURIComponent(seed)}/1200/900`;
+import { themedImage } from "@/lib/images";
 
 const portalCategories = [
-  { label: "Onde se Hospedar", to: "/onde-se-hospedar", img: img("hosp-portal"), tag: "Pousadas & Hotéis" },
-  { label: "Restaurantes", to: "/restaurantes", img: img("rest-portal"), tag: "Sabores caiçaras" },
-  { label: "O Que Fazer", to: "/o-que-fazer", img: img("fazer-portal"), tag: "Experiências" },
-  { label: "Passeios", to: "/passeios", img: img("passeio-portal"), tag: "Barco & lancha" },
-  { label: "Praias", to: "/praias", img: img("praia-portal"), tag: "Paraíso natural" },
-  { label: "Trilhas", to: "/trilhas", img: img("trilha-portal"), tag: "Aventura" },
-  { label: "Vida Noturna", to: "/vida-noturna", img: img("noite-portal"), tag: "Bares & shows" },
-  { label: "Transporte", to: "/transporte", img: img("transp-portal"), tag: "Como chegar" },
-  { label: "Dicas Importantes", to: "/dicas", img: img("dicas-portal"), tag: "Saiba antes" },
-  { label: "Guias Locais", to: "/guias", img: img("guias-portal"), tag: "Caiçaras" },
+  { label: "Onde se Hospedar", to: "/onde-se-hospedar", img: themedImage("lodging", "portal-hosp"), tag: "Pousadas & Hotéis" },
+  { label: "Restaurantes", to: "/restaurantes", img: themedImage("restaurant", "portal-rest"), tag: "Sabores caiçaras" },
+  { label: "O Que Fazer", to: "/o-que-fazer", img: themedImage("activity", "portal-fazer"), tag: "Experiências" },
+  { label: "Passeios", to: "/passeios", img: themedImage("boat", "portal-passeio"), tag: "Barco & lancha" },
+  { label: "Praias", to: "/praias", img: themedImage("beach", "portal-praia"), tag: "Paraíso natural" },
+  { label: "Trilhas", to: "/trilhas", img: themedImage("hike", "portal-trilha"), tag: "Aventura" },
+  { label: "Vida Noturna", to: "/vida-noturna", img: themedImage("nightlife", "portal-noite"), tag: "Bares & shows" },
+  { label: "Transporte", to: "/transporte", img: themedImage("transport", "portal-transp"), tag: "Como chegar" },
+  { label: "Dicas Importantes", to: "/dicas", img: themedImage("tips", "portal-dicas"), tag: "Saiba antes" },
+  { label: "Guias Locais", to: "/guias", img: themedImage("guide", "portal-guias"), tag: "Caiçaras" },
 ];
 
 const Home = () => {
