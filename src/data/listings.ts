@@ -1,7 +1,13 @@
 // Listagens curadas a partir de guias públicos de turismo sobre Ilha Grande.
 // Confirme sempre com o estabelecimento.
 
-const img = (seed: string) => `https://picsum.photos/seed/${encodeURIComponent(seed)}/800/600`;
+import { themedImage, type ImageCategory } from "@/lib/images";
+
+const img = (cat: ImageCategory) => (seed: string) => themedImage(cat, seed);
+const imgLodging = img("lodging");
+const imgRestaurant = img("restaurant");
+const imgBoat = img("boat");
+const imgActivity = img("activity");
 
 export interface Lodging {
   id: string;
