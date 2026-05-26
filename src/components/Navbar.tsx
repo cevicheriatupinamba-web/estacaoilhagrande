@@ -45,11 +45,11 @@ const Navbar = () => {
               <Button variant="ghost" size="sm" onClick={() => nav("/favoritos")}>
                 <Heart className="w-4 h-4 mr-1" /> Favoritos
               </Button>
-              {user.isAdmin && (
+              {isAdmin && (
                 <Button variant="ghost" size="sm" onClick={() => nav("/admin")}>Admin</Button>
               )}
               <Button variant="ghost" size="sm" onClick={() => nav("/perfil")}>
-                <User className="w-4 h-4 mr-1" /> {user.name}
+                <User className="w-4 h-4 mr-1" /> {displayName}
               </Button>
               <Button variant="ghost" size="icon" onClick={() => { logout(); nav("/"); }}>
                 <LogOut className="w-4 h-4" />
