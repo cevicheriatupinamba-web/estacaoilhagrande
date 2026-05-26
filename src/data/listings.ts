@@ -34,6 +34,27 @@ export const lodgings: Lodging[] = [
   { id: "l18", name: "Yes Hotel Pousada", area: "Vila do Abraão", rating: 4.5, image: img("yes"), tags: ["Centro"], description: "Boa estrutura no coração da Vila do Abraão." },
   { id: "l19", name: "Asalem", area: "Vila do Abraão", rating: 4.9, image: img("asalem"), tags: ["Boutique", "Vista panorâmica"], description: "Pousada boutique com vista deslumbrante da baía, indicada para casais." },
   { id: "l20", name: "Lonier Praia Inn Flats", area: "Praia do Abraão", rating: 4.7, image: img("lonier"), tags: ["Flat", "Frente mar"], description: "Flats confortáveis de frente para o mar, com piscina." },
+  // 20 novas hospedagens — guia premium 2026
+  { id: "l21", name: "Porto Abraão Pousada", area: "Vila do Abraão", rating: 4.7, image: img("portoabraao"), tags: ["Centro", "Café da manhã"], description: "Pousada moderna no coração da Vila, a passos do cais." },
+  { id: "l22", name: "Pousada do Canto", area: "Vila do Abraão", rating: 4.6, image: img("docanto"), tags: ["Calmo", "Família"], description: "Recanto silencioso a poucos minutos da rua principal." },
+  { id: "l23", name: "Casa da Ilha Ilha Grande", area: "Vila do Abraão", rating: 4.8, image: img("casadailha"), tags: ["Boutique", "Piscina"], description: "Casa boutique com piscina, jardim tropical e decoração autoral." },
+  { id: "l24", name: "Pousada Mata Nativa II", area: "Vila do Abraão", rating: 4.8, image: img("matanativa2"), tags: ["Natureza", "Sossego"], description: "Imersão total na mata atlântica com chalés rústico-chique." },
+  { id: "l25", name: "Costa Verde Inn", area: "Praia do Abraão", rating: 4.6, image: img("costaverde"), tags: ["Frente mar", "Café da manhã"], description: "Hospedagem confortável com vista para a Baía de Abraão." },
+  { id: "l26", name: "Ilha Grande Mar", area: "Vila do Abraão", rating: 4.5, image: img("ilhagrandemar"), tags: ["Econômica", "Centro"], description: "Boa opção custo-benefício no centrinho da Vila." },
+  { id: "l27", name: "Pousada Rubi", area: "Vila do Abraão", rating: 4.7, image: img("rubi"), tags: ["Charme", "Casal"], description: "Pousada charmosa com suítes aconchegantes para casais." },
+  { id: "l28", name: "Pousada Juliana", area: "Vila do Abraão", rating: 4.5, image: img("juliana"), tags: ["Família", "Econômica"], description: "Atendimento familiar e quartos simples bem cuidados." },
+  { id: "l29", name: "Only Nature Inn", area: "Praia Grande de Araçatiba", rating: 4.9, image: img("onlynature"), tags: ["Eco", "Premium"], description: "Refúgio ecológico em praia isolada, ideal para desconectar." },
+  { id: "l30", name: "Inn Mother Nature", area: "Vila do Abraão", rating: 4.8, image: img("mothernature"), tags: ["Eco", "Boutique"], description: "Pousada sustentável com vista panorâmica da baía." },
+  { id: "l31", name: "Pousada Riacho dos Cambucás", area: "Vila do Abraão", rating: 4.6, image: img("cambucas"), tags: ["Natureza", "Piscina"], description: "Cercada por mata e com piscina natural alimentada por riacho." },
+  { id: "l32", name: "Che Lagarto Hostel Ilha Grande", area: "Vila do Abraão", rating: 4.4, image: img("chelagarto"), tags: ["Hostel", "Mochileiro"], description: "Hostel internacional com festas, bar e ótimo astral." },
+  { id: "l33", name: "CLH Suites Ilha Grande", area: "Vila do Abraão", rating: 4.6, image: img("clh"), tags: ["Suíte", "Moderna"], description: "Suítes modernas com excelente custo-benefício." },
+  { id: "l34", name: "Pousada Ancoradouro", area: "Vila do Abraão", rating: 4.7, image: img("ancoradouro"), tags: ["Frente mar", "Família"], description: "Vista para o cais e quartos amplos para famílias." },
+  { id: "l35", name: "Pousada Só Natureza", area: "Vila do Abraão", rating: 4.8, image: img("sonatureza"), tags: ["Eco", "Sossego"], description: "Cercada pela mata, perfeita para quem busca silêncio." },
+  { id: "l36", name: "Pousada Recanto da Sereia", area: "Vila do Abraão", rating: 4.5, image: img("sereia"), tags: ["Casal", "Charme"], description: "Pousada romântica com decoração náutica." },
+  { id: "l37", name: "Vila Pedra Mar", area: "Praia do Abraão", rating: 4.8, image: img("vilapedramar"), tags: ["Premium", "Frente mar"], description: "Bangalôs sofisticados com vista panorâmica do mar." },
+  { id: "l38", name: "Pousada Estrela do Mar", area: "Vila do Abraão", rating: 4.5, image: img("estreladomar"), tags: ["Família", "Café da manhã"], description: "Café da manhã farto e ambiente acolhedor." },
+  { id: "l39", name: "Hostel Ilha", area: "Vila do Abraão", rating: 4.4, image: img("hostelilha"), tags: ["Hostel"], description: "Hostel descontraído com ótima localização." },
+  { id: "l40", name: "Pousada Sankay", area: "Vila do Abraão", rating: 4.7, image: img("sankay"), tags: ["Família", "Piscina"], description: "Pousada com piscina, área kids e café da manhã reforçado." },
 ];
 
 export interface Restaurant {
