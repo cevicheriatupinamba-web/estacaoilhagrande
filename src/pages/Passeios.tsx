@@ -6,6 +6,7 @@ import {
 import { boatTours, type BoatTour } from "@/data/listings";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
+import { themedImage } from "@/lib/images";
 
 const categories = ["Todos", "Aventura", "Relax", "Mergulho", "VIP", "Ecoturismo"] as const;
 
@@ -275,7 +276,7 @@ const Passeios = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {bestExperiences.map((e, i) => (
               <div key={e.title} className="relative rounded-2xl overflow-hidden aspect-[3/4] group cursor-pointer">
-                <img src={`https://picsum.photos/seed/exp${i}/600/800`} alt={e.title}
+                <img src={themedImage("activity", e.title)} alt={e.title}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-smooth" />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/30 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4">
