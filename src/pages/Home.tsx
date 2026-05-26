@@ -3,6 +3,7 @@ import { Search, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { useState } from "react";
 import hero from "@/assets/hero-ilha.jpg";
 import { Button } from "@/components/ui/button";
+import Disclaimer from "@/components/Disclaimer";
 import { themedImage } from "@/lib/images";
 
 const portalCategories = [
