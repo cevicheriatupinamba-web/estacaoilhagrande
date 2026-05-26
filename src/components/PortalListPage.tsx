@@ -13,15 +13,15 @@ interface SimpleItem {
 interface Props {
   title: string;
   tagline: string;
-  heroSeed: string;
+  heroImage: string;
   intro: string;
   items: SimpleItem[];
   footerCtaTo?: string;
   footerCtaLabel?: string;
 }
 
-const PortalListPage = ({ title, tagline, heroSeed, intro, items, footerCtaTo, footerCtaLabel }: Props) => {
-  const hero = `https://picsum.photos/seed/${encodeURIComponent(heroSeed)}/1920/900`;
+const PortalListPage = ({ title, tagline, heroImage, intro, items, footerCtaTo, footerCtaLabel }: Props) => {
+  const hero = heroImage;
   return (
     <>
       <section className="relative h-[44vh] min-h-[320px] overflow-hidden">
