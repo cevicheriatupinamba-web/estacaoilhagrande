@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Heart, LogOut, User as UserIcon } from "lucide-react";
 
 const Perfil = () => {
-  const { user, logout, favorites } = useAuth();
+  const { user, isAdmin, logout, favorites } = useAuth();
   const nav = useNavigate();
 
   if (!user) {
@@ -15,24 +15,26 @@ const Perfil = () => {
     );
   }
 
+  const displayName = (user.user_metadata?.name as string) || user.email?.split("@")[0] || "Você";
+
   return (
     <div className="container py-10 max-w-2xl">
       <div className="bg-card rounded-3xl border border-border p-8 shadow-soft">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-16 h-16 rounded-full gradient-ocean grid place-items-center text-primary-foreground text-2xl font-bold">
-            {user.name[0]?.toUpperCase()}
+            {displayName[0]?.toUpperCase()}
           </div>
           <div>
-            <h1 className="font-display font-bold text-2xl">{user.name}</h1>
+            <h1 className="font-display font-bold text-2xl">{displayName}</h1>
             <p className="text-sm text-muted-foreground">{user.email}</p>
-            {user.isAdmin && <span className="text-xs px-2 py-0.5 rounded-full bg-accent text-accent-foreground font-semibold inline-block mt-1">Admin</span>}
+            {isAdmin && <span className="text-xs px-2 py-0.5 rounded-full bg-accent text-accent-foreground font-semibold inline-block mt-1">Admin</span>}
           </div>
         </div>
         <div className="grid sm:grid-cols-2 gap-3">
           <Button variant="outline" asChild className="justify-start">
             <Link to="/favoritos"><Heart className="w-4 h-4" /> Favoritos ({favorites.length})</Link>
           </Button>
-          {user.isAdmin && (
+          {isAdmin && (
             <Button variant="outline" asChild className="justify-start">
               <Link to="/admin"><UserIcon className="w-4 h-4" /> Painel admin</Link>
             </Button>
