@@ -80,9 +80,47 @@ export interface BoatTour {
   highlight: string;
   alert: string;
   image: string;
+  category?: "Aventura" | "Relax" | "Mergulho" | "VIP" | "Família" | "Ecoturismo";
+  difficulty?: "Leve" | "Moderado" | "Intenso";
+  featured?: boolean;
 }
 
 export const boatTours: BoatTour[] = [
+  {
+    id: "lopes-mendes", name: "Lopes Mendes", duration: "6–7 h", avgPrice: "R$ 80 – R$ 120",
+    boat: "Escuna + trilha", stops: ["Praia de Lopes Mendes", "Pouso", "Mangues"],
+    highlight: "Uma das praias mais bonitas do Brasil — areia branca fininha e mar cristalino.",
+    alert: "Acesso por trilha de ~20 min após desembarque no Pouso.", image: img("lopesmendes"),
+    category: "Ecoturismo", difficulty: "Moderado", featured: true,
+  },
+  {
+    id: "aventureiro", name: "Praia do Aventureiro", duration: "7–8 h", avgPrice: "R$ 160 – R$ 230",
+    boat: "Escuna grande", stops: ["Aventureiro", "Coqueiro inclinado", "Provetá"],
+    highlight: "A praia icônica do coqueiro inclinado, cartão-postal de Ilha Grande.",
+    alert: "Mar aberto no trajeto — pode balançar bastante.", image: img("aventureiro2"),
+    category: "Aventura", difficulty: "Intenso", featured: true,
+  },
+  {
+    id: "parnaioca", name: "Parnaioca", duration: "8 h", avgPrice: "R$ 180 – R$ 250",
+    boat: "Escuna", stops: ["Parnaioca", "Rio de água doce", "Caxadaço"],
+    highlight: "Praia isolada com paisagem selvagem e rio de água doce desaguando no mar.",
+    alert: "Pouca infraestrutura — leve água e lanche.", image: img("parnaioca"),
+    category: "Ecoturismo", difficulty: "Moderado",
+  },
+  {
+    id: "saco-do-ceu", name: "Saco do Céu", duration: "4–5 h", avgPrice: "R$ 80 – R$ 130",
+    boat: "Escuna ou lancha", stops: ["Saco do Céu", "Freguesia de Santana", "Japariz"],
+    highlight: "Águas espelhadas e vilarejos caiçaras — perfeito para relaxar.",
+    alert: "Bonito também ao entardecer e à noite (passeio romântico).", image: img("sacoceu2"),
+    category: "Relax", difficulty: "Leve",
+  },
+  {
+    id: "vip-lancha", name: "Passeio VIP de Lancha", duration: "Sob medida", avgPrice: "A partir de R$ 1.200/grupo",
+    boat: "Lancha privativa", stops: ["Roteiro personalizado", "Praias reservadas", "Horários flexíveis"],
+    highlight: "Experiência premium e privativa — você escolhe o roteiro e o ritmo do dia.",
+    alert: "Reserve com antecedência em alta temporada.", image: img("vip"),
+    category: "VIP", difficulty: "Leve", featured: true,
+  },
   {
     id: "meia-volta", name: "Meia Volta à Ilha", duration: "5–6 h", avgPrice: "R$ 90 – R$ 130",
     boat: "Escuna média", stops: ["Lagoa Azul", "Lagoa Verde", "Freguesia de Santana", "Japariz"],
