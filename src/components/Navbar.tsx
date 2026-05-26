@@ -17,7 +17,8 @@ const navItems = [
 ];
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, isAdmin, logout } = useAuth();
+  const displayName = (user?.user_metadata?.name as string) || user?.email?.split("@")[0] || "";
   const [open, setOpen] = useState(false);
   const nav = useNavigate();
 
