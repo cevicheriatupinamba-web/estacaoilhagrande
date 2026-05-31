@@ -31,7 +31,17 @@ const ListagemDetalhe = () => {
   const cover = l.photos?.[active] || l.photos?.[0];
   const waLink = l.whatsapp ? `https://wa.me/${l.whatsapp.replace(/\D/g, "")}` : null;
   const igLink = l.instagram ? `https://instagram.com/${l.instagram.replace(/^@/, "")}` : null;
-  const mapsLink = l.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address + " Ilha Grande RJ")}` : null;
+  const hasCoords = typeof l.latitude === "number" && typeof l.longitude === "number";
+  const mapsLink = hasCoords
+    ? `https://www.google.com/maps/search/?api=1&query=${l.latitude},${l.longitude}`
+    : l.address
+      ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address + " Ilha Grande RJ")}`
+      : null;
+  const directionsLink = hasCoords
+    ? `https://www.google.com/maps/dir/?api=1&destination=${l.latitude},${l.longitude}`
+    : l.address
+      ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(l.address + " Ilha Grande RJ")}`
+      : null;
 
   const share = async () => {
     const url = window.location.href;
@@ -66,6 +76,7 @@ const ListagemDetalhe = () => {
           telephone: l.phone,
           priceRange: l.price_range,
           url: typeof window !== "undefined" ? window.location.href : undefined,
+          ...(hasCoords ? { geo: { "@type": "GeoCoordinates", latitude: l.latitude, longitude: l.longitude } } : {}),
         })}</script>
       </Helmet>
 
@@ -176,7 +187,14 @@ const ListagemDetalhe = () => {
             {mapsLink && (
               <Button asChild variant="outline" className="w-full">
                 <a href={mapsLink} target="_blank" rel="noopener noreferrer">
-                  <MapPin className="w-4 h-4 mr-2" /> Ver no mapa
+                  <MapPin className="w-4 h-4 mr-2" /> Ver no Google Maps
+                </a>
+              </Button>
+            )}
+            {directionsLink && (
+              <Button asChild variant="outline" className="w-full">
+                <a href={directionsLink} target="_blank" rel="noopener noreferrer">
+                  <MapPin className="w-4 h-4 mr-2" /> Como chegar
                 </a>
               </Button>
             )}

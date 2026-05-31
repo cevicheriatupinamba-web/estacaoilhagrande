@@ -29,6 +29,8 @@ const schema = z.object({
   website: z.string().trim().url().max(300).optional().or(z.literal("")),
   price_range: z.string().trim().max(60).optional(),
   opening_hours: z.string().trim().max(200).optional(),
+  latitude: z.string().trim().optional(),
+  longitude: z.string().trim().optional(),
 });
 
 const initial = {
@@ -37,6 +39,7 @@ const initial = {
   address: "", neighborhood: "", phone: "", whatsapp: "",
   instagram: "", email: "", website: "",
   price_range: "", opening_hours: "",
+  latitude: "", longitude: "",
 };
 
 const CadastroEmpresa = () => {
@@ -100,6 +103,8 @@ const CadastroEmpresa = () => {
         website: form.website || null,
         price_range: form.price_range || null,
         opening_hours: form.opening_hours || null,
+        latitude: form.latitude ? Number(form.latitude) : null,
+        longitude: form.longitude ? Number(form.longitude) : null,
         photos,
       });
       if (error) throw error;
@@ -207,6 +212,26 @@ const CadastroEmpresa = () => {
               <Label>Horário de funcionamento</Label>
               <Input placeholder="Ex: Seg–Dom 12h às 23h" value={form.opening_hours}
                 onChange={e => update("opening_hours", e.target.value)} />
+            </div>
+            <div className="sm:col-span-2 rounded-2xl border border-dashed border-border p-4 bg-secondary/30">
+              <div className="text-sm font-semibold mb-1">Coordenadas geográficas (opcional)</div>
+              <p className="text-xs text-muted-foreground mb-3">
+                Abra o <a className="underline" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer">Google Maps</a>,
+                clique com o botão direito sobre o local e copie a latitude e longitude.
+                Salvar essas coordenadas garante que seu negócio apareça no futuro mapa interativo do portal.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div>
+                  <Label>Latitude</Label>
+                  <Input inputMode="decimal" placeholder="-23.1428" value={form.latitude}
+                    onChange={e => update("latitude", e.target.value)} />
+                </div>
+                <div>
+                  <Label>Longitude</Label>
+                  <Input inputMode="decimal" placeholder="-44.1731" value={form.longitude}
+                    onChange={e => update("longitude", e.target.value)} />
+                </div>
+              </div>
             </div>
           </div>
         </section>
