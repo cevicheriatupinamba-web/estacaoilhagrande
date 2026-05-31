@@ -13,7 +13,7 @@ const navItems = [
   { to: "/diversao", label: "Diversão" },
   { to: "/roteiros", label: "Roteiros" },
   { to: "/dicas", label: "Dicas" },
-  { to: "/anuncie", label: "Anuncie" },
+  { to: "/cadastro-empresa", label: "Anuncie" },
 ];
 
 const Navbar = () => {
@@ -45,6 +45,7 @@ const Navbar = () => {
               <Button variant="ghost" size="sm" onClick={() => nav("/favoritos")}>
                 <Heart className="w-4 h-4 mr-1" /> Favoritos
               </Button>
+              <Button variant="ghost" size="sm" onClick={() => nav("/painel-anunciante")}>Meus anúncios</Button>
               {isAdmin && (
                 <Button variant="ghost" size="sm" onClick={() => nav("/admin")}>Admin</Button>
               )}

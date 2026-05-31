@@ -3,6 +3,7 @@ import { Search, MapPin, Star } from "lucide-react";
 import { lodgings } from "@/data/listings";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
+import DbListingSection from "@/components/DbListingSection";
 
 const Hospedagem = () => {
   const [q, setQ] = useState("");
@@ -30,7 +31,10 @@ const Hospedagem = () => {
         </div>
       </section>
 
+      <DbListingSection category="hospedagem" subtitle="Pousadas, hotéis e hostels cadastrados" />
+
       <section className="container py-10">
+        <h2 className="font-display font-black text-2xl md:text-3xl mb-6">Outras opções na ilha</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {list.map(l => (
             <article key={l.id} className="group bg-card rounded-3xl overflow-hidden shadow-soft hover:shadow-card transition-smooth border border-border/60 flex flex-col">
