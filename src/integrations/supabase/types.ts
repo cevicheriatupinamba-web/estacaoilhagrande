@@ -26,7 +26,9 @@ export type Database = {
           featured: boolean
           id: string
           instagram: string | null
+          latitude: number | null
           logo_url: string | null
+          longitude: number | null
           name: string
           neighborhood: string | null
           opening_hours: string | null
@@ -55,7 +57,9 @@ export type Database = {
           featured?: boolean
           id?: string
           instagram?: string | null
+          latitude?: number | null
           logo_url?: string | null
+          longitude?: number | null
           name: string
           neighborhood?: string | null
           opening_hours?: string | null
@@ -84,7 +88,9 @@ export type Database = {
           featured?: boolean
           id?: string
           instagram?: string | null
+          latitude?: number | null
           logo_url?: string | null
+          longitude?: number | null
           name?: string
           neighborhood?: string | null
           opening_hours?: string | null
