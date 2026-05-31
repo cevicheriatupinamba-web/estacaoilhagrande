@@ -29,6 +29,8 @@ const schema = z.object({
   website: z.string().trim().url().max(300).optional().or(z.literal("")),
   price_range: z.string().trim().max(60).optional(),
   opening_hours: z.string().trim().max(200).optional(),
+  latitude: z.string().trim().optional(),
+  longitude: z.string().trim().optional(),
 });
 
 const initial = {
@@ -37,6 +39,7 @@ const initial = {
   address: "", neighborhood: "", phone: "", whatsapp: "",
   instagram: "", email: "", website: "",
   price_range: "", opening_hours: "",
+  latitude: "", longitude: "",
 };
 
 const CadastroEmpresa = () => {
