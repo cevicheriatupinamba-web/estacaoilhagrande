@@ -213,6 +213,26 @@ const CadastroEmpresa = () => {
               <Input placeholder="Ex: Seg–Dom 12h às 23h" value={form.opening_hours}
                 onChange={e => update("opening_hours", e.target.value)} />
             </div>
+            <div className="sm:col-span-2 rounded-2xl border border-dashed border-border p-4 bg-secondary/30">
+              <div className="text-sm font-semibold mb-1">Coordenadas geográficas (opcional)</div>
+              <p className="text-xs text-muted-foreground mb-3">
+                Abra o <a className="underline" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer">Google Maps</a>,
+                clique com o botão direito sobre o local e copie a latitude e longitude.
+                Salvar essas coordenadas garante que seu negócio apareça no futuro mapa interativo do portal.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div>
+                  <Label>Latitude</Label>
+                  <Input inputMode="decimal" placeholder="-23.1428" value={form.latitude}
+                    onChange={e => update("latitude", e.target.value)} />
+                </div>
+                <div>
+                  <Label>Longitude</Label>
+                  <Input inputMode="decimal" placeholder="-44.1731" value={form.longitude}
+                    onChange={e => update("longitude", e.target.value)} />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
