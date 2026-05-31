@@ -6,6 +6,7 @@ import {
 import { boatTours, type BoatTour } from "@/data/listings";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
+import DbListingSection from "@/components/DbListingSection";
 import { themedImage } from "@/lib/images";
 
 const categories = ["Todos", "Aventura", "Relax", "Mergulho", "VIP", "Ecoturismo"] as const;
