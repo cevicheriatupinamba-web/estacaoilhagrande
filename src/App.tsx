@@ -28,6 +28,7 @@ import Guias from "./pages/Guias";
 import OQueFazer from "./pages/OQueFazer";
 import CadastroEmpresa from "./pages/CadastroEmpresa";
 import PainelAnunciante from "./pages/PainelAnunciante";
+import EditarListagem from "./pages/EditarListagem";
 import ListagemDetalhe from "./pages/ListagemDetalhe";
 import NotFound from "./pages/NotFound";
 
@@ -70,6 +71,7 @@ const App = () => (
               <Route path="/anuncie" element={<Anuncie />} />
               <Route path="/cadastro-empresa" element={<CadastroEmpresa />} />
               <Route path="/painel-anunciante" element={<PainelAnunciante />} />
+              <Route path="/painel-anunciante/editar/:id" element={<EditarListagem />} />
               <Route path="/listagem/:slug" element={<ListagemDetalhe />} />
               <Route path="/favoritos" element={<Favoritos />} />
               <Route path="/perfil" element={<Perfil />} />
