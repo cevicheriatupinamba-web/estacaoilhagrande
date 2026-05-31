@@ -100,21 +100,21 @@ export const imagePools = {
   ],
   // Transporte — ferries, lanchas, marinas
   transport: [
-    u("1506016476100-de90fa37dc4d"), // ferry
-    u("1544551763-46a013bb70d5"), // boat aerial
+    u("1527431016-3ba47543e90c"), // ferry boat
     u("1473186578172-c141e6798cf4"), // marina
     u("1502602898657-3e91760cbb34"), // boat tropical
-    u("1505761671935-60b3a7427bad"), // boat bay
-    u("1565017228812-bcae5a1f3bc1"), // parking
+    u("1520450202524-87afe6dc6312"), // speedboat ocean
+    u("1507525428034-b723cf961d3e"), // turquoise water
+    u("1449965408869-eaa3f722e40d"), // boat at pier
   ],
   // Guias locais — pessoas guiando, mapas, mergulho, trilhas
   guide: [
-    u("1551632811-561732d1e306"), // guide mountain
-    u("1530631673369-bc20fdb32288"), // dive guide
+    u("1464822759023-fed622ff2c3b"), // trail guide forest
     u("1469854523086-cc02fe5d8800"), // map planning
-    u("1571687949921-1306bfb24b72"), // SUP instructor
-    u("1444930694458-01babe71870a"), // birdwatching
-    u("1544551763-46a013bb70d5"), // captain boat
+    u("1502602898657-3e91760cbb34"), // captain boat
+    u("1530538987395-032d1800fdd4"), // diver underwater
+    u("1488646953014-85cb44e25828"), // tourist exploring
+    u("1551632436-cbf8dd35adfa"), // hiker backpack
   ],
   // Dicas — turistas, mapas, planejamento
   tips: [
