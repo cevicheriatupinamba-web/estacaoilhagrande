@@ -186,7 +186,14 @@ const ListagemDetalhe = () => {
             {mapsLink && (
               <Button asChild variant="outline" className="w-full">
                 <a href={mapsLink} target="_blank" rel="noopener noreferrer">
-                  <MapPin className="w-4 h-4 mr-2" /> Ver no mapa
+                  <MapPin className="w-4 h-4 mr-2" /> Ver no Google Maps
+                </a>
+              </Button>
+            )}
+            {directionsLink && (
+              <Button asChild variant="outline" className="w-full">
+                <a href={directionsLink} target="_blank" rel="noopener noreferrer">
+                  <MapPin className="w-4 h-4 mr-2" /> Como chegar
                 </a>
               </Button>
             )}
