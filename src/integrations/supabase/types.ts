@@ -14,6 +14,96 @@ export type Database = {
   }
   public: {
     Tables: {
+      listings: {
+        Row: {
+          address: string | null
+          amenities: string[]
+          category: Database["public"]["Enums"]["listing_category"]
+          created_at: string
+          description: string | null
+          email: string | null
+          extras: Json
+          featured: boolean
+          id: string
+          instagram: string | null
+          logo_url: string | null
+          name: string
+          neighborhood: string | null
+          opening_hours: string | null
+          owner_id: string
+          phone: string | null
+          photos: string[]
+          plan: Database["public"]["Enums"]["listing_plan"]
+          price_range: string | null
+          services: string[]
+          short_description: string | null
+          slug: string
+          status: Database["public"]["Enums"]["listing_status"]
+          subcategory: string | null
+          updated_at: string
+          website: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          address?: string | null
+          amenities?: string[]
+          category: Database["public"]["Enums"]["listing_category"]
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          extras?: Json
+          featured?: boolean
+          id?: string
+          instagram?: string | null
+          logo_url?: string | null
+          name: string
+          neighborhood?: string | null
+          opening_hours?: string | null
+          owner_id: string
+          phone?: string | null
+          photos?: string[]
+          plan?: Database["public"]["Enums"]["listing_plan"]
+          price_range?: string | null
+          services?: string[]
+          short_description?: string | null
+          slug: string
+          status?: Database["public"]["Enums"]["listing_status"]
+          subcategory?: string | null
+          updated_at?: string
+          website?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          address?: string | null
+          amenities?: string[]
+          category?: Database["public"]["Enums"]["listing_category"]
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          extras?: Json
+          featured?: boolean
+          id?: string
+          instagram?: string | null
+          logo_url?: string | null
+          name?: string
+          neighborhood?: string | null
+          opening_hours?: string | null
+          owner_id?: string
+          phone?: string | null
+          photos?: string[]
+          plan?: Database["public"]["Enums"]["listing_plan"]
+          price_range?: string | null
+          services?: string[]
+          short_description?: string | null
+          slug?: string
+          status?: Database["public"]["Enums"]["listing_status"]
+          subcategory?: string | null
+          updated_at?: string
+          website?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -50,6 +140,9 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      listing_category: "hospedagem" | "restaurante" | "passeio" | "experiencia"
+      listing_plan: "gratuito" | "destaque" | "premium"
+      listing_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -178,6 +271,9 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      listing_category: ["hospedagem", "restaurante", "passeio", "experiencia"],
+      listing_plan: ["gratuito", "destaque", "premium"],
+      listing_status: ["pending", "approved", "rejected"],
     },
   },
 } as const
