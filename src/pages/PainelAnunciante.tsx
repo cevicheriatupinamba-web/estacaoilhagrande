@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchMyListings, STATUS_LABEL, PLAN_LABEL, CATEGORY_LABEL, type ListingRow } from "@/lib/listings-api";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, ExternalLink, Trash2 } from "lucide-react";
+import { Plus, ExternalLink, Trash2, Pencil } from "lucide-react";
 
 const statusColor: Record<string, string> = {
   pending: "bg-sun text-sun-foreground",
@@ -80,6 +80,11 @@ const PainelAnunciante = () => {
                 </div>
                 <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{l.short_description}</p>
                 <div className="flex flex-wrap gap-2">
+                  <Button asChild size="sm" variant="hero">
+                    <Link to={`/painel-anunciante/editar/${l.id}`}>
+                      <Pencil className="w-3.5 h-3.5 mr-1" /> Editar
+                    </Link>
+                  </Button>
                   {l.status === "approved" && (
                     <Button asChild size="sm" variant="outline">
                       <Link to={`/listagem/${l.slug}`}>
