@@ -145,6 +145,8 @@ const Passeios = () => {
           </div>
         </div>
       </section>
+      <DbListingSection category="passeio" subtitle="Passeios e agências cadastradas" />
+
 
       {/* DESTAQUES */}
       {featured.length > 0 && (
