@@ -103,6 +103,8 @@ const CadastroEmpresa = () => {
         website: form.website || null,
         price_range: form.price_range || null,
         opening_hours: form.opening_hours || null,
+        latitude: form.latitude ? Number(form.latitude) : null,
+        longitude: form.longitude ? Number(form.longitude) : null,
         photos,
       });
       if (error) throw error;
