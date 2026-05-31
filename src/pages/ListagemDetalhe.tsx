@@ -76,6 +76,7 @@ const ListagemDetalhe = () => {
           telephone: l.phone,
           priceRange: l.price_range,
           url: typeof window !== "undefined" ? window.location.href : undefined,
+          ...(hasCoords ? { geo: { "@type": "GeoCoordinates", latitude: l.latitude, longitude: l.longitude } } : {}),
         })}</script>
       </Helmet>
 
