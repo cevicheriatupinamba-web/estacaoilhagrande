@@ -110,6 +110,86 @@ export type Database = {
         }
         Relationships: []
       }
+      pousada_imagens: {
+        Row: {
+          created_at: string
+          id: string
+          imagem_url: string
+          ordem: number
+          pousada_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          imagem_url: string
+          ordem?: number
+          pousada_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          imagem_url?: string
+          ordem?: number
+          pousada_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pousada_imagens_pousada_id_fkey"
+            columns: ["pousada_id"]
+            isOneToOne: false
+            referencedRelation: "pousadas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pousadas: {
+        Row: {
+          cidade: string | null
+          created_at: string
+          descricao: string | null
+          email: string | null
+          endereco: string | null
+          estado: string | null
+          id: string
+          nome: string
+          owner_id: string
+          status: string
+          telefone: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          cidade?: string | null
+          created_at?: string
+          descricao?: string | null
+          email?: string | null
+          endereco?: string | null
+          estado?: string | null
+          id?: string
+          nome: string
+          owner_id: string
+          status?: string
+          telefone?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          cidade?: string | null
+          created_at?: string
+          descricao?: string | null
+          email?: string | null
+          endereco?: string | null
+          estado?: string | null
+          id?: string
+          nome?: string
+          owner_id?: string
+          status?: string
+          telefone?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
