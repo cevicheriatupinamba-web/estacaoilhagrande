@@ -85,8 +85,8 @@ const Admin = () => {
         {[
           ["Cadastros", listings.length],
           ["Pendentes", pendingCount],
+          ["Edições pendentes", pendingEditsCount],
           ["Lugares", places.length],
-          ["Roteiros", roteiros.length],
           ["Solicitações", reqs.length],
         ].map(([l, n]) => (
           <div key={l} className="bg-card rounded-2xl p-4 border border-border">
@@ -95,6 +95,7 @@ const Admin = () => {
           </div>
         ))}
       </div>
+
 
       <Tabs defaultValue="listings">
         <TabsList className="mb-4 flex-wrap">
