@@ -141,6 +141,11 @@ const Admin = () => {
                       <Star className="w-3 h-3" /> Destaque
                     </span>
                   )}
+                  {(l as any).pending_changes && (
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-sun text-sun-foreground font-bold uppercase">
+                      Alterações pendentes
+                    </span>
+                  )}
                 </div>
                 <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{l.short_description}</p>
                 <p className="text-xs text-muted-foreground">
@@ -149,15 +154,46 @@ const Admin = () => {
                   {l.neighborhood}
                 </p>
 
+                {(l as any).pending_changes && (
+                  <details className="mt-3 rounded-xl border border-sun/40 bg-sun/5 p-3 text-xs">
+                    <summary className="cursor-pointer font-semibold text-foreground">
+                      Ver alterações propostas pelo anunciante
+                    </summary>
+                    <div className="mt-2 grid sm:grid-cols-2 gap-2">
+                      {Object.entries((l as any).pending_changes as Record<string, any>).map(([k, v]) => {
+                        const current = (l as any)[k];
+                        const fmt = (x: any) => Array.isArray(x) ? x.join(", ") : (x === null || x === undefined ? "—" : String(x));
+                        return (
+                          <div key={k} className="p-2 bg-card rounded-lg border border-border">
+                            <div className="font-mono text-[10px] uppercase text-muted-foreground mb-1">{k}</div>
+                            <div className="line-through opacity-60 text-[11px] break-words">{fmt(current)}</div>
+                            <div className="text-[11px] font-semibold text-primary break-words">{fmt(v)}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </details>
+                )}
+
                 <div className="flex flex-wrap gap-2 mt-3">
+                  {(l as any).pending_changes && (
+                    <>
+                      <Button size="sm" variant="hero" onClick={() => approvePending(l)}>
+                        <Check className="w-3.5 h-3.5 mr-1" /> Aprovar alterações
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => rejectPending(l.id)}>
+                        <X className="w-3.5 h-3.5 mr-1" /> Recusar alterações
+                      </Button>
+                    </>
+                  )}
                   {l.status !== "approved" && (
                     <Button size="sm" variant="hero" onClick={() => updateListing(l.id, { status: "approved" })}>
-                      <Check className="w-3.5 h-3.5 mr-1" /> Aprovar
+                      <Check className="w-3.5 h-3.5 mr-1" /> Aprovar cadastro
                     </Button>
                   )}
                   {l.status !== "rejected" && (
                     <Button size="sm" variant="outline" onClick={() => updateListing(l.id, { status: "rejected" })}>
-                      <X className="w-3.5 h-3.5 mr-1" /> Recusar
+                      <X className="w-3.5 h-3.5 mr-1" /> Recusar cadastro
                     </Button>
                   )}
                   <select value={l.plan}
@@ -176,6 +212,7 @@ const Admin = () => {
             </article>
           ))}
         </TabsContent>
+
 
         <TabsContent value="requests">
           {reqs.length === 0 ? (
