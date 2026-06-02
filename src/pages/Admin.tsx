@@ -50,6 +50,20 @@ const Admin = () => {
     else { toast({ title: "Atualizado" }); loadListings(); }
   };
 
+  const approvePending = async (l: any) => {
+    const patch = { ...(l.pending_changes || {}), pending_changes: null, pending_changes_at: null };
+    const { error } = await supabase.from("listings").update(patch as any).eq("id", l.id);
+    if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
+    else { toast({ title: "Alterações aplicadas" }); loadListings(); }
+  };
+
+  const rejectPending = async (id: string) => {
+    const { error } = await supabase.from("listings")
+      .update({ pending_changes: null, pending_changes_at: null } as any).eq("id", id);
+    if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
+    else { toast({ title: "Alterações recusadas" }); loadListings(); }
+  };
+
   const deleteListing = async (id: string) => {
     if (!confirm("Remover esta listagem definitivamente?")) return;
     const { error } = await supabase.from("listings").delete().eq("id", id);
@@ -59,6 +73,8 @@ const Admin = () => {
 
   const filtered = filter === "all" ? listings : listings.filter(l => l.status === filter);
   const pendingCount = listings.filter(l => l.status === "pending").length;
+  const pendingEditsCount = listings.filter(l => !!(l as any).pending_changes).length;
+
 
   return (
     <div className="container py-10">
