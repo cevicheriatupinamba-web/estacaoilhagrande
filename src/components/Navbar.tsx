@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Menu, X, Heart, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
-import logo from "@/assets/ilhago-logo.png";
+
+
 
 const navItems = [
   { to: "/explorar", label: "Explorar" },
@@ -25,9 +26,10 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-border/60">
       <div className="container flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-2 shrink-0 h-16 py-1">
-          <img src={logo} alt="Ilha Grande Oficial" className="h-full w-auto object-contain" />
+        <Link to="/" className="flex items-center gap-1 shrink-0">
+          <span className="font-display font-extrabold text-2xl md:text-3xl text-gradient-ocean tracking-tight">Ilha Go</span>
         </Link>
+
 
         <nav className="hidden lg:flex items-center gap-1">
           {navItems.map(i => (
