@@ -71,6 +71,11 @@ const PainelAnunciante = () => {
                   <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${statusColor[l.status]}`}>
                     {STATUS_LABEL[l.status]}
                   </span>
+                  {(l as any).pending_changes && (
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-sun text-sun-foreground font-bold uppercase">
+                      Alterações em análise
+                    </span>
+                  )}
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary font-semibold uppercase">
                     {CATEGORY_LABEL[l.category]}
                   </span>
@@ -78,6 +83,7 @@ const PainelAnunciante = () => {
                     Plano {PLAN_LABEL[l.plan]}
                   </span>
                 </div>
+
                 <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{l.short_description}</p>
                 <div className="flex flex-wrap gap-2">
                   <Button asChild size="sm" variant="hero">

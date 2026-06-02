@@ -33,6 +33,8 @@ export type Database = {
           neighborhood: string | null
           opening_hours: string | null
           owner_id: string
+          pending_changes: Json | null
+          pending_changes_at: string | null
           phone: string | null
           photos: string[]
           plan: Database["public"]["Enums"]["listing_plan"]
@@ -64,6 +66,8 @@ export type Database = {
           neighborhood?: string | null
           opening_hours?: string | null
           owner_id: string
+          pending_changes?: Json | null
+          pending_changes_at?: string | null
           phone?: string | null
           photos?: string[]
           plan?: Database["public"]["Enums"]["listing_plan"]
@@ -95,6 +99,8 @@ export type Database = {
           neighborhood?: string | null
           opening_hours?: string | null
           owner_id?: string
+          pending_changes?: Json | null
+          pending_changes_at?: string | null
           phone?: string | null
           photos?: string[]
           plan?: Database["public"]["Enums"]["listing_plan"]

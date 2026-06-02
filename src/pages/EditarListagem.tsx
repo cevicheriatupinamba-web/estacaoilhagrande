@@ -12,7 +12,7 @@ import {
   CATEGORY_LABEL, SUBCATEGORIES, uploadListingPhoto,
   type ListingCategory, type ListingRow,
 } from "@/lib/listings-api";
-import { ArrowLeft, Save, Upload, X } from "lucide-react";
+import { ArrowLeft, Save, Upload, X, Clock } from "lucide-react";
 
 const schema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -34,20 +34,15 @@ const schema = z.object({
   services: z.string().trim().max(500).optional(),
 });
 
+const CATEGORIES: ListingCategory[] = ["hospedagem", "restaurante", "passeio", "experiencia"];
+
 type FormState = {
-  name: string; subcategory: string; short_description: string; description: string;
+  name: string; category: ListingCategory; subcategory: string;
+  short_description: string; description: string;
   address: string; neighborhood: string; phone: string; whatsapp: string;
   instagram: string; email: string; website: string; price_range: string;
   opening_hours: string; latitude: string; longitude: string;
   amenities: string; services: string;
-};
-
-const empty: FormState = {
-  name: "", subcategory: "", short_description: "", description: "",
-  address: "", neighborhood: "", phone: "", whatsapp: "",
-  instagram: "", email: "", website: "", price_range: "",
-  opening_hours: "", latitude: "", longitude: "",
-  amenities: "", services: "",
 };
 
 const EditarListagem = () => {
@@ -56,9 +51,9 @@ const EditarListagem = () => {
   const { toast } = useToast();
   const nav = useNavigate();
 
-  const [listing, setListing] = useState<ListingRow | null>(null);
+  const [listing, setListing] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState<FormState>(empty);
+  const [form, setForm] = useState<FormState | null>(null);
   const [existingPhotos, setExistingPhotos] = useState<string[]>([]);
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [newPreviews, setNewPreviews] = useState<string[]>([]);
@@ -69,37 +64,40 @@ const EditarListagem = () => {
     (async () => {
       const { data, error } = await supabase.from("listings").select("*").eq("id", id).maybeSingle();
       if (error || !data) { toast({ title: "Listagem não encontrada", variant: "destructive" }); nav("/painel-anunciante"); return; }
-      if (data.owner_id !== user.id) { toast({ title: "Sem permissão", variant: "destructive" }); nav("/painel-anunciante"); return; }
-      setListing(data as ListingRow);
+      if ((data as any).owner_id !== user.id) { toast({ title: "Sem permissão", variant: "destructive" }); nav("/painel-anunciante"); return; }
+      setListing(data);
+      const pending = (data as any).pending_changes || {};
+      const v = (k: string, fb: any) => (pending[k] !== undefined ? pending[k] : fb);
       setForm({
-        name: data.name ?? "",
-        subcategory: data.subcategory ?? "",
-        short_description: data.short_description ?? "",
-        description: data.description ?? "",
-        address: data.address ?? "",
-        neighborhood: data.neighborhood ?? "",
-        phone: data.phone ?? "",
-        whatsapp: data.whatsapp ?? "",
-        instagram: data.instagram ?? "",
-        email: data.email ?? "",
-        website: data.website ?? "",
-        price_range: data.price_range ?? "",
-        opening_hours: data.opening_hours ?? "",
-        latitude: data.latitude != null ? String(data.latitude) : "",
-        longitude: data.longitude != null ? String(data.longitude) : "",
-        amenities: (data.amenities ?? []).join(", "),
-        services: (data.services ?? []).join(", "),
+        name: v("name", data.name ?? ""),
+        category: v("category", data.category),
+        subcategory: v("subcategory", data.subcategory ?? ""),
+        short_description: v("short_description", data.short_description ?? ""),
+        description: v("description", data.description ?? ""),
+        address: v("address", data.address ?? ""),
+        neighborhood: v("neighborhood", data.neighborhood ?? ""),
+        phone: v("phone", data.phone ?? ""),
+        whatsapp: v("whatsapp", data.whatsapp ?? ""),
+        instagram: v("instagram", data.instagram ?? ""),
+        email: v("email", data.email ?? ""),
+        website: v("website", data.website ?? ""),
+        price_range: v("price_range", data.price_range ?? ""),
+        opening_hours: v("opening_hours", data.opening_hours ?? ""),
+        latitude: pending.latitude != null ? String(pending.latitude) : (data.latitude != null ? String(data.latitude) : ""),
+        longitude: pending.longitude != null ? String(pending.longitude) : (data.longitude != null ? String(data.longitude) : ""),
+        amenities: (v("amenities", data.amenities ?? []) as string[]).join(", "),
+        services: (v("services", data.services ?? []) as string[]).join(", "),
       });
-      setExistingPhotos(data.photos ?? []);
+      setExistingPhotos(v("photos", data.photos ?? []) as string[]);
       setLoading(false);
     })();
   }, [id, user, nav, toast]);
 
   if (authLoading) return <div className="container py-20 text-center text-muted-foreground">Carregando…</div>;
   if (!user) return <Navigate to={`/login?next=/painel-anunciante/editar/${id}`} replace />;
-  if (loading || !listing) return <div className="container py-20 text-center text-muted-foreground">Carregando listagem…</div>;
+  if (loading || !listing || !form) return <div className="container py-20 text-center text-muted-foreground">Carregando listagem…</div>;
 
-  const update = <K extends keyof FormState>(k: K, v: FormState[K]) => setForm(p => ({ ...p, [k]: v }));
+  const update = <K extends keyof FormState>(k: K, v: FormState[K]) => setForm(p => p ? { ...p, [k]: v } : p);
 
   const handleFiles = (list: FileList | null) => {
     if (!list) return;
@@ -119,6 +117,9 @@ const EditarListagem = () => {
     setExistingPhotos(p => { const a = [...p]; [a[i-1], a[i]] = [a[i], a[i-1]]; return a; });
   };
 
+  const isLive = listing.status === "approved";
+  const hasPending = !!listing.pending_changes && Object.keys(listing.pending_changes).length > 0;
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const parsed = schema.safeParse(form);
@@ -137,8 +138,9 @@ const EditarListagem = () => {
       const finalPhotos = [...existingPhotos, ...uploaded];
       const toArr = (s: string) => s.split(",").map(x => x.trim()).filter(Boolean).slice(0, 30);
 
-      const { error } = await supabase.from("listings").update({
+      const payload = {
         name: form.name,
+        category: form.category,
         subcategory: form.subcategory || null,
         short_description: form.short_description,
         description: form.description,
@@ -156,14 +158,31 @@ const EditarListagem = () => {
         amenities: toArr(form.amenities),
         services: toArr(form.services),
         photos: finalPhotos,
-      }).eq("id", listing.id);
-      if (error) throw error;
-      toast({
-        title: "Alterações salvas",
-        description: listing.status === "approved"
-          ? "Sua listagem foi atualizada no portal."
-          : "Sua listagem foi atualizada e continua em análise.",
-      });
+      };
+
+      if (isLive) {
+        // Listagem já publicada → guarda alterações para aprovação do admin
+        const { error } = await supabase
+          .from("listings")
+          .update({
+            pending_changes: payload as any,
+            pending_changes_at: new Date().toISOString(),
+          } as any)
+          .eq("id", listing.id);
+        if (error) throw error;
+        toast({
+          title: "Alterações enviadas para aprovação",
+          description: "Sua listagem continua publicada com as informações atuais. As mudanças aparecerão após a revisão.",
+        });
+      } else {
+        // Ainda não publicada (pendente/rejeitada) → grava direto
+        const { error } = await supabase.from("listings").update(payload as any).eq("id", listing.id);
+        if (error) throw error;
+        toast({
+          title: "Alterações salvas",
+          description: "Sua listagem continua em análise pelo administrador.",
+        });
+      }
       nav("/painel-anunciante");
     } catch (err: any) {
       toast({ title: "Erro ao salvar", description: err.message, variant: "destructive" });
@@ -172,22 +191,34 @@ const EditarListagem = () => {
     }
   };
 
-  const category = listing.category as ListingCategory;
-
   return (
     <div className="container py-10 max-w-4xl">
       <Link to="/painel-anunciante" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4">
         <ArrowLeft className="w-4 h-4" /> Voltar ao painel
       </Link>
-      <header className="mb-8">
+      <header className="mb-6">
         <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
-          Editando · {CATEGORY_LABEL[category]}
+          Editando · {CATEGORY_LABEL[form.category]}
         </span>
         <h1 className="font-display font-bold text-4xl md:text-5xl mb-2">{listing.name}</h1>
         <p className="text-muted-foreground">
-          Atualize fotos, descrição e informações de contato. As alterações entram no ar imediatamente após salvar.
+          {isLive
+            ? "Sua listagem está publicada. Toda alteração precisa ser aprovada pelo administrador antes de aparecer no portal."
+            : "Sua listagem ainda não foi publicada. Atualize os dados que desejar e o administrador fará a revisão."}
         </p>
       </header>
+
+      {isLive && hasPending && (
+        <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border border-sun/40 bg-sun/10">
+          <Clock className="w-5 h-5 text-sun-foreground shrink-0 mt-0.5" />
+          <div className="text-sm">
+            <p className="font-semibold mb-0.5">Você já tem alterações aguardando aprovação.</p>
+            <p className="text-muted-foreground">
+              O formulário abaixo mostra a versão proposta. Salvar novamente substitui as alterações pendentes.
+            </p>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={submit} className="bg-card border border-border rounded-3xl p-6 md:p-8 shadow-soft space-y-6">
         <section className="grid sm:grid-cols-2 gap-4">
@@ -195,13 +226,21 @@ const EditarListagem = () => {
             <Label>Nome do estabelecimento *</Label>
             <Input required value={form.name} onChange={e => update("name", e.target.value)} maxLength={120} />
           </div>
-          <div className="sm:col-span-2">
+          <div>
+            <Label>Categoria *</Label>
+            <select value={form.category}
+              onChange={e => update("category", e.target.value as ListingCategory)}
+              className="flex h-10 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm">
+              {CATEGORIES.map(c => <option key={c} value={c}>{CATEGORY_LABEL[c]}</option>)}
+            </select>
+          </div>
+          <div>
             <Label>Subcategoria</Label>
             <select value={form.subcategory}
               onChange={e => update("subcategory", e.target.value)}
               className="flex h-10 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm">
               <option value="">Selecione…</option>
-              {SUBCATEGORIES[category].map(s => <option key={s} value={s}>{s}</option>)}
+              {SUBCATEGORIES[form.category].map(s => <option key={s} value={s}>{s}</option>)}
             </select>
           </div>
           <div className="sm:col-span-2">
@@ -335,7 +374,7 @@ const EditarListagem = () => {
 
         <div className="flex gap-3">
           <Button type="submit" variant="hero" size="lg" className="flex-1" disabled={saving}>
-            <Save className="w-4 h-4 mr-1" /> {saving ? "Salvando…" : "Salvar alterações"}
+            <Save className="w-4 h-4 mr-1" /> {saving ? "Salvando…" : isLive ? "Enviar alterações para aprovação" : "Salvar alterações"}
           </Button>
           <Button type="button" variant="outline" size="lg" onClick={() => nav("/painel-anunciante")}>
             Cancelar
