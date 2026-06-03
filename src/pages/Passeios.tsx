@@ -134,7 +134,17 @@ const Passeios = () => {
 
   return (
     <>
+      <SEO
+        title="Passeios em Ilha Grande: Volta à Ilha, Lagoa Azul e lancha privativa"
+        description="Os melhores passeios de barco em Ilha Grande: Volta à Ilha, meia volta, Lagoa Azul, Lagoa Verde, mergulho e lancha privativa. Compare roteiros e preços."
+        path="/passeios-em-ilha-grande"
+        keywords="passeios em ilha grande, volta à ilha grande, meia volta ilha grande, lagoa azul, lagoa verde, mergulho ilha grande, lancha em ilha grande, passeio de barco ilha grande"
+        breadcrumbs={[{ name: "Passeios em Ilha Grande", path: "/passeios-em-ilha-grande" }]}
+        faqs={PASSEIOS_FAQS}
+      />
+      <Breadcrumbs items={[{ name: "Passeios em Ilha Grande", path: "/passeios-em-ilha-grande" }]} />
       {/* HERO */}
+
       <section className="relative gradient-ocean text-primary-foreground py-20 overflow-hidden">
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,white,transparent_60%)]" />
         <div className="container relative">
