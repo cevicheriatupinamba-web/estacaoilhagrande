@@ -4,6 +4,14 @@ import { restaurants } from "@/data/listings";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
 import DbListingSection from "@/components/DbListingSection";
+import SEO from "@/components/SEO";
+import Breadcrumbs from "@/components/Breadcrumbs";
+
+const FAQS = [
+  { question: "Quais os melhores restaurantes em Ilha Grande?", answer: "Os melhores restaurantes ficam concentrados na Rua da Praia, na Vila do Abraão, com destaque para frutos do mar, moqueca caiçara e pizza em forno a lenha." },
+  { question: "Onde comer peixe fresco em Ilha Grande?", answer: "Restaurantes caiçaras na orla servem peixe do dia, lula, polvo e moqueca capixaba. Pergunte sempre pela 'sugestão do chef'." },
+  { question: "Quanto custa comer em Ilha Grande?", answer: "Um prato individual custa em média R$ 50 a R$ 90. Praças de alimentação e lanchonetes oferecem opções mais econômicas." },
+];
 
 const OndeComer = () => {
   const [q, setQ] = useState("");
@@ -14,6 +22,16 @@ const OndeComer = () => {
 
   return (
     <>
+      <SEO
+        title="Restaurantes em Ilha Grande: onde comer bem na Vila do Abraão"
+        description="Os melhores restaurantes de Ilha Grande RJ: frutos do mar, peixe fresco, moqueca, pizza, hambúrguer e bares. Guia atualizado com fotos, preços e WhatsApp."
+        path="/restaurantes-em-ilha-grande"
+        keywords="restaurantes em ilha grande, onde comer em ilha grande, melhores restaurantes ilha grande, frutos do mar ilha grande, peixe fresco ilha grande"
+        breadcrumbs={[{ name: "Restaurantes em Ilha Grande", path: "/restaurantes-em-ilha-grande" }]}
+        faqs={FAQS}
+      />
+      <Breadcrumbs items={[{ name: "Restaurantes em Ilha Grande", path: "/restaurantes-em-ilha-grande" }]} />
+
       <section className="bg-gradient-to-br from-accent/10 via-background to-secondary py-12">
         <div className="container">
           <h1 className="font-display font-black text-4xl md:text-5xl mb-3">Onde comer</h1>

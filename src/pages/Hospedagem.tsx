@@ -4,6 +4,15 @@ import { lodgings } from "@/data/listings";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
 import DbListingSection from "@/components/DbListingSection";
+import SEO from "@/components/SEO";
+import Breadcrumbs from "@/components/Breadcrumbs";
+
+const FAQS = [
+  { question: "Quais as melhores pousadas em Ilha Grande?", answer: "As melhores pousadas ficam na Vila do Abraão (mais movimentada), Araçatiba e Provetá. O Guia Salt lista pousadas, hotéis e hostels verificados com fotos, contato e localização." },
+  { question: "Onde ficar em Ilha Grande pela primeira vez?", answer: "Para a primeira viagem, hospede-se na Vila do Abraão: concentra restaurantes, agências de passeios e o cais de chegada das barcas." },
+  { question: "Tem hotel barato em Ilha Grande?", answer: "Sim — há hostels e pousadas econômicas a partir de cerca de R$ 80 por pessoa, principalmente fora da alta temporada." },
+  { question: "É possível pagar pousada em Ilha Grande no PIX?", answer: "A maioria das pousadas aceita PIX, cartão e dinheiro. Confirme sempre direto com o anunciante via WhatsApp." },
+];
 
 const Hospedagem = () => {
   const [q, setQ] = useState("");
@@ -14,6 +23,16 @@ const Hospedagem = () => {
 
   return (
     <>
+      <SEO
+        title="Onde ficar em Ilha Grande: pousadas, hotéis e hostels"
+        description="Guia completo de hospedagem em Ilha Grande RJ: pousadas no Abraão, Araçatiba, Provetá, hotéis frente mar, hostels econômicos e camping. Compare e reserve direto."
+        path="/pousadas-em-ilha-grande"
+        keywords="pousadas em ilha grande, hospedagem em ilha grande, onde ficar em ilha grande, hotel em ilha grande, hostel em ilha grande, pousada em abraão"
+        breadcrumbs={[{ name: "Onde ficar em Ilha Grande", path: "/pousadas-em-ilha-grande" }]}
+        faqs={FAQS}
+      />
+      <Breadcrumbs items={[{ name: "Onde ficar em Ilha Grande", path: "/pousadas-em-ilha-grande" }]} />
+
       <section className="bg-gradient-to-br from-primary/10 via-background to-secondary py-12">
         <div className="container">
           <h1 className="font-display font-black text-4xl md:text-5xl mb-3">Onde se hospedar</h1>

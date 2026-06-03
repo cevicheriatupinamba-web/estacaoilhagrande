@@ -4,7 +4,16 @@ import { useState } from "react";
 import hero from "@/assets/hero-ilha.jpg";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
+import SEO from "@/components/SEO";
 import { themedImage } from "@/lib/images";
+
+const HOME_FAQS = [
+  { question: "Qual a melhor época para visitar Ilha Grande?", answer: "Entre março e maio, e setembro e novembro, o clima é mais estável e a ilha está menos cheia. Dezembro a fevereiro é alta temporada." },
+  { question: "Quantos dias ficar em Ilha Grande?", answer: "O ideal são 3 a 5 dias — tempo suficiente para conhecer Lopes Mendes, fazer um passeio de barco, uma trilha e curtir a Vila do Abraão." },
+  { question: "Ilha Grande tem caixa eletrônico?", answer: "Sim, na Vila do Abraão, mas é recomendável levar dinheiro do continente. A maioria dos estabelecimentos aceita PIX." },
+  { question: "Precisa de passaporte de visitação para Ilha Grande?", answer: "Não. O acesso é livre, mas algumas trilhas exigem guia credenciado por proteção ambiental." },
+];
+
 
 const portalCategories = [
   { label: "Onde se Hospedar", to: "/onde-se-hospedar", img: themedImage("lodging", "portal-hosp"), tag: "Pousadas & Hotéis" },
@@ -30,7 +39,15 @@ const Home = () => {
 
   return (
     <>
+      <SEO
+        title="Guia Salt — Guia completo de Ilha Grande RJ: hospedagem, restaurantes e passeios"
+        description="O guia mais completo de Ilha Grande (RJ). Pousadas, restaurantes, praias, trilhas, passeios de barco e tudo para planejar sua viagem ao paraíso caiçara."
+        path="/"
+        keywords="ilha grande, ilha grande rj, guia ilha grande, turismo em ilha grande, portal ilha grande, viajar para ilha grande, o que fazer em ilha grande"
+        faqs={HOME_FAQS}
+      />
       {/* HERO */}
+
       <section className="relative min-h-[92vh] flex items-center overflow-hidden">
         <img src={hero} alt="Ilha Grande vista aérea ao pôr do sol" width={1920} height={1080}
           className="absolute inset-0 w-full h-full object-cover scale-105 animate-[float_20s_ease-in-out_infinite]" />

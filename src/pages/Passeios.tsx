@@ -7,7 +7,16 @@ import { boatTours, type BoatTour } from "@/data/listings";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
 import DbListingSection from "@/components/DbListingSection";
+import SEO from "@/components/SEO";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { themedImage } from "@/lib/images";
+
+const PASSEIOS_FAQS = [
+  { question: "Qual o melhor passeio de barco em Ilha Grande?", answer: "A 'Volta à Ilha' é o passeio mais completo, visitando Aventureiro, Parnaioca, Lagoa Azul e outras praias paradisíacas em um único dia." },
+  { question: "Quanto custa um passeio de barco em Ilha Grande?", answer: "Passeios em escuna coletiva custam entre R$ 120 e R$ 250 por pessoa. Lanchas privativas saem a partir de R$ 1.500 por embarcação." },
+  { question: "Vale a pena fazer Lagoa Azul?", answer: "Sim — a Lagoa Azul tem águas cristalinas e é parada obrigatória dos passeios de meia volta e volta à ilha." },
+];
+
 
 const categories = ["Todos", "Aventura", "Relax", "Mergulho", "VIP", "Ecoturismo"] as const;
 
@@ -125,7 +134,17 @@ const Passeios = () => {
 
   return (
     <>
+      <SEO
+        title="Passeios em Ilha Grande: Volta à Ilha, Lagoa Azul e lancha privativa"
+        description="Os melhores passeios de barco em Ilha Grande: Volta à Ilha, meia volta, Lagoa Azul, Lagoa Verde, mergulho e lancha privativa. Compare roteiros e preços."
+        path="/passeios-em-ilha-grande"
+        keywords="passeios em ilha grande, volta à ilha grande, meia volta ilha grande, lagoa azul, lagoa verde, mergulho ilha grande, lancha em ilha grande, passeio de barco ilha grande"
+        breadcrumbs={[{ name: "Passeios em Ilha Grande", path: "/passeios-em-ilha-grande" }]}
+        faqs={PASSEIOS_FAQS}
+      />
+      <Breadcrumbs items={[{ name: "Passeios em Ilha Grande", path: "/passeios-em-ilha-grande" }]} />
       {/* HERO */}
+
       <section className="relative gradient-ocean text-primary-foreground py-20 overflow-hidden">
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,white,transparent_60%)]" />
         <div className="container relative">

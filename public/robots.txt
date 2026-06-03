@@ -1,3 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /painel-anunciante
+Disallow: /perfil
+Disallow: /favoritos
+Disallow: /login
+Disallow: /cadastro
+
 User-agent: Googlebot
 Allow: /
 
@@ -10,5 +19,4 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+Sitemap: https://guiasalt.lovable.app/sitemap.xml
