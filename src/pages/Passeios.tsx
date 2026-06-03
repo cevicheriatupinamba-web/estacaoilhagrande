@@ -7,7 +7,16 @@ import { boatTours, type BoatTour } from "@/data/listings";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
 import DbListingSection from "@/components/DbListingSection";
+import SEO from "@/components/SEO";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { themedImage } from "@/lib/images";
+
+const PASSEIOS_FAQS = [
+  { question: "Qual o melhor passeio de barco em Ilha Grande?", answer: "A 'Volta à Ilha' é o passeio mais completo, visitando Aventureiro, Parnaioca, Lagoa Azul e outras praias paradisíacas em um único dia." },
+  { question: "Quanto custa um passeio de barco em Ilha Grande?", answer: "Passeios em escuna coletiva custam entre R$ 120 e R$ 250 por pessoa. Lanchas privativas saem a partir de R$ 1.500 por embarcação." },
+  { question: "Vale a pena fazer Lagoa Azul?", answer: "Sim — a Lagoa Azul tem águas cristalinas e é parada obrigatória dos passeios de meia volta e volta à ilha." },
+];
+
 
 const categories = ["Todos", "Aventura", "Relax", "Mergulho", "VIP", "Ecoturismo"] as const;
 
