@@ -47,21 +47,32 @@ const App = () => (
               <Route path="/explorar" element={<Explorar />} />
               <Route path="/lugar/:slug" element={<LugarDetalhe />} />
 
-              {/* Hospedagem (com alias) */}
+              {/* Hospedagem (com aliases SEO) */}
               <Route path="/hospedagem" element={<Hospedagem />} />
               <Route path="/onde-se-hospedar" element={<Hospedagem />} />
+              <Route path="/onde-ficar-em-ilha-grande" element={<Hospedagem />} />
+              <Route path="/pousadas-em-ilha-grande" element={<Hospedagem />} />
+              <Route path="/hoteis-em-ilha-grande" element={<Hospedagem />} />
+              <Route path="/hostels-em-ilha-grande" element={<Hospedagem />} />
 
               {/* Gastronomia */}
               <Route path="/onde-comer" element={<OndeComer />} />
               <Route path="/restaurantes" element={<OndeComer />} />
+              <Route path="/restaurantes-em-ilha-grande" element={<OndeComer />} />
+              <Route path="/onde-comer-em-ilha-grande" element={<OndeComer />} />
 
               {/* Experiências */}
               <Route path="/passeios" element={<Passeios />} />
+              <Route path="/passeios-em-ilha-grande" element={<Passeios />} />
               <Route path="/o-que-fazer" element={<OQueFazer />} />
+              <Route path="/o-que-fazer-em-ilha-grande" element={<OQueFazer />} />
               <Route path="/praias" element={<Praias />} />
+              <Route path="/praias-de-ilha-grande" element={<Praias />} />
               <Route path="/trilhas" element={<Trilhas />} />
+              <Route path="/trilhas-em-ilha-grande" element={<Trilhas />} />
               <Route path="/vida-noturna" element={<VidaNoturna />} />
               <Route path="/transporte" element={<Transporte />} />
+              <Route path="/como-chegar-em-ilha-grande" element={<Transporte />} />
               <Route path="/guias" element={<Guias />} />
 
               <Route path="/diversao" element={<Diversao />} />
@@ -78,6 +89,7 @@ const App = () => (
               <Route path="/login" element={<AuthForm mode="login" />} />
               <Route path="/cadastro" element={<AuthForm mode="signup" />} />
               <Route path="/admin" element={<Admin />} />
+
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
