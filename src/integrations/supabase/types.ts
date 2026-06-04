@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      lead_requests: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string
+          email: string
+          id: string
+          name: string
+          source: string | null
+          status: string
+          updated_at: string
+          whatsapp: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description: string
+          email: string
+          id?: string
+          name: string
+          source?: string | null
+          status?: string
+          updated_at?: string
+          whatsapp: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string
+          email?: string
+          id?: string
+          name?: string
+          source?: string | null
+          status?: string
+          updated_at?: string
+          whatsapp?: string
+        }
+        Relationships: []
+      }
       listings: {
         Row: {
           address: string | null
