@@ -42,10 +42,10 @@ const Home = () => {
   return (
     <>
       <SEO
-        title="Guia Salt — Guia completo de Ilha Grande RJ: hospedagem, restaurantes e passeios"
-        description="O guia mais completo de Ilha Grande (RJ). Pousadas, restaurantes, praias, trilhas, passeios de barco e tudo para planejar sua viagem ao paraíso caiçara."
+        title="Estação Ilha Grande — Plataforma oficial de planejamento da viagem"
+        description="A plataforma oficial de conexão entre viajantes e a Ilha Grande (RJ). Planeje sua viagem: como chegar, onde ficar, o que fazer, onde comer, eventos, trilhas, praias e mapa interativo."
         path="/"
-        keywords="ilha grande, ilha grande rj, guia ilha grande, turismo em ilha grande, portal ilha grande, viajar para ilha grande, o que fazer em ilha grande"
+        keywords="estação ilha grande, planejar viagem ilha grande, ilha grande rj, como chegar ilha grande, portal ilha grande, o que fazer em ilha grande"
         faqs={HOME_FAQS}
       />
       {/* HERO */}

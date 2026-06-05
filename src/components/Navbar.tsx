@@ -34,7 +34,7 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-border/60">
       <div className="container flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex items-center gap-1 shrink-0">
-          <span className="font-display font-extrabold text-2xl md:text-3xl text-gradient-ocean tracking-tight">Ilha Go</span>
+          <span className="font-display font-extrabold text-xl md:text-2xl text-gradient-ocean tracking-tight leading-none">Estação Ilha Grande</span>
         </Link>
 
 

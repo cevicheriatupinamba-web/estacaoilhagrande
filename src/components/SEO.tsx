@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-const SITE_URL = "https://guiasalt.lovable.app";
+const SITE_URL = "https://estacaoilhagrande.com.br";
 
 export interface BreadcrumbItem {
   name: string;
@@ -38,7 +38,7 @@ export const SEO = ({
   noIndex,
 }: Props) => {
   const url = `${SITE_URL}${path}`;
-  const fullTitle = title.includes("Ilha Grande") ? title : `${title} | Ilha Grande RJ — Guia Salt`;
+  const fullTitle = title.includes("Ilha Grande") ? title : `${title} | Estação Ilha Grande`;
 
   const breadcrumbLd = breadcrumbs && breadcrumbs.length > 0 ? {
     "@context": "https://schema.org",
@@ -77,7 +77,7 @@ export const SEO = ({
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:locale" content="pt_BR" />
-      <meta property="og:site_name" content="Guia Salt — Ilha Grande" />
+      <meta property="og:site_name" content="Estação Ilha Grande" />
       {image && <meta property="og:image" content={image} />}
 
       <meta name="twitter:card" content="summary_large_image" />

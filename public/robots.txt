@@ -19,4 +19,4 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-Sitemap: https://guiasalt.lovable.app/sitemap.xml
+Sitemap: https://estacaoilhagrande.com.br/sitemap.xml
