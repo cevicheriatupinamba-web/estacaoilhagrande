@@ -4,7 +4,7 @@
 import { writeFileSync } from "fs";
 import { resolve } from "path";
 
-const BASE_URL = "https://guiasalt.lovable.app";
+const BASE_URL = "https://estacaoilhagrande.com.br";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || "https://vplwcsdtcbgpcjgdgtob.supabase.co";
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_URtJWX29mqbmJNrZHouLhQ_RXvM0FkJ";
