@@ -3,22 +3,29 @@ import { useState } from "react";
 import { Menu, X, Heart, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 
 
-const navItems = [
-  { to: "/explorar", label: "Explorar" },
-  { to: "/hospedagem", label: "Onde se hospedar" },
-  { to: "/onde-comer", label: "Onde comer" },
-  { to: "/passeios", label: "Passeios" },
-  { to: "/diversao", label: "Diversão" },
-  { to: "/roteiros", label: "Roteiros" },
-  { to: "/dicas", label: "Dicas" },
-  { to: "/cadastro-empresa", label: "Anuncie" },
-];
+const useNavItems = () => {
+  const { t } = useLanguage();
+  return [
+    { to: "/explorar", label: t("nav.explore") },
+    { to: "/hospedagem", label: t("nav.lodging") },
+    { to: "/onde-comer", label: t("nav.eat") },
+    { to: "/passeios", label: t("nav.tours") },
+    { to: "/diversao", label: t("nav.fun") },
+    { to: "/roteiros", label: t("nav.itineraries") },
+    { to: "/dicas", label: t("nav.tips") },
+    { to: "/cadastro-empresa", label: t("nav.advertise") },
+  ];
+};
 
 const Navbar = () => {
   const { user, isAdmin, logout } = useAuth();
+  const { t } = useLanguage();
+  const navItems = useNavItems();
   const displayName = (user?.user_metadata?.name as string) || user?.email?.split("@")[0] || "";
   const [open, setOpen] = useState(false);
   const nav = useNavigate();
@@ -42,14 +49,15 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden lg:flex items-center gap-2 shrink-0">
+          <LanguageSwitcher />
           {user ? (
             <>
               <Button variant="ghost" size="sm" onClick={() => nav("/favoritos")}>
-                <Heart className="w-4 h-4 mr-1" /> Favoritos
+                <Heart className="w-4 h-4 mr-1" /> {t("nav.favorites")}
               </Button>
-              <Button variant="ghost" size="sm" onClick={() => nav("/painel-anunciante")}>Meus anúncios</Button>
+              <Button variant="ghost" size="sm" onClick={() => nav("/painel-anunciante")}>{t("nav.myAds")}</Button>
               {isAdmin && (
-                <Button variant="ghost" size="sm" onClick={() => nav("/admin")}>Admin</Button>
+                <Button variant="ghost" size="sm" onClick={() => nav("/admin")}>{t("nav.admin")}</Button>
               )}
               <Button variant="ghost" size="sm" onClick={() => nav("/perfil")}>
                 <User className="w-4 h-4 mr-1" /> {displayName}
@@ -60,15 +68,18 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm" onClick={() => nav("/login")}>Entrar</Button>
-              <Button variant="hero" size="sm" onClick={() => nav("/cadastro")}>Criar conta</Button>
+              <Button variant="ghost" size="sm" onClick={() => nav("/login")}>{t("nav.login")}</Button>
+              <Button variant="hero" size="sm" onClick={() => nav("/cadastro")}>{t("nav.signup")}</Button>
             </>
           )}
         </div>
 
-        <button className="lg:hidden p-2" onClick={() => setOpen(!open)} aria-label="Menu">
-          {open ? <X /> : <Menu />}
-        </button>
+        <div className="lg:hidden flex items-center gap-2">
+          <LanguageSwitcher />
+          <button className="p-2" onClick={() => setOpen(!open)} aria-label="Menu">
+            {open ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -85,15 +96,15 @@ const Navbar = () => {
               {user ? (
                 <>
                   <Button variant="outline" onClick={() => { nav("/favoritos"); setOpen(false); }}>
-                    <Heart className="w-4 h-4 mr-2" /> Favoritos
+                    <Heart className="w-4 h-4 mr-2" /> {t("nav.favorites")}
                   </Button>
-                  {isAdmin && <Button variant="outline" onClick={() => { nav("/admin"); setOpen(false); }}>Admin</Button>}
-                  <Button variant="ghost" onClick={() => { logout(); setOpen(false); nav("/"); }}>Sair</Button>
+                  {isAdmin && <Button variant="outline" onClick={() => { nav("/admin"); setOpen(false); }}>{t("nav.admin")}</Button>}
+                  <Button variant="ghost" onClick={() => { logout(); setOpen(false); nav("/"); }}>{t("nav.logout")}</Button>
                 </>
               ) : (
                 <>
-                  <Button variant="outline" onClick={() => { nav("/login"); setOpen(false); }}>Entrar</Button>
-                  <Button variant="hero" onClick={() => { nav("/cadastro"); setOpen(false); }}>Criar conta</Button>
+                  <Button variant="outline" onClick={() => { nav("/login"); setOpen(false); }}>{t("nav.login")}</Button>
+                  <Button variant="hero" onClick={() => { nav("/cadastro"); setOpen(false); }}>{t("nav.signup")}</Button>
                 </>
               )}
             </div>
