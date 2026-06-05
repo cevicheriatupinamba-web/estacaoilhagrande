@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
 import SEO from "@/components/SEO";
 import { themedImage } from "@/lib/images";
+import { useLanguage } from "@/context/LanguageContext";
 
 const HOME_FAQS = [
   { question: "Qual a melhor época para visitar Ilha Grande?", answer: "Entre março e maio, e setembro e novembro, o clima é mais estável e a ilha está menos cheia. Dezembro a fevereiro é alta temporada." },
@@ -31,6 +32,7 @@ const portalCategories = [
 const Home = () => {
   const [q, setQ] = useState("");
   const nav = useNavigate();
+  const { t } = useLanguage();
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,23 +57,23 @@ const Home = () => {
 
         <div className="container relative z-10 py-20 text-primary-foreground animate-fade-up">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/15 backdrop-blur border border-background/20 text-xs font-medium mb-6">
-            <Sparkles className="w-3.5 h-3.5" /> Guia oficial — Ilha Grande / RJ
+            <Sparkles className="w-3.5 h-3.5" /> {t("home.badge")}
           </span>
           <h1 className="font-display font-black text-5xl md:text-7xl leading-[1.02] max-w-4xl mb-5">
-            O portal premium <br /><span className="text-gradient-sunset">da Ilha Grande</span>
+            {t("home.title1")} <br /><span className="text-gradient-sunset">{t("home.title2")}</span>
           </h1>
           <p className="text-lg md:text-xl text-primary-foreground/90 max-w-2xl mb-8">
-            Pousadas, restaurantes, passeios e experiências curadas em um só lugar. Descubra o paraíso como um local.
+            {t("home.subtitle")}
           </p>
 
           <form onSubmit={submit} className="max-w-2xl bg-background rounded-2xl p-2 flex gap-2 shadow-2xl">
             <div className="flex-1 flex items-center gap-2 px-3">
               <Search className="w-5 h-5 text-muted-foreground shrink-0" />
               <input value={q} onChange={e => setQ(e.target.value)}
-                placeholder="Busque praias, pousadas, passeios..."
+                placeholder={t("home.searchPlaceholder")}
                 className="w-full bg-transparent outline-none text-foreground placeholder:text-muted-foreground py-3" />
             </div>
-            <Button type="submit" variant="hero" size="lg">Buscar</Button>
+            <Button type="submit" variant="hero" size="lg">{t("home.search")}</Button>
           </form>
 
           <div className="mt-8 flex flex-wrap gap-2">
