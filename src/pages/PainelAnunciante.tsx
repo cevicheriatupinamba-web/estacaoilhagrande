@@ -42,7 +42,7 @@ const PainelAnunciante = () => {
       <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
         <div>
           <h1 className="font-display font-bold text-4xl mb-2">Painel do anunciante</h1>
-          <p className="text-muted-foreground">Gerencie suas listagens no portal Ilha Go.</p>
+          <p className="text-muted-foreground">Gerencie suas listagens na Estação Ilha Grande.</p>
         </div>
         <Button asChild variant="hero">
           <Link to="/cadastro-empresa"><Plus className="w-4 h-4 mr-1" /> Novo cadastro</Link>

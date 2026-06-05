@@ -39,7 +39,7 @@ const maskPhone = (v: string) => {
 };
 
 const buildWhatsAppFallback = (f: FormShape) => {
-  const msg = `Olá! Quero anunciar no Guia Salt.%0A%0A*Negócio:* ${f.name}%0A*Categoria:* ${f.category}%0A*E-mail:* ${f.email}%0A*Descrição:* ${f.description}`;
+  const msg = `Olá! Quero anunciar na Estação Ilha Grande.%0A%0A*Negócio:* ${f.name}%0A*Categoria:* ${f.category}%0A*E-mail:* ${f.email}%0A*Descrição:* ${f.description}`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
 };
 
@@ -101,7 +101,7 @@ const Anuncie = () => {
   return (
     <>
       <SEO
-        title="Anuncie em Ilha Grande — Guia Salt"
+        title="Anuncie em Ilha Grande — Estação Ilha Grande"
         description="Cadastre sua pousada, restaurante, passeio ou serviço no maior portal de turismo de Ilha Grande. Atendimento local, resposta rápida."
         path="/anuncie"
         keywords="anunciar em ilha grande, divulgar pousada ilha grande, marketing turismo ilha grande"
@@ -273,7 +273,7 @@ const Anuncie = () => {
                 </Button>
               </div>
               <p className="sm:col-span-2 text-xs text-muted-foreground text-center">
-                Ao enviar, você concorda em ser contatado pela equipe do Guia Salt.
+                Ao enviar, você concorda em ser contatado pela equipe da Estação Ilha Grande.
               </p>
             </form>
           )}
