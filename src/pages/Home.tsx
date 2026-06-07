@@ -88,6 +88,9 @@ const Home = () => {
         </div>
       </section>
 
+      {/* HUB: Planeje sua viagem */}
+      <PlanejeViagem />
+
       {/* PORTAL: cinematic category cards */}
       <section className="container py-20">
         <div className="text-center max-w-2xl mx-auto mb-12">

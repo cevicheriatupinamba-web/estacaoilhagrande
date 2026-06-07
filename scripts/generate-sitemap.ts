@@ -42,6 +42,32 @@ const staticEntries: Entry[] = [
   { path: "/dicas", changefreq: "monthly", priority: "0.7" },
   { path: "/nao-fazer", changefreq: "monthly", priority: "0.6" },
   { path: "/anuncie", changefreq: "monthly", priority: "0.5" },
+
+  // Novas páginas long-form
+  { path: "/hospedagens-ilha-grande", changefreq: "weekly", priority: "0.9" },
+  { path: "/hostels-ilha-grande", changefreq: "weekly", priority: "0.8" },
+  { path: "/camping-ilha-grande", changefreq: "weekly", priority: "0.8" },
+  { path: "/restaurantes-ilha-grande", changefreq: "weekly", priority: "0.9" },
+  { path: "/passeios-ilha-grande", changefreq: "weekly", priority: "0.9" },
+  { path: "/transfer-ilha-grande", changefreq: "weekly", priority: "0.8" },
+  { path: "/eventos-ilha-grande", changefreq: "weekly", priority: "0.7" },
+  { path: "/experiencias-ilha-grande", changefreq: "weekly", priority: "0.8" },
+  { path: "/comercio-local-ilha-grande", changefreq: "monthly", priority: "0.6" },
+  { path: "/melhor-epoca-para-visitar-ilha-grande", changefreq: "monthly", priority: "0.8" },
+
+  // Páginas programáticas (long-tail SEO)
+  { path: "/pousadas-com-cafe-da-manha-ilha-grande", changefreq: "monthly", priority: "0.7" },
+  { path: "/pousadas-pet-friendly-ilha-grande", changefreq: "monthly", priority: "0.7" },
+  { path: "/pousadas-baratas-ilha-grande", changefreq: "monthly", priority: "0.7" },
+  { path: "/restaurantes-beira-mar-ilha-grande", changefreq: "monthly", priority: "0.7" },
+  { path: "/passeios-de-lancha-ilha-grande", changefreq: "monthly", priority: "0.7" },
+  { path: "/passeios-para-lopes-mendes", changefreq: "monthly", priority: "0.8" },
+  { path: "/onde-comer-frutos-do-mar-em-ilha-grande", changefreq: "monthly", priority: "0.7" },
+  { path: "/transfer-rio-para-ilha-grande", changefreq: "monthly", priority: "0.8" },
+  { path: "/transfer-conceicao-de-jacarei-para-ilha-grande", changefreq: "monthly", priority: "0.7" },
+
+  // Blog
+  { path: "/blog", changefreq: "daily", priority: "0.9" },
 ];
 
 async function fetchListingSlugs(): Promise<Entry[]> {
