@@ -18,6 +18,7 @@ const useNavItems = () => {
     { to: "/diversao", label: t("nav.fun") },
     { to: "/roteiros", label: t("nav.itineraries") },
     { to: "/dicas", label: t("nav.tips") },
+    { to: "/blog", label: "Blog" },
     { to: "/cadastro-empresa", label: t("nav.advertise") },
   ];
 };

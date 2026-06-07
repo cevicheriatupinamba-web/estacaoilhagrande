@@ -5,6 +5,7 @@ import hero from "@/assets/hero-ilha.jpg";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
 import SEO from "@/components/SEO";
+import PlanejeViagem from "@/components/PlanejeViagem";
 import { themedImage } from "@/lib/images";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -86,6 +87,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* HUB: Planeje sua viagem */}
+      <PlanejeViagem />
 
       {/* PORTAL: cinematic category cards */}
       <section className="container py-20">
