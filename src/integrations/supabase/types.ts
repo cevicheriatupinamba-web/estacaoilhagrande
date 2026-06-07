@@ -14,6 +14,95 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author: string | null
+          category_slug: string | null
+          content: string | null
+          cover_image: string | null
+          created_at: string
+          excerpt: string | null
+          id: string
+          keywords: string | null
+          published: boolean
+          published_at: string
+          reading_minutes: number | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author?: string | null
+          category_slug?: string | null
+          content?: string | null
+          cover_image?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          keywords?: string | null
+          published?: boolean
+          published_at?: string
+          reading_minutes?: number | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string | null
+          category_slug?: string | null
+          content?: string | null
+          cover_image?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          keywords?: string | null
+          published?: boolean
+          published_at?: string
+          reading_minutes?: number | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_posts_category_slug_fkey"
+            columns: ["category_slug"]
+            isOneToOne: false
+            referencedRelation: "blog_categories"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
       lead_requests: {
         Row: {
           category: string | null
