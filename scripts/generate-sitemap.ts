@@ -100,6 +100,22 @@ async function fetchListingSlugs(): Promise<Entry[]> {
   }
 }
 
+async function fetchBlogSlugs(): Promise<Entry[]> {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/blog_posts?select=slug,updated_at&published=eq.true`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } },
+    );
+    if (!res.ok) return [];
+    const rows = (await res.json()) as Array<{ slug: string; updated_at: string }>;
+    return rows.filter(r => r.slug).map(r => ({
+      path: `/blog/${r.slug}`,
+      lastmod: r.updated_at?.slice(0, 10) || today,
+      changefreq: "monthly" as Freq,
+      priority: "0.7",
+    }));
+  } catch { return []; }
+
 function generate(entries: Entry[]) {
   const urls = entries
     .map((e) =>
@@ -124,10 +140,10 @@ ${urls}
 }
 
 async function main() {
-  const dynamic = await fetchListingSlugs();
-  const all = [...staticEntries, ...dynamic];
+  const [listings, blogs] = await Promise.all([fetchListingSlugs(), fetchBlogSlugs()]);
+  const all = [...staticEntries, ...listings, ...blogs];
   writeFileSync(resolve("public/sitemap.xml"), generate(all));
-  console.log(`sitemap.xml written (${all.length} entries — ${dynamic.length} dynamic)`);
+  console.log(`sitemap.xml written (${all.length} entries — ${listings.length} listings, ${blogs.length} blog)`);
 }
 
 main();
