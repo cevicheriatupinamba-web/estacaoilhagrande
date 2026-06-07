@@ -49,7 +49,7 @@ const Blog = () => {
       />
 
       <section className="relative h-[36vh] min-h-[280px] overflow-hidden">
-        <img src={themedImage("nature", "blog-hero")} alt="Blog Estação Ilha Grande" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={themedImage("hike", "blog-hero")} alt="Blog Estação Ilha Grande" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 to-foreground/80" />
         <div className="relative z-10 container h-full flex flex-col justify-end pb-10 text-primary-foreground">
           <span className="text-xs font-bold tracking-widest text-sun uppercase mb-2">Blog Estação Ilha Grande</span>
@@ -79,7 +79,7 @@ const Blog = () => {
               <Link key={p.slug} to={`/blog/${p.slug}`}
                 className="group bg-card rounded-3xl overflow-hidden border border-border/60 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
                 <div className="relative h-48 overflow-hidden">
-                  <img src={p.cover_image || themedImage("nature", p.slug)} alt={p.title}
+                  <img src={p.cover_image || themedImage("hike", p.slug)} alt={p.title}
                     loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 </div>
                 <div className="p-5">

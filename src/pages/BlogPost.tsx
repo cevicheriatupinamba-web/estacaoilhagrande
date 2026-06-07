@@ -44,7 +44,7 @@ const BlogPost = () => {
     );
   }
 
-  const cover = post.cover_image || themedImage("nature", post.slug);
+  const cover = post.cover_image || themedImage("hike", post.slug);
   const articleLd = {
     "@context": "https://schema.org",
     "@type": "Article",

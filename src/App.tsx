@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -31,6 +31,17 @@ import CadastroEmpresa from "./pages/CadastroEmpresa";
 import PainelAnunciante from "./pages/PainelAnunciante";
 import EditarListagem from "./pages/EditarListagem";
 import ListagemDetalhe from "./pages/ListagemDetalhe";
+import Hostels from "./pages/Hostels";
+import Camping from "./pages/Camping";
+import Transfer from "./pages/Transfer";
+import Eventos from "./pages/Eventos";
+import Experiencias from "./pages/Experiencias";
+import ComercioLocal from "./pages/ComercioLocal";
+import MelhorEpoca from "./pages/MelhorEpoca";
+import ProgrammaticPage from "./pages/ProgrammaticPage";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import EmpresaRedirect from "./pages/EmpresaRedirect";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,22 +60,29 @@ const App = () => (
               <Route path="/explorar" element={<Explorar />} />
               <Route path="/lugar/:slug" element={<LugarDetalhe />} />
 
-              {/* Hospedagem (com aliases SEO) */}
+              {/* Hospedagem */}
               <Route path="/hospedagem" element={<Hospedagem />} />
+              <Route path="/hospedagens" element={<Hospedagem />} />
+              <Route path="/hospedagens-ilha-grande" element={<Hospedagem />} />
               <Route path="/onde-se-hospedar" element={<Hospedagem />} />
               <Route path="/onde-ficar-em-ilha-grande" element={<Hospedagem />} />
               <Route path="/pousadas-em-ilha-grande" element={<Hospedagem />} />
               <Route path="/hoteis-em-ilha-grande" element={<Hospedagem />} />
-              <Route path="/hostels-em-ilha-grande" element={<Hospedagem />} />
+              <Route path="/hostels-em-ilha-grande" element={<Hostels />} />
+              <Route path="/hostels-ilha-grande" element={<Hostels />} />
+              <Route path="/camping-ilha-grande" element={<Camping />} />
+              <Route path="/camping-em-ilha-grande" element={<Camping />} />
 
               {/* Gastronomia */}
               <Route path="/onde-comer" element={<OndeComer />} />
               <Route path="/restaurantes" element={<OndeComer />} />
+              <Route path="/restaurantes-ilha-grande" element={<OndeComer />} />
               <Route path="/restaurantes-em-ilha-grande" element={<OndeComer />} />
               <Route path="/onde-comer-em-ilha-grande" element={<OndeComer />} />
 
               {/* Experiências */}
               <Route path="/passeios" element={<Passeios />} />
+              <Route path="/passeios-ilha-grande" element={<Passeios />} />
               <Route path="/passeios-em-ilha-grande" element={<Passeios />} />
               <Route path="/o-que-fazer" element={<OQueFazer />} />
               <Route path="/o-que-fazer-em-ilha-grande" element={<OQueFazer />} />
@@ -73,9 +91,42 @@ const App = () => (
               <Route path="/trilhas" element={<Trilhas />} />
               <Route path="/trilhas-em-ilha-grande" element={<Trilhas />} />
               <Route path="/vida-noturna" element={<VidaNoturna />} />
+              <Route path="/experiencias" element={<Experiencias />} />
+              <Route path="/experiencias-ilha-grande" element={<Experiencias />} />
+
+              {/* Eventos / Comércio local */}
+              <Route path="/eventos" element={<Eventos />} />
+              <Route path="/eventos-ilha-grande" element={<Eventos />} />
+              <Route path="/comercio-local" element={<ComercioLocal />} />
+              <Route path="/comercio-local-ilha-grande" element={<ComercioLocal />} />
+
+              {/* Transporte */}
               <Route path="/transporte" element={<Transporte />} />
+              <Route path="/transfer" element={<Transfer />} />
+              <Route path="/transfer-ilha-grande" element={<Transfer />} />
               <Route path="/como-chegar-em-ilha-grande" element={<Transporte />} />
               <Route path="/guias" element={<Guias />} />
+
+              {/* Planejamento */}
+              <Route path="/melhor-epoca-para-visitar-ilha-grande" element={<MelhorEpoca />} />
+
+              {/* Páginas programáticas (long-tail) */}
+              <Route path="/pousadas-com-cafe-da-manha-ilha-grande" element={<ProgrammaticPage />} />
+              <Route path="/pousadas-pet-friendly-ilha-grande" element={<ProgrammaticPage />} />
+              <Route path="/pousadas-baratas-ilha-grande" element={<ProgrammaticPage />} />
+              <Route path="/restaurantes-beira-mar-ilha-grande" element={<ProgrammaticPage />} />
+              <Route path="/passeios-de-lancha-ilha-grande" element={<ProgrammaticPage />} />
+              <Route path="/passeios-para-lopes-mendes" element={<ProgrammaticPage />} />
+              <Route path="/onde-comer-frutos-do-mar-em-ilha-grande" element={<ProgrammaticPage />} />
+              <Route path="/transfer-rio-para-ilha-grande" element={<ProgrammaticPage />} />
+              <Route path="/transfer-conceicao-de-jacarei-para-ilha-grande" element={<ProgrammaticPage />} />
+
+              {/* Blog */}
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+
+              {/* Empresa (alias SEO) */}
+              <Route path="/empresa/:slug" element={<EmpresaRedirect />} />
 
               <Route path="/diversao" element={<Diversao />} />
               <Route path="/roteiros" element={<Roteiros />} />

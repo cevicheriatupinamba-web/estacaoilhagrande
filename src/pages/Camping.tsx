@@ -8,7 +8,7 @@ const Camping = () => (
     seoDescription="Onde acampar em Ilha Grande: campings em Abraão, Aventureiro e Provetá. Estrutura, preços, regras ambientais e o que levar."
     keywords="camping em ilha grande, acampar ilha grande, camping aventureiro, camping abraão"
     path="/camping-ilha-grande"
-    heroImage={themedImage("nature", "camping-hero")}
+    heroImage={themedImage("hike", "camping-hero")}
     intro="Tudo sobre acampar em Ilha Grande: campings com estrutura, áreas selvagens, preços e dicas indispensáveis."
     sections={[
       { h2: "Onde acampar", paragraphs: ["Os principais campings ficam em Abraão (mais estrutura), no Aventureiro (camping diante de praia paradisíaca, sob controle ambiental) e em Provetá."] },
