@@ -1,4 +1,4 @@
-import whatsappBtn from "@/assets/whatsapp-button.png.asset.json";
+import whatsappBtn from "@/assets/whatsapp-button-transparent.png";
 
 export const WHATSAPP_NUMBER = "5547997579939";
 export const WHATSAPP_MSG = "Olá! Vim pela Estação Ilha Grande.";
@@ -10,10 +10,10 @@ const WhatsAppFAB = () => (
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Fale conosco no WhatsApp"
-    className="fixed bottom-5 right-5 z-50 hover:scale-105 active:scale-95 transition-transform duration-200 drop-shadow-2xl"
+    className="fixed bottom-5 right-5 z-50 hover:scale-105 active:scale-95 transition-transform duration-200"
   >
     <img
-      src={whatsappBtn.url}
+      src={whatsappBtn}
       alt="WhatsApp"
       className="h-16 sm:h-20 w-auto"
     />
