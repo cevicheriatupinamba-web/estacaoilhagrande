@@ -195,12 +195,22 @@ const ListagemDetalhe = () => {
           <span className="text-xs uppercase tracking-widest text-primary font-bold">
             {CATEGORY_LABEL[l.category]}{l.subcategory ? ` · ${l.subcategory}` : ""}
           </span>
-          <h1 className="font-display font-black text-3xl md:text-5xl mt-1 mb-2 flex items-start gap-2">
+          <h1 className="font-display font-black text-3xl md:text-5xl mt-1 mb-2 flex items-start gap-2 flex-wrap">
             {l.name}
             {(l.plan === "premium" || l.plan === "destaque") && (
               <BadgeCheck className="w-7 h-7 text-primary mt-2 shrink-0" />
             )}
+            {l.plan === "premium" && (
+              <span className="inline-flex items-center gap-1 px-3 py-1 mt-3 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 text-foreground text-[11px] font-bold uppercase tracking-wider shadow-soft">
+                <Crown className="w-3.5 h-3.5" /> Anunciante Premium
+              </span>
+            )}
           </h1>
+          {l.plan === "premium" && (
+            <p className="text-sm text-amber-700 dark:text-amber-300 font-medium mb-3">
+              ⭐ Este estabelecimento possui destaque Premium no portal Estação Ilha Grande.
+            </p>
+          )}
           {(l.neighborhood || l.address) && (
             <div className="flex items-center gap-1 text-sm text-muted-foreground mb-6">
               <MapPin className="w-4 h-4" /> {l.neighborhood}{l.neighborhood && l.address ? " · " : ""}{l.address}
