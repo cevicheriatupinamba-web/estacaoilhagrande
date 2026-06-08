@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Search, SlidersHorizontal, X } from "lucide-react";
 import { fetchApprovedByCategory, SUBCATEGORIES, type ListingCategory, type ListingRow } from "@/lib/listings-api";
 import DbListingCard from "./DbListingCard";
+import PremiumUpsell from "./PremiumUpsell";
 
 interface Props {
   category: ListingCategory;
@@ -207,9 +208,17 @@ const DbListingSection = ({
           </button>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {filtered.map(l => <DbListingCard key={l.id} l={l} />)}
-        </div>
+        <>
+          <div className="mb-6">
+            <PremiumUpsell variant="compact" category={category} />
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {filtered.map(l => <DbListingCard key={l.id} l={l} />)}
+          </div>
+          <div className="mt-10">
+            <PremiumUpsell />
+          </div>
+        </>
       )}
 
       {/* CTA Anuncie aqui */}
