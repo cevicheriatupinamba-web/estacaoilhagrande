@@ -43,6 +43,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import EmpresaRedirect from "./pages/EmpresaRedirect";
 import Servicos from "./pages/Servicos";
+import StaticDetalhe from "./pages/StaticDetalhe";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
