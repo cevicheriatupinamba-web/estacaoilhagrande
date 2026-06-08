@@ -13,6 +13,7 @@ import {
   type ListingCategory,
 } from "@/lib/listings-api";
 import { Sparkles, Upload, X } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const schema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -121,6 +122,8 @@ const CadastroEmpresa = () => {
   };
 
   return (
+    <>
+    <SEO title="Cadastro de empresa" description="Cadastre seu negócio no portal." path="/cadastro-empresa" noIndex />
     <div className="container py-10 max-w-4xl">
       <header className="mb-8">
         <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sun/20 text-sun-foreground text-xs font-semibold mb-4">
@@ -271,6 +274,7 @@ const CadastroEmpresa = () => {
         </Button>
       </form>
     </div>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ import { categories, places, CategoryKey } from "@/data/mockData";
 import PlaceCard from "@/components/PlaceCard";
 import { Button } from "@/components/ui/button";
 import Disclaimer from "@/components/Disclaimer";
+import SEO from "@/components/SEO";
 import { cn } from "@/lib/utils";
 
 const Explorar = () => {
@@ -31,6 +32,12 @@ const Explorar = () => {
 
   return (
     <>
+    <SEO
+      title="Explorar Ilha Grande — Busca por pousadas, restaurantes e passeios"
+      description="Busque por nome, categoria ou localização tudo o que Ilha Grande oferece: pousadas, restaurantes, passeios, trilhas e mais."
+      path="/explorar"
+      keywords="explorar ilha grande, buscar ilha grande, mapa ilha grande, lugares ilha grande"
+    />
     <div className="container py-10">
       <header className="mb-8 animate-fade-up">
         <h1 className="font-display font-bold text-4xl md:text-5xl mb-2">Explorar a ilha</h1>

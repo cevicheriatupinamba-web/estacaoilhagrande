@@ -11,6 +11,7 @@ import {
   type ListingRow, type ListingPlan, type ListingStatus,
 } from "@/lib/listings-api";
 import { Check, X, Star, Crown } from "lucide-react";
+import SEO from "@/components/SEO";
 
 interface AdReq { id: number; name: string; category: string; whatsapp: string; email: string; description: string; status: string; createdAt: string }
 
@@ -77,6 +78,8 @@ const Admin = () => {
 
 
   return (
+    <>
+    <SEO title="Painel admin" description="Área administrativa privada." path="/admin" noIndex />
     <div className="container py-10">
       <h1 className="font-display font-bold text-4xl mb-2">Painel admin</h1>
       <p className="text-muted-foreground mb-8">Gerencie cadastros, listagens e conteúdo.</p>
@@ -277,6 +280,7 @@ const Admin = () => {
         </TabsContent>
       </Tabs>
     </div>
+    </>
   );
 };
 

@@ -115,6 +115,8 @@ async function fetchBlogSlugs(): Promise<Entry[]> {
       priority: "0.7",
     }));
   } catch { return []; }
+}
+
 
 function generate(entries: Entry[]) {
   const urls = entries

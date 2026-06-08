@@ -61,6 +61,28 @@ const StaticDetalhe = ({ categoryKey }: Props) => {
     tier === "premium" ? "ring-2 ring-amber-400/60" :
     tier === "destaque" ? "ring-2 ring-emerald-400/50" : "";
 
+  // Schema.org type per category for rich snippets
+  const schemaType =
+    categoryKey === "onde-se-hospedar" ? "LodgingBusiness" :
+    categoryKey === "onde-comer" ? "Restaurant" :
+    categoryKey === "passeios" ? "TouristAttraction" :
+    "Thing";
+
+  const itemJsonLd: Record<string, any> = {
+    "@context": "https://schema.org",
+    "@type": schemaType,
+    name: item.name,
+    description: item.shortDescription,
+    image: gallery,
+    url: `https://estacaoilhagrande.com.br${CATEGORY_BASE_PATH[categoryKey]}/${item.slug}`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: item.location || "Ilha Grande",
+      addressRegion: "RJ",
+      addressCountry: "BR",
+    },
+  };
+
   return (
     <>
       <SEO
@@ -69,6 +91,7 @@ const StaticDetalhe = ({ categoryKey }: Props) => {
         path={`${CATEGORY_BASE_PATH[categoryKey]}/${item.slug}`}
         image={cover}
         breadcrumbs={breadcrumbs}
+        jsonLd={itemJsonLd}
       />
       <Breadcrumbs items={breadcrumbs} />
 
