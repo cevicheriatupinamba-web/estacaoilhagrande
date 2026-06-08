@@ -16,11 +16,11 @@ const useNavItems = () => {
     { to: "/hospedagem", label: t("nav.lodging") },
     { to: "/onde-comer", label: t("nav.eat") },
     { to: "/passeios", label: t("nav.tours") },
-    { to: "/diversao", label: t("nav.fun") },
+    { to: "/servicos", label: "Serviços" },
     { to: "/roteiros", label: t("nav.itineraries") },
     { to: "/dicas", label: t("nav.tips") },
     { to: "/blog", label: "Blog" },
-    { to: "/cadastro-empresa", label: t("nav.advertise") },
+    { to: "/anuncie", label: t("nav.advertise") },
   ];
 };
 
