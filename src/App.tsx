@@ -42,6 +42,7 @@ import ProgrammaticPage from "./pages/ProgrammaticPage";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import EmpresaRedirect from "./pages/EmpresaRedirect";
+import Servicos from "./pages/Servicos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
