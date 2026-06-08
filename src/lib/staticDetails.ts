@@ -5,6 +5,7 @@
 import { lodgings, restaurants, boatTours } from "@/data/listings";
 import { roteiros as roteirosMock, tips as tipsMock } from "@/data/mockData";
 import { themedImage } from "@/lib/images";
+import { curatedTourImage } from "@/lib/curatedImages";
 import {
   Truck, Anchor, Camera, ShoppingBag, Sparkles, Store, Wrench, LucideIcon,
 } from "lucide-react";
