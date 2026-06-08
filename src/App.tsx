@@ -42,6 +42,7 @@ import ProgrammaticPage from "./pages/ProgrammaticPage";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import EmpresaRedirect from "./pages/EmpresaRedirect";
+import Servicos from "./pages/Servicos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -127,6 +128,10 @@ const App = () => (
 
               {/* Empresa (alias SEO) */}
               <Route path="/empresa/:slug" element={<EmpresaRedirect />} />
+
+              {/* Serviços (hub comercial) */}
+              <Route path="/servicos" element={<Servicos />} />
+              <Route path="/servicos-ilha-grande" element={<Servicos />} />
 
               <Route path="/diversao" element={<Diversao />} />
               <Route path="/roteiros" element={<Roteiros />} />
