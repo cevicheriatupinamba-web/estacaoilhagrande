@@ -1,6 +1,6 @@
 import whatsappBtn from "@/assets/whatsapp-button-transparent.png";
 
-export const WHATSAPP_NUMBER = "5547997579939";
+export const WHATSAPP_NUMBER = "5524999992503";
 export const WHATSAPP_MSG = "Olá! Vim pela Estação Ilha Grande.";
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`;
 
