@@ -10,7 +10,7 @@ const WhatsAppLogo = ({ className }: { className?: string }) => (
 );
 
 export const WHATSAPP_NUMBER = "5524993009938";
-export const WHATSAPP_MSG = "Olá! Vim pelo Guia Ilha Grande Oficial.";
+export const WHATSAPP_MSG = "Olá! Vim pela Estação Ilha Grande.";
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`;
 
 const WhatsAppFAB = () => (

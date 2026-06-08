@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
 import { Instagram, Mail } from "lucide-react";
-import logo from "@/assets/ilhago-logo.png";
 
 const Footer = () => (
   <footer className="mt-20 border-t border-border bg-secondary/40">
     <div className="container py-12 grid gap-8 md:grid-cols-4">
       <div>
-        <img src={logo} alt="Estação Ilha Grande" className="h-32 w-32 md:h-40 md:w-40 rounded-full object-contain mb-4 shadow-soft bg-white p-2" />
         <p className="font-display font-bold text-lg mb-1">Estação Ilha Grande</p>
         <p className="text-sm text-muted-foreground">A plataforma oficial de conexão entre viajantes e a Ilha Grande.</p>
       </div>
