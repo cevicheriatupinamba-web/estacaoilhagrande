@@ -81,6 +81,7 @@ const AuthForm = ({ mode }: Props) => {
         </p>
       </div>
     </div>
+    </>
   );
 };
 

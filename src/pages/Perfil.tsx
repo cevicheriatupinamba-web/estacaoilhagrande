@@ -2,6 +2,9 @@ import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, LogOut, User as UserIcon } from "lucide-react";
+import SEO from "@/components/SEO";
+
+const PerfilSEO = () => <SEO title="Perfil" description="Sua conta na Estação Ilha Grande." path="/perfil" noIndex />;
 
 const Perfil = () => {
   const { user, isAdmin, logout, favorites } = useAuth();
@@ -9,15 +12,17 @@ const Perfil = () => {
 
   if (!user) {
     return (
+      <><PerfilSEO />
       <div className="container py-20 text-center">
         <Button asChild variant="hero"><Link to="/login">Entrar</Link></Button>
-      </div>
+      </div></>
     );
   }
 
   const displayName = (user.user_metadata?.name as string) || user.email?.split("@")[0] || "Você";
 
   return (
+    <><PerfilSEO />
     <div className="container py-10 max-w-2xl">
       <div className="bg-card rounded-3xl border border-border p-8 shadow-soft">
         <div className="flex items-center gap-4 mb-6">
