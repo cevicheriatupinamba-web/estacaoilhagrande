@@ -3,6 +3,7 @@ import { ArrowRight, MapPin } from "lucide-react";
 import Disclaimer from "@/components/Disclaimer";
 import SEO, { FAQItem } from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import PremiumUpsell from "@/components/PremiumUpsell";
 
 interface SimpleItem {
   name: string;
@@ -88,6 +89,10 @@ const PortalListPage = ({ title, tagline, heroImage, intro, items, footerCtaTo, 
             </Link>
           </div>
         )}
+
+        <div className="mt-12">
+          <PremiumUpsell />
+        </div>
 
         <Disclaimer />
       </section>
