@@ -129,6 +129,10 @@ const App = () => (
               {/* Empresa (alias SEO) */}
               <Route path="/empresa/:slug" element={<EmpresaRedirect />} />
 
+              {/* Serviços (hub comercial) */}
+              <Route path="/servicos" element={<Servicos />} />
+              <Route path="/servicos-ilha-grande" element={<Servicos />} />
+
               <Route path="/diversao" element={<Diversao />} />
               <Route path="/roteiros" element={<Roteiros />} />
               <Route path="/dicas" element={<Dicas />} />
