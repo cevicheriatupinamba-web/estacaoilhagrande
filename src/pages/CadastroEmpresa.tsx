@@ -274,6 +274,7 @@ const CadastroEmpresa = () => {
         </Button>
       </form>
     </div>
+    </>
   );
 };
 
