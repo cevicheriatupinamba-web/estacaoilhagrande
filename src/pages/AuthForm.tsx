@@ -4,8 +4,8 @@ import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Waves } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import logoAsset from "@/assets/logo-estacao-ilha-grande.png.asset.json";
 
 interface Props { mode: "login" | "signup" }
 
@@ -35,9 +35,11 @@ const AuthForm = ({ mode }: Props) => {
     <div className="min-h-[80vh] grid place-items-center px-5 py-10">
       <div className="w-full max-w-md bg-card rounded-3xl border border-border p-8 shadow-card animate-fade-up">
         <div className="text-center mb-6">
-          <div className="inline-grid place-items-center w-12 h-12 rounded-2xl gradient-ocean text-primary-foreground mb-3 shadow-glow">
-            <Waves className="w-6 h-6" />
-          </div>
+          <img
+            src={logoAsset.url}
+            alt="Estação Ilha Grande"
+            className="w-16 h-16 object-contain mx-auto mb-3"
+          />
           <h1 className="font-display font-bold text-3xl">{mode === "login" ? "Bem-vindo de volta" : "Criar conta"}</h1>
           <p className="text-muted-foreground text-sm mt-1">
             {mode === "login" ? "Entre para salvar seus favoritos" : "Comece a explorar a ilha"}

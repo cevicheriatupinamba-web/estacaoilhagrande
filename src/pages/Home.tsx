@@ -3,7 +3,7 @@ import { Search, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { useState } from "react";
 import hero from "@/assets/hero-ilha.jpg";
 import { Button } from "@/components/ui/button";
-import Disclaimer from "@/components/Disclaimer";
+
 import SEO from "@/components/SEO";
 import PlanejeViagem from "@/components/PlanejeViagem";
 import { themedImage } from "@/lib/images";
@@ -166,16 +166,18 @@ const Home = () => {
               <Link to="/anuncie">Quero anunciar</Link>
             </Button>
           </div>
-          <div className="grid grid-cols-3 gap-3 text-center">
-            {[["+50k", "visitas/mês"], ["+200", "anunciantes"], ["4.9★", "satisfação"]].map(([n, l]) => (
-              <div key={l} className="rounded-2xl bg-secondary p-4">
-                <div className="font-display font-bold text-2xl text-gradient-ocean">{n}</div>
-                <div className="text-xs text-muted-foreground mt-1">{l}</div>
-              </div>
-            ))}
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 text-center">
+            {["+50k", "+200", "4.9★"].map((n, i) => {
+              const labels = ["visitas/mês", "anunciantes", "satisfação"];
+              return (
+                <div key={labels[i]} className="rounded-2xl bg-secondary p-2 sm:p-4 min-w-0">
+                  <div className="font-display font-bold text-lg sm:text-2xl text-gradient-ocean whitespace-nowrap">{n}</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground mt-1 leading-tight">{labels[i]}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
-        <Disclaimer />
       </section>
     </>
   );
