@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import logo from "@/assets/logo-estacao-ilha-grande.png.asset.json";
 
 
 
