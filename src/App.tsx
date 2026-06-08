@@ -136,9 +136,18 @@ const App = () => (
 
               <Route path="/diversao" element={<Diversao />} />
               <Route path="/roteiros" element={<Roteiros />} />
+              <Route path="/roteiros/:slug" element={<StaticDetalhe categoryKey="roteiros" />} />
               <Route path="/dicas" element={<Dicas />} />
+              <Route path="/dicas/:slug" element={<StaticDetalhe categoryKey="dicas" />} />
               <Route path="/nao-fazer" element={<NaoFazer />} />
               <Route path="/anuncie" element={<Anuncie />} />
+
+              {/* Páginas individuais — categorias estáticas */}
+              <Route path="/onde-comer/:slug" element={<StaticDetalhe categoryKey="onde-comer" />} />
+              <Route path="/onde-se-hospedar/:slug" element={<StaticDetalhe categoryKey="onde-se-hospedar" />} />
+              <Route path="/passeios/:slug" element={<StaticDetalhe categoryKey="passeios" />} />
+              <Route path="/servicos/:slug" element={<StaticDetalhe categoryKey="servicos" />} />
+
               <Route path="/cadastro-empresa" element={<CadastroEmpresa />} />
               <Route path="/painel-anunciante" element={<PainelAnunciante />} />
               <Route path="/painel-anunciante/editar/:id" element={<EditarListagem />} />
