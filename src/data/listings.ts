@@ -1,4 +1,4 @@
-// Listagens curadas a partir de guias públicos de turismo sobre Ilha Grande.
+// Listagens curadas do portal Estação Ilha Grande.
 // Confirme sempre com o estabelecimento.
 
 import { themedImage, type ImageCategory } from "@/lib/images";

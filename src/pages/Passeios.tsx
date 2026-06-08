@@ -57,16 +57,20 @@ const Passeios = () => {
   const [cat, setCat] = useState<(typeof categories)[number]>("Todos");
   const all = STATIC_ITEMS["passeios"];
 
-  const visible = useMemo(() => {
-    return all
-      .map((item, originalIndex) => ({ item, originalIndex }))
-      .filter(({ item }) => cat === "Todos" || item.subcategory === cat);
-  }, [cat, all]);
-
   const featuredSlugs = new Set(boatTours.filter(t => t.featured).map(t => slugify(t.name)));
   const featured = all
     .map((item, originalIndex) => ({ item, originalIndex }))
     .filter(({ item }) => featuredSlugs.has(item.slug));
+
+  // Evita exibir o mesmo passeio duas vezes (Top experiências + grid principal)
+  const visible = useMemo(() => {
+    return all
+      .map((item, originalIndex) => ({ item, originalIndex }))
+      .filter(({ item }) =>
+        (cat === "Todos" || item.subcategory === cat) &&
+        !featuredSlugs.has(item.slug)
+      );
+  }, [cat, all, featuredSlugs]);
 
   return (
     <>
