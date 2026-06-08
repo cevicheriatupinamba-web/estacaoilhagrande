@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import logoAsset from "@/assets/logo-estacao-ilha-grande.png.asset.json";
+import SEO from "@/components/SEO";
 
 interface Props { mode: "login" | "signup" }
 
@@ -32,6 +33,13 @@ const AuthForm = ({ mode }: Props) => {
   };
 
   return (
+    <>
+    <SEO
+      title={mode === "login" ? "Entrar — Estação Ilha Grande" : "Criar conta — Estação Ilha Grande"}
+      description="Acesse sua conta Estação Ilha Grande para gerenciar listagens e favoritos."
+      path={mode === "login" ? "/login" : "/cadastro"}
+      noIndex
+    />
     <div className="min-h-[80vh] grid place-items-center px-5 py-10">
       <div className="w-full max-w-md bg-card rounded-3xl border border-border p-8 shadow-card animate-fade-up">
         <div className="text-center mb-6">
