@@ -111,6 +111,7 @@ const PainelAnunciante = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
