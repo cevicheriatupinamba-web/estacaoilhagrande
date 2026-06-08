@@ -10,6 +10,7 @@ import TieredCard from "@/components/TieredCard";
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { themedImage } from "@/lib/images";
+import { curatedTourImage } from "@/lib/curatedImages";
 import { STATIC_ITEMS, tierByIndex, slugify } from "@/lib/staticDetails";
 
 const PASSEIOS_FAQS = [
@@ -57,16 +58,20 @@ const Passeios = () => {
   const [cat, setCat] = useState<(typeof categories)[number]>("Todos");
   const all = STATIC_ITEMS["passeios"];
 
-  const visible = useMemo(() => {
-    return all
-      .map((item, originalIndex) => ({ item, originalIndex }))
-      .filter(({ item }) => cat === "Todos" || item.subcategory === cat);
-  }, [cat, all]);
-
   const featuredSlugs = new Set(boatTours.filter(t => t.featured).map(t => slugify(t.name)));
   const featured = all
     .map((item, originalIndex) => ({ item, originalIndex }))
     .filter(({ item }) => featuredSlugs.has(item.slug));
+
+  // Evita exibir o mesmo passeio duas vezes (Top experiências + grid principal)
+  const visible = useMemo(() => {
+    return all
+      .map((item, originalIndex) => ({ item, originalIndex }))
+      .filter(({ item }) =>
+        (cat === "Todos" || item.subcategory === cat) &&
+        !featuredSlugs.has(item.slug)
+      );
+  }, [cat, all, featuredSlugs]);
 
   return (
     <>
@@ -224,7 +229,7 @@ const Passeios = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {bestExperiences.map(e => (
               <div key={e.title} className="relative rounded-2xl overflow-hidden aspect-[3/4] group">
-                <img src={themedImage("activity", e.title)} alt={e.title}
+                <img src={curatedTourImage(slugify(e.title), themedImage("activity", e.title))} alt={e.title}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-smooth" />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/30 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4">

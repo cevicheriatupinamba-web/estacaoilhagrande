@@ -12,8 +12,9 @@ export const TOUR_IMAGES: Record<string, string> = {
   "praia-do-aventureiro": U("1602002418082-a4443e081dd1"),
   "parnaioca": U("1507525428034-b723cf961d3e"), // praia selvagem
   "saco-do-ceu": U("1505228395891-9a51e7e86bf6"), // enseada calma
-  "vip-lancha": U("1520450202524-87afe6dc6312"), // lancha
-  "passeio-vip-de-lancha": U("1520450202524-87afe6dc6312"),
+  "vip-lancha": U("1567899378494-47b22a2ae96a"), // lancha premium com pessoas
+  "passeio-vip-de-lancha": U("1567899378494-47b22a2ae96a"),
+  "lancha-vip-privativa": U("1567899378494-47b22a2ae96a"),
   "meia-volta": U("1502602898657-3e91760cbb34"),
   "meia-volta-a-ilha": U("1502602898657-3e91760cbb34"),
   "volta-ilha": U("1544551763-46a013bb70d5"), // escuna aerea
