@@ -4,8 +4,8 @@ import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Waves } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import logoAsset from "@/assets/logo-estacao-ilha-grande.png.asset.json";
 
 interface Props { mode: "login" | "signup" }
 

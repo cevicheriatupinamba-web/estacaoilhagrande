@@ -178,7 +178,6 @@ const Home = () => {
             })}
           </div>
         </div>
-        <Disclaimer />
       </section>
     </>
   );
