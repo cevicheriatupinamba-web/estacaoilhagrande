@@ -28,10 +28,10 @@ const Footer = () => (
       <div>
         <h4 className="font-semibold mb-3 text-sm">Contato</h4>
         <div className="flex gap-3">
-          <a href="https://www.instagram.com/ilhagrande.oficial" target="_blank" rel="noopener noreferrer" aria-label="Instagram @ilhagrande.oficial" className="p-2 rounded-lg bg-background hover:bg-primary hover:text-primary-foreground transition-smooth"><Instagram className="w-4 h-4" /></a>
-          <a href="mailto:contato@ilhago.com.br" aria-label="Email" className="p-2 rounded-lg bg-background hover:bg-primary hover:text-primary-foreground transition-smooth"><Mail className="w-4 h-4" /></a>
+          <a href="https://www.instagram.com/estacaoilhagranderj/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @estacaoilhagranderj" className="p-2 rounded-lg bg-background hover:bg-primary hover:text-primary-foreground transition-smooth"><Instagram className="w-4 h-4" /></a>
+          <a href="mailto:contato@estacaoilhagrande.com.br" aria-label="Email" className="p-2 rounded-lg bg-background hover:bg-primary hover:text-primary-foreground transition-smooth"><Mail className="w-4 h-4" /></a>
         </div>
-        <p className="text-xs text-muted-foreground mt-3">@ilhagrande.oficial</p>
+        <p className="text-xs text-muted-foreground mt-3">@estacaoilhagranderj</p>
       </div>
     </div>
     <div className="border-t border-border py-5 text-center text-xs text-muted-foreground">
