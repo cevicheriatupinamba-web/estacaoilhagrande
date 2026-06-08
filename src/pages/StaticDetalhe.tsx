@@ -197,6 +197,36 @@ const StaticDetalhe = ({ categoryKey }: Props) => {
                 <Instagram className="w-4 h-4" /> Instagram
               </a>
             )}
+            {item.location && (
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${item.name}, ${item.location}, Ilha Grande, Angra dos Reis, RJ`)}`}
+                target="_blank"
+                rel="noopener nofollow noreferrer"
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-border font-semibold hover:border-primary transition"
+              >
+                <MapPin className="w-4 h-4" /> Ver no Google Maps
+              </a>
+            )}
+            {categoryKey === "onde-se-hospedar" && (
+              <a
+                href={`https://www.booking.com/searchresults.pt-br.html?ss=${encodeURIComponent(`${item.name} Ilha Grande`)}`}
+                target="_blank"
+                rel="noopener nofollow noreferrer"
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-border font-semibold hover:border-primary transition"
+              >
+                Ver disponibilidade no Booking
+              </a>
+            )}
+            {categoryKey === "passeios" && (
+              <a
+                href="https://www.climatempo.com.br/previsao-do-tempo/cidade/4172/ilhagrande-rj"
+                target="_blank"
+                rel="noopener nofollow noreferrer"
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-border font-semibold hover:border-primary transition"
+              >
+                Conferir previsão do tempo
+              </a>
+            )}
             <Link
               to={CATEGORY_BASE_PATH[categoryKey]}
               className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-border font-semibold hover:border-primary transition"
@@ -204,6 +234,7 @@ const StaticDetalhe = ({ categoryKey }: Props) => {
               <ArrowLeft className="w-4 h-4" /> Voltar para a categoria
             </Link>
           </div>
+
 
           <div className="bg-secondary/60 border border-border rounded-2xl p-4 text-xs text-muted-foreground text-center">
             Quer aparecer aqui também? <Link to="/anuncie" className="font-semibold text-primary hover:underline">Anuncie seu negócio</Link>.
