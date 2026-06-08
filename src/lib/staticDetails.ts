@@ -5,6 +5,7 @@
 import { lodgings, restaurants, boatTours } from "@/data/listings";
 import { roteiros as roteirosMock, tips as tipsMock } from "@/data/mockData";
 import { themedImage } from "@/lib/images";
+import { curatedTourImage } from "@/lib/curatedImages";
 import {
   Truck, Anchor, Camera, ShoppingBag, Sparkles, Store, Wrench, LucideIcon,
 } from "lucide-react";
@@ -120,26 +121,30 @@ const restaurantsAsItems: StaticItem[] = restaurants.map(r => ({
   ],
 }));
 
-const boatToursAsItems: StaticItem[] = boatTours.map(t => ({
-  slug: slugify(t.name),
-  name: t.name,
-  categoryKey: "passeios",
-  subcategory: t.category,
-  image: t.image,
-  gallery: [t.image, themedImage("boat", t.id + "-2"), themedImage("boat", t.id + "-3")],
-  shortDescription: t.highlight,
-  fullDescription:
-    `${t.highlight}\n\nRoteiro: ${t.stops.join(" · ")}.\n\nDuração estimada de ${t.duration} a bordo de ${t.boat}. Preço médio na temporada: ${t.avgPrice}. Atenção: ${t.alert}`,
-  bullets: t.stops,
-  location: "Saída do cais de Abraão",
-  whatsapp: defaultWa,
-  meta: [
-    { label: "Duração", value: t.duration },
-    { label: "Preço médio", value: t.avgPrice },
-    { label: "Embarcação", value: t.boat },
-    ...(t.difficulty ? [{ label: "Dificuldade", value: t.difficulty }] : []),
-  ],
-}));
+const boatToursAsItems: StaticItem[] = boatTours.map(t => {
+  const slug = slugify(t.name);
+  const main = curatedTourImage(slug, t.image);
+  return {
+    slug,
+    name: t.name,
+    categoryKey: "passeios" as const,
+    subcategory: t.category,
+    image: main,
+    gallery: [main, themedImage("boat", t.id + "-2"), themedImage("beach", t.id + "-3")],
+    shortDescription: t.highlight,
+    fullDescription:
+      `${t.highlight}\n\nRoteiro: ${t.stops.join(" · ")}.\n\nDuração estimada de ${t.duration} a bordo de ${t.boat}. Preço médio na temporada: ${t.avgPrice}. Atenção: ${t.alert}`,
+    bullets: t.stops,
+    location: "Saída do cais de Abraão",
+    whatsapp: defaultWa,
+    meta: [
+      { label: "Duração", value: t.duration },
+      { label: "Preço médio", value: t.avgPrice },
+      { label: "Embarcação", value: t.boat },
+      ...(t.difficulty ? [{ label: "Dificuldade", value: t.difficulty }] : []),
+    ],
+  };
+});
 
 const roteirosAsItems: StaticItem[] = roteirosMock.map(r => ({
   slug: slugify(r.title),
