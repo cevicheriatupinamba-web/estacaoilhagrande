@@ -211,8 +211,26 @@ const DbListingSection = ({
           {filtered.map(l => <DbListingCard key={l.id} l={l} />)}
         </div>
       )}
+
+      {/* CTA Anuncie aqui */}
+      <div className="mt-10 rounded-3xl bg-gradient-to-br from-primary/10 via-background to-sun/10 border border-primary/20 p-6 md:p-8 text-center">
+        <span className="inline-block px-3 py-1 rounded-full bg-primary/15 text-primary text-[11px] font-bold uppercase tracking-wider mb-3">
+          Anuncie aqui
+        </span>
+        <h3 className="font-display font-bold text-2xl md:text-3xl mb-2">
+          Quer aparecer nesta página?
+        </h3>
+        <p className="text-muted-foreground mb-5 max-w-xl mx-auto text-sm">
+          Cadastre seu negócio na Estação Ilha Grande e apareça para milhares de turistas todo mês.
+        </p>
+        <Link to="/anuncie"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition">
+          Quero anunciar meu negócio <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
     </section>
   );
 };
 
 export default DbListingSection;
+
