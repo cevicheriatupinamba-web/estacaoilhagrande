@@ -40,18 +40,27 @@ export const SUBCATEGORIES: Record<ListingCategory, string[]> = {
   experiencia: ["Premium", "Aventura", "Romântico", "Família", "Ecoturismo"],
 };
 
+const PLAN_RANK: Record<ListingPlan, number> = { premium: 3, destaque: 2, gratuito: 1 };
+
 export async function fetchApprovedByCategory(category: ListingCategory) {
   const { data, error } = await supabase
     .from("listings")
     .select("*")
     .eq("category", category)
     .eq("status", "approved")
-    .order("featured", { ascending: false })
-    .order("plan", { ascending: false })
     .order("created_at", { ascending: false });
   if (error) throw error;
-  return data as ListingRow[];
+  const rows = (data as ListingRow[]) || [];
+  // Ordem comercial: Premium → Destaque → Gratuito. Featured sobe dentro do mesmo plano.
+  return rows.sort((a, b) => {
+    const pr = (PLAN_RANK[b.plan] ?? 0) - (PLAN_RANK[a.plan] ?? 0);
+    if (pr !== 0) return pr;
+    const fr = (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+    if (fr !== 0) return fr;
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+  });
 }
+
 
 export async function fetchListingBySlug(slug: string) {
   const { data, error } = await supabase
