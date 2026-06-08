@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Clock, ArrowLeft } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import { themedImage } from "@/lib/images";
@@ -94,9 +96,13 @@ const BlogPost = () => {
         </div>
       </section>
 
-      <article className="container max-w-3xl py-12 prose prose-lg">
+      <article className="container max-w-3xl py-12">
         {post.excerpt && <p className="text-xl text-foreground/80 leading-relaxed mb-8">{post.excerpt}</p>}
-        <div className="text-foreground/85 leading-relaxed whitespace-pre-line">{post.content || "Conteúdo em produção."}</div>
+        <div className="prose prose-lg max-w-none prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-a:text-primary prose-strong:text-foreground prose-blockquote:border-primary prose-blockquote:text-foreground/80">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {post.content || "Conteúdo em produção."}
+          </ReactMarkdown>
+        </div>
       </article>
     </>
   );
