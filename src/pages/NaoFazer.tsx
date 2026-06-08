@@ -1,9 +1,19 @@
 import { naoFazer } from "@/data/mockData";
 import { AlertTriangle, X } from "lucide-react";
 import Disclaimer from "@/components/Disclaimer";
+import SEO from "@/components/SEO";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const NaoFazer = () => (
   <>
+  <SEO
+    title="O que NÃO fazer em Ilha Grande — Erros comuns de turistas"
+    description="Evite perrengues em Ilha Grande: o que não fazer, regras ambientais, segurança, golpes comuns e dicas para preservar o paraíso."
+    path="/nao-fazer"
+    keywords="o que nao fazer ilha grande, erros turistas ilha grande, dicas seguranca ilha grande"
+    breadcrumbs={[{ name: "O que não fazer", path: "/nao-fazer" }]}
+  />
+  <Breadcrumbs items={[{ name: "O que não fazer", path: "/nao-fazer" }]} />
   <div className="container py-10">
     <header className="mb-10 max-w-2xl">
       <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 text-destructive text-xs font-semibold mb-4">

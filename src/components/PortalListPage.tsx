@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin } from "lucide-react";
 import Disclaimer from "@/components/Disclaimer";
+import SEO, { FAQItem } from "@/components/SEO";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface SimpleItem {
   name: string;
@@ -18,12 +20,32 @@ interface Props {
   items: SimpleItem[];
   footerCtaTo?: string;
   footerCtaLabel?: string;
+  /** SEO opcional — quando informado, injeta <SEO> + breadcrumbs */
+  seo?: {
+    title: string;
+    description: string;
+    path: string;
+    keywords?: string;
+    faqs?: FAQItem[];
+  };
 }
 
-const PortalListPage = ({ title, tagline, heroImage, intro, items, footerCtaTo, footerCtaLabel }: Props) => {
+const PortalListPage = ({ title, tagline, heroImage, intro, items, footerCtaTo, footerCtaLabel, seo }: Props) => {
   const hero = heroImage;
+  const crumbs = seo ? [{ name: title, path: seo.path }] : null;
   return (
     <>
+      {seo && (
+        <SEO
+          title={seo.title}
+          description={seo.description}
+          path={seo.path}
+          keywords={seo.keywords}
+          breadcrumbs={crumbs!}
+          faqs={seo.faqs}
+        />
+      )}
+      {crumbs && <Breadcrumbs items={crumbs} />}
       <section className="relative h-[44vh] min-h-[320px] overflow-hidden">
         <img src={hero} alt={title} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/40 to-foreground/80" />
