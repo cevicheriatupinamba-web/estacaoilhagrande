@@ -26,6 +26,7 @@ const Favoritos = () => {
   const favs = places.filter(p => favorites.includes(p.id));
 
   return (
+    <><FavSEO />
     <div className="container py-10">
       <h1 className="font-display font-bold text-4xl mb-2">Seus favoritos</h1>
       <p className="text-muted-foreground mb-8">{favs.length} salvos</p>
@@ -40,6 +41,7 @@ const Favoritos = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

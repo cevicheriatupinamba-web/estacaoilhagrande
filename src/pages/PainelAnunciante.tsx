@@ -6,6 +6,7 @@ import { fetchMyListings, STATUS_LABEL, PLAN_LABEL, CATEGORY_LABEL, type Listing
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, ExternalLink, Trash2, Pencil } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const statusColor: Record<string, string> = {
   pending: "bg-sun text-sun-foreground",
@@ -38,6 +39,8 @@ const PainelAnunciante = () => {
   };
 
   return (
+    <>
+    <SEO title="Painel do anunciante" description="Gerencie suas listagens." path="/painel-anunciante" noIndex />
     <div className="container py-10">
       <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
         <div>
