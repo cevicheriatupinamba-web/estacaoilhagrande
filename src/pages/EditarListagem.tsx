@@ -13,6 +13,7 @@ import {
   type ListingCategory, type ListingRow,
 } from "@/lib/listings-api";
 import { ArrowLeft, Save, Upload, X, Clock } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const schema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -192,6 +193,8 @@ const EditarListagem = () => {
   };
 
   return (
+    <>
+    <SEO title="Editar listagem" description="Edição privada de listagem." path="/painel-anunciante/editar" noIndex />
     <div className="container py-10 max-w-4xl">
       <Link to="/painel-anunciante" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4">
         <ArrowLeft className="w-4 h-4" /> Voltar ao painel
