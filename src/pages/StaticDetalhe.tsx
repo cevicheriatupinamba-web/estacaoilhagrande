@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import LocationMap from "@/components/LocationMap";
 import {
   CATEGORY_BASE_PATH, CATEGORY_LABEL, STATIC_ITEMS, TIER_LABEL, TIER_MAX_PHOTOS,
   getStaticItem, tierByIndex, type StaticCategoryKey,
