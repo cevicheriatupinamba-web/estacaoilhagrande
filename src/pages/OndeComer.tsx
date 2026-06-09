@@ -6,6 +6,7 @@ import TieredCard from "@/components/TieredCard";
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { STATIC_ITEMS, tierByIndex } from "@/lib/staticDetails";
+import { itemListLd } from "@/lib/jsonld";
 
 const FAQS = [
   { question: "Quais os melhores restaurantes em Ilha Grande?", answer: "Os melhores restaurantes ficam concentrados na Rua da Praia, na Vila do Abraão, com destaque para frutos do mar, moqueca caiçara e pizza em forno a lenha." },
@@ -36,6 +37,17 @@ const OndeComer = () => {
         keywords="restaurantes em ilha grande, onde comer em ilha grande, melhores restaurantes ilha grande, frutos do mar ilha grande, peixe fresco ilha grande"
         breadcrumbs={[{ name: "Onde comer em Ilha Grande", path: "/onde-comer" }]}
         faqs={FAQS}
+        jsonLd={itemListLd(
+          "Restaurantes em Ilha Grande",
+          "/onde-comer",
+          all.slice(0, 20).map(it => ({
+            name: it.name,
+            description: it.bullets?.[0],
+            image: it.image,
+            path: `/onde-comer/${it.slug}`,
+          })),
+          "Lista curada dos melhores restaurantes, bares e quiosques de Ilha Grande, RJ.",
+        )}
       />
       <Breadcrumbs items={[{ name: "Onde comer", path: "/onde-comer" }]} />
 

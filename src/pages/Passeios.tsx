@@ -12,6 +12,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { themedImage } from "@/lib/images";
 import { curatedTourImage } from "@/lib/curatedImages";
 import { STATIC_ITEMS, tierByIndex, slugify } from "@/lib/staticDetails";
+import { itemListLd } from "@/lib/jsonld";
 
 const PASSEIOS_FAQS = [
   { question: "Qual o melhor passeio de barco em Ilha Grande?", answer: "A 'Volta à Ilha' é o passeio mais completo, visitando Aventureiro, Parnaioca, Lagoa Azul e outras praias paradisíacas em um único dia." },
@@ -82,6 +83,17 @@ const Passeios = () => {
         keywords="passeios em ilha grande, volta à ilha grande, meia volta ilha grande, lagoa azul, lagoa verde, mergulho ilha grande, lancha em ilha grande, passeio de barco ilha grande"
         breadcrumbs={[{ name: "Passeios em Ilha Grande", path: "/passeios" }]}
         faqs={PASSEIOS_FAQS}
+        jsonLd={itemListLd(
+          "Passeios de barco em Ilha Grande",
+          "/passeios",
+          boatTours.map(t => ({
+            name: t.name,
+            description: (t.stops || []).join(", "),
+            image: t.image,
+            path: `/passeios/${t.id}`,
+          })),
+          "Roteiros de barco, escuna e lancha em Ilha Grande: Volta à Ilha, Lagoa Azul, Lopes Mendes e mais.",
+        )}
       />
       <Breadcrumbs items={[{ name: "Passeios", path: "/passeios" }]} />
 

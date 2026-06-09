@@ -3,6 +3,7 @@ import TieredCard from "@/components/TieredCard";
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { STATIC_ITEMS, tierByIndex } from "@/lib/staticDetails";
+import { collectionPageLd, itemListLd } from "@/lib/jsonld";
 
 const Dicas = () => {
   const items = STATIC_ITEMS["dicas"];
@@ -13,6 +14,23 @@ const Dicas = () => {
         description="Dicas essenciais para visitar Ilha Grande: o que levar, melhor época, internet, transporte, trilhas, segurança e meio ambiente."
         path="/dicas"
         breadcrumbs={[{ name: "Dicas", path: "/dicas" }]}
+        jsonLd={[
+          collectionPageLd(
+            "Dicas para visitar Ilha Grande",
+            "Coleção de dicas práticas para quem vai visitar Ilha Grande: o que levar, segurança, internet, trilhas e cuidados ambientais.",
+            "/dicas",
+          ),
+          itemListLd(
+            "Dicas para Ilha Grande",
+            "/dicas",
+            items.map(it => ({
+              name: it.name,
+              description: it.bullets?.[0],
+              image: it.image,
+              path: `/dicas/${it.slug}`,
+            })),
+          ),
+        ]}
       />
       <Breadcrumbs items={[{ name: "Dicas", path: "/dicas" }]} />
 

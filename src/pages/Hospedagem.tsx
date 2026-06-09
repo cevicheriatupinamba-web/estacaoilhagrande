@@ -6,6 +6,7 @@ import TieredCard from "@/components/TieredCard";
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { STATIC_ITEMS, tierByIndex } from "@/lib/staticDetails";
+import { itemListLd } from "@/lib/jsonld";
 
 const FAQS = [
   { question: "Quais as melhores pousadas em Ilha Grande?", answer: "As melhores pousadas ficam na Vila do Abraão (mais movimentada), Araçatiba e Provetá. A Estação Ilha Grande lista pousadas, hotéis e hostels verificados com fotos, contato e localização." },
@@ -37,6 +38,17 @@ const Hospedagem = () => {
         keywords="pousadas em ilha grande, hospedagem em ilha grande, onde ficar em ilha grande, hotel em ilha grande, hostel em ilha grande, pousada em abraão"
         breadcrumbs={[{ name: "Onde se hospedar em Ilha Grande", path: "/onde-se-hospedar" }]}
         faqs={FAQS}
+        jsonLd={itemListLd(
+          "Hospedagem em Ilha Grande",
+          "/onde-se-hospedar",
+          all.slice(0, 20).map(it => ({
+            name: it.name,
+            description: it.bullets?.[0],
+            image: it.image,
+            path: `/onde-se-hospedar/${it.slug}`,
+          })),
+          "Pousadas, hotéis, hostels e camping verificados em Ilha Grande, RJ.",
+        )}
       />
       <Breadcrumbs items={[{ name: "Onde se hospedar", path: "/onde-se-hospedar" }]} />
 

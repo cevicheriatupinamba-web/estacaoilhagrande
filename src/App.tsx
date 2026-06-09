@@ -44,6 +44,7 @@ import BlogPost from "./pages/BlogPost";
 import EmpresaRedirect from "./pages/EmpresaRedirect";
 import Servicos from "./pages/Servicos";
 import StaticDetalhe from "./pages/StaticDetalhe";
+import LopesMendes from "./pages/LopesMendes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -90,6 +91,8 @@ const App = () => (
               <Route path="/o-que-fazer-em-ilha-grande" element={<OQueFazer />} />
               <Route path="/praias" element={<Praias />} />
               <Route path="/praias-de-ilha-grande" element={<Praias />} />
+              <Route path="/praias/lopes-mendes" element={<LopesMendes />} />
+              <Route path="/lopes-mendes" element={<LopesMendes />} />
               <Route path="/trilhas" element={<Trilhas />} />
               <Route path="/trilhas-em-ilha-grande" element={<Trilhas />} />
               <Route path="/vida-noturna" element={<VidaNoturna />} />
