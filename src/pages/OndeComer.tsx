@@ -6,6 +6,7 @@ import TieredCard from "@/components/TieredCard";
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { STATIC_ITEMS, tierByIndex } from "@/lib/staticDetails";
+import { itemListLd } from "@/lib/jsonld";
 
 const FAQS = [
   { question: "Quais os melhores restaurantes em Ilha Grande?", answer: "Os melhores restaurantes ficam concentrados na Rua da Praia, na Vila do Abraão, com destaque para frutos do mar, moqueca caiçara e pizza em forno a lenha." },
