@@ -59,6 +59,8 @@ import AdminInvites from "./pages/admin/Invites";
 import AdminPlans from "./pages/admin/Plans";
 import AdminSettings from "./pages/admin/Settings";
 import AdminUsers from "./pages/admin/Users";
+import ImportarPousada from "./pages/admin/ImportarPousada";
+import PousadaDetalhe from "./pages/PousadaDetalhe";
 import InviteAccept from "./pages/InviteAccept";
 import EsqueciSenha from "./pages/EsqueciSenha";
 import RedefinirSenha from "./pages/RedefinirSenha";
@@ -181,6 +183,7 @@ const App = () => (
               <Route path="/painel-anunciante" element={<PainelAnunciante />} />
               <Route path="/painel-anunciante/editar/:id" element={<EditarListagem />} />
               <Route path="/listagem/:slug" element={<ListagemDetalhe />} />
+              <Route path="/pousadas/:slug" element={<PousadaDetalhe />} />
               <Route path="/favoritos" element={<Favoritos />} />
               <Route path="/perfil" element={<Perfil />} />
               <Route path="/login" element={<AuthForm mode="login" />} />
@@ -200,6 +203,7 @@ const App = () => (
               <Route index element={<AdminDashboard />} />
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="usuarios" element={<AdminUsers />} />
+              <Route path="importar-pousada" element={<ImportarPousada />} />
               <Route path="anunciantes" element={<AdminCRM />} />
               <Route path="solicitacoes" element={<AdminLeads />} />
               <Route path="conteudo" element={<AdminContent />} />
