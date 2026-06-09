@@ -214,7 +214,7 @@ export default function ImportarPousada() {
               className="bg-amber-500 hover:bg-amber-600 text-white flex-1 min-w-[160px]"
               onClick={() => {
                 const r = normalizeApifyJSON(jsonText);
-                if (!r.ok) { toast.error(r.error); return; }
+                if (r.ok === false) { toast.error(r.error); return; }
                 setDraft(r.data);
                 setJsonText(JSON.stringify(r.data, null, 2));
                 toast.success(`Importado: ${r.data.photos.length} fotos, ${r.data.amenities.length} comodidades, ${r.data.rooms.length} quartos`);
