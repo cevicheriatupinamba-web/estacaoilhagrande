@@ -1,96 +1,80 @@
-# Reestruturação Estação Ilha Grande — Fase 1
+# Fase 1 V4.0 — Plano de execução
 
-Vou implementar apenas o que tem backend real funcionando hoje. Tudo que for "em construção" sai do menu, da navegação e dos cards. Sem placeholders.
+Vou implementar **somente a Fase 1**, com backend real. Tudo que não tiver dado real não entra no menu. Fases 2 e 3 (Avaliações, Leads avançados, Reservas, Promoções, Cupons, SEO Center, BI, Heatmap, IA) ficam fora.
 
-## 1. Limpeza imediata (sai do ar)
+## 1. Banco — migração única
 
-**Admin** — remover do menu lateral e das rotas:
-- SEO, BI, Marketing, Crescimento, Mapa, Suporte, Avaliações
+- **invites** (id, token único, email, role, status[pending|accepted|expired|cancelled], invited_by, created_at, expires_at, accepted_at). RLS: admin gerencia tudo; rota pública valida token via RPC `accept_invite(token)` security definer.
+- **platform_settings** (key, value jsonb, updated_by, updated_at) — fonte única para nome, logo, WhatsApp, e-mail, redes, CNPJ, SEO global, integrações (chaves públicas).
+- **plans** (id, slug, name, price_cents, benefits jsonb, trial_days, active) — substitui constantes hardcoded de planos.
+- **audit_log** (actor_id, actor_email, action, resource_type, resource_id, before jsonb, after jsonb, created_at). Generalização do `activity_logs` atual com diff antes/depois.
+- Triggers: capturar antes/depois em `listings`, `subscriptions`, `user_roles`, `plans`, `platform_settings`.
+- RPCs: `accept_invite(token, user_id)`, `create_invite(email, role, days)`, `get_dashboard_kpis(period)`.
 
-**Mantidos no Admin** (têm dados reais ou função operacional):
-- Painel Admin (dashboard)
-- Anunciantes (CRM)
-- Assinaturas
-- Financeiro
-- Solicitações (leads — já existe tabela `lead_requests`)
-- Conteúdo (blog)
-- Permissões
-- Configurações
-- Auditoria (activity_logs)
+## 2. Sistema de Convites (mata o "precisa logar antes")
 
-**Anunciante** — menu fica só com o que funciona:
-- Visão geral, Minha empresa, Meu plano, Financeiro
+- `/admin/invites`: criar (email + role + validade), listar (status, expira em, ações: reenviar, cancelar, copiar link, QR), busca.
+- Link `/invite/:token`: página premium com logo, hero, "Entrar com Google" + "Criar conta". Após auth, RPC `accept_invite` aplica role e redireciona pro painel do role.
+- E-mail via Resend é Fase 2; por ora link copiável + botão "Enviar via WhatsApp".
 
-## 2. Papéis e permissões
+## 3. Super Admin — `/admin`
 
-Enum `app_role` já tem: super_admin, admin, financial_manager, content_manager, support_agent, advertiser, user.
+Menu enxuto, só rotas com backend:
 
-Ações:
-- Renomear semanticamente `user` → tratado como **customer** na UI (sem mudar o enum, evita migração quebrada).
-- Confirmar guards: `AdminLayout` (super_admin/admin), `AdvertiserLayout` (advertiser + admin), novo `CustomerLayout` (qualquer usuário logado) para `/minha-conta`.
-- RLS já existe nas tabelas principais; revisar `listings`, `subscriptions`, `lead_requests` para garantir que o anunciante só lê o que é dele (`owner_id = auth.uid()`).
-
-## 3. Três ecossistemas (rotas)
-
-```text
-/admin/*          → Super Admin / staff
-/dashboard,
-/minha-empresa,
-/minha-assinatura → Anunciante (extranet)
-/minha-conta/*    → Turista (customer)
+```
+Dashboard · Anunciantes · Assinaturas · Financeiro · Solicitações ·
+Conteúdo · Convites · Permissões · Planos · Configurações · Auditoria
 ```
 
-## 4. Ecossistema Turista — novo
+- **Dashboard Executivo**: KPIs reais via RPC `get_dashboard_kpis` — MRR, ARR, ativos, novos, churn (cancelados/ativos), leads do período, top categorias, top anunciantes. Filtros: hoje/7d/30d/90d/ano. Sem gráfico falso — só o que sai do banco.
+- **Planos**: CRUD da tabela `plans`.
+- **Configurações**: tabs Institucional, SEO Global, Integrações (chaves públicas em `platform_settings`; chaves secretas via secrets tool, listadas como "configurada/não configurada"), Segurança (link p/ auditoria).
+- **Auditoria**: timeline com filtro por autor/ação/recurso/período; diff antes→depois.
+- **Permissões**: já existe; ajustar para usar convites no fluxo "Adicionar usuário".
 
-Criar `/minha-conta` com:
-- **Perfil**: nome, email, whatsapp, cidade, país, idioma (tabela `profiles` nova, ligada a `auth.users`).
-- **Favoritos**: já existem em localStorage; migrar para tabela `favorites` (user_id, listing_id) com RLS por dono.
-- **Histórico**: lista de favoritos + avaliações futuras (Fase 2).
+## 4. Anunciante — `/advertiser/*` (renomear rotas atuais)
 
-Layout próprio com navegação simples (sem sidebar pesado). Mobile-first.
+Menu: **Dashboard · Minha Empresa · Galeria · Meu Plano · Financeiro · Estatísticas**
 
-## 5. Ecossistema Anunciante — completar Fase 1
+- **Dashboard**: já existe, refinar com filtros hoje/7d/30d/90d/ano e delta vs período anterior.
+- **Minha Empresa**: expandir campos (horário, serviços, diferenciais, redes, localização lat/lng com mapa).
+- **Galeria** (`/advertiser/galeria`): upload múltiplo, drag&drop, capa, ordem, legenda, alt. Bucket `listing-photos`, tabela `pousada_imagens` generalizada.
+- **Meu Plano**: status, valor, próxima renovação, dias restantes, botão "Renovar via WhatsApp" (upgrade/downgrade abre WhatsApp com admin).
+- **Financeiro**: histórico `subscription_payments`, recibo via `window.print()`.
+- **Estatísticas**: vista detalhada de `listing_events` agrupada por tipo + origem (referrer).
 
-Já existe Dashboard + Minha Empresa + Minha Assinatura. Adicionar:
-- **Galeria** (`/minha-galeria`): upload múltiplo, drag&drop, reordenar, marcar capa. Usa bucket `listing-photos` + tabela `pousada_imagens` (já existe) — generalizar para listings também.
-- **Financeiro** (`/meu-financeiro`): histórico de `subscription_payments` com download de recibo (PDF gerado client-side simples) e botão "Renovar via WhatsApp".
-- **Minha Empresa**: expandir formulário com horário, serviços, diferenciais, redes sociais completas, localização no mapa (campos lat/lng já existem em listings).
+## 5. Turista — `/minha-conta/*`
 
-Dashboard ganha:
-- Filtros de período (hoje / 7d / 30d / 90d / ano) — já parcialmente feito.
-- KPIs: visualizações, cliques WhatsApp, Instagram, telefone, favoritos, solicitações.
-- Comparativo vs período anterior (% delta).
+Já existe Perfil + Favoritos + Histórico. Adicionar:
+- Bottom-nav mobile (Início, Explorar, Mapa, Favoritos, Conta) só para usuários customer/logados sem role staff/advertiser.
+- Perfil: alterar senha, idioma, foto (upload pra bucket).
+- Favoritos: listas (`favorite_lists`) — opcional, só se couber no escopo; senão fica em Fase 2.
 
-## 6. Ecossistema Super Admin — ajustes
+## 6. Limpeza
 
-- **Permissões** (`/admin/roles`): trocar exibição de UUIDs por nome+email+cargo+status+data, com ações Editar/Remover. Join `user_roles` + `auth.users` via função SECURITY DEFINER `get_users_with_roles()`.
-- **Dashboard Executivo**: KPIs reais (MRR, ativos, cancelados, novos no mês, leads do mês) a partir de `subscriptions` e `lead_requests`. Sem gráficos falsos — só o que sai do banco.
+Remover do código rotas/itens sem backend: ComingSoon do admin e do advertiser, links a SEO Center/BI/Heatmap/Marketing/Growth.
 
-## 7. Banco — migrações necessárias
+## 7. Ordem de execução
 
-1. `profiles` (user_id PK, name, whatsapp, city, country, language, avatar_url) + RLS dono.
-2. `favorites` (user_id, listing_id, created_at) + RLS dono + GRANTs.
-3. Função `get_users_with_roles()` SECURITY DEFINER para painel de permissões.
-4. Revisão RLS: anunciante só vê `subscriptions`/`subscription_payments`/`lead_requests`/`listing_events` dos seus listings.
-
-## 8. O que NÃO entra nesta fase
-
-Avaliações, Reservas, Cupons, Promoções, SEO Center, BI avançado, Heatmap, Ranking, Suporte interno, Notificações, Pagamento online. Ficam para Fase 2/3 conforme roadmap — e **não aparecem na UI** até estarem prontos.
+1. Migração (invites, platform_settings, plans, audit_log + triggers + RPCs).
+2. Convites (admin + página pública `/invite/:token`).
+3. Configurações + Planos (admin).
+4. Auditoria com diff.
+5. Dashboard Executivo com KPIs reais.
+6. Renomear rotas anunciante para `/advertiser/*` e adicionar Galeria + Estatísticas + Financeiro.
+7. Bottom-nav turista + ajustes perfil.
+8. QA com 3 contas (super_admin, advertiser, customer).
 
 ## Detalhes técnicos
 
-- Stack mantida: React 18 + Vite + Tailwind + shadcn + Supabase.
-- Sem novas dependências pesadas (recharts já está). Upload de imagem usa `supabase.storage` existente.
-- Recibo PDF: `window.print()` em página dedicada com CSS print (sem libs).
-- Mobile-first: revisar Navbar para mostrar bottom-nav no turista logado.
-- Tudo via design tokens em `index.css` (sem cores hardcoded).
+- Stack mantida (React 18 + Vite + Tailwind + shadcn + Supabase). Sem novas libs pesadas.
+- QR code: `qrcode.react` (leve, ~5KB) — única dep nova.
+- Diff de auditoria: jsonb_diff feito no trigger Postgres, renderizado em `<pre>` no front.
+- Todos os textos em PT-BR; design tokens em `index.css`.
 
-## Ordem de execução
+## Perguntas antes de começar
 
-1. Migração: `profiles`, `favorites`, função `get_users_with_roles`, ajustes RLS.
-2. Limpeza Admin (menu + rotas mortas).
-3. Painel `/admin/roles` reescrito com dados úteis.
-4. Anunciante: Galeria + Meu Financeiro + Minha Empresa expandida + Dashboard com comparativo.
-5. Turista: `/minha-conta` (Perfil + Favoritos no banco + Histórico).
-6. Bottom-nav mobile para turista logado.
-7. QA: testar 3 contas (super_admin, advertiser, customer) e validar isolamento.
+1. **Convites — entrega**: por enquanto só link copiável + botão WhatsApp, ou já configurar Resend pra enviar por e-mail nesta fase?
+2. **Planos**: quero criar a tabela `plans` e migrar os planos atuais (Gratuito/Básico R$97/Destaque/Premium) — confirma esses 4 e os valores?
+3. **Listas de favoritos**: entram agora ou ficam pra Fase 2?
+4. **Renomear `/dashboard` `/minha-empresa` `/minha-assinatura` → `/advertiser/*`**: faço redirect das rotas antigas pra não quebrar links?
