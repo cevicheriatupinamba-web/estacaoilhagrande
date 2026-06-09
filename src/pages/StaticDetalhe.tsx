@@ -160,6 +160,10 @@ const StaticDetalhe = ({ categoryKey }: Props) => {
               </ul>
             </div>
           )}
+
+          <div className="mt-8">
+            <LocationMap name={item.name} location={item.location} />
+          </div>
         </div>
 
         <aside className="lg:sticky lg:top-24 self-start space-y-4">
