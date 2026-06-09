@@ -3,6 +3,7 @@ import TieredCard from "@/components/TieredCard";
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { STATIC_ITEMS, tierByIndex } from "@/lib/staticDetails";
+import { collectionPageLd, itemListLd } from "@/lib/jsonld";
 
 const Roteiros = () => {
   const items = STATIC_ITEMS["roteiros"];
@@ -13,6 +14,23 @@ const Roteiros = () => {
         description="Roteiros prontos para Ilha Grande: clássicos, romântico, família, aventura e econômico. Escolha o seu e personalize com guias locais."
         path="/roteiros"
         breadcrumbs={[{ name: "Roteiros", path: "/roteiros" }]}
+        jsonLd={[
+          collectionPageLd(
+            "Roteiros prontos para Ilha Grande",
+            "Roteiros prontos de 1, 2, 3 dias e mais para Ilha Grande, com sugestões clássicas, românticas, família, aventura e econômicas.",
+            "/roteiros",
+          ),
+          itemListLd(
+            "Roteiros para Ilha Grande",
+            "/roteiros",
+            items.map(it => ({
+              name: it.name,
+              description: it.bullets?.[0],
+              image: it.image,
+              path: `/roteiros/${it.slug}`,
+            })),
+          ),
+        ]}
       />
       <Breadcrumbs items={[{ name: "Roteiros", path: "/roteiros" }]} />
 
