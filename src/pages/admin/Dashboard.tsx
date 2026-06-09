@@ -4,6 +4,7 @@ import StatCard from "@/components/admin/StatCard";
 import PageHeader from "@/components/admin/PageHeader";
 import {
   Users, Crown, Sparkles, MessageSquare, FileText, Star, Eye, DollarSign,
+  MessageCircle, Trophy, Smartphone,
 } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Bar, Legend, PieChart, Pie, Cell } from "recharts";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ const COLORS = ["hsl(var(--primary))", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6
 export default function Dashboard() {
   const [period, setPeriod] = useState<typeof PERIODS[number]>(PERIODS[2]);
   const [data, setData] = useState<any>(null);
+  const [funnel, setFunnel] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { load(); }, [period.id]);
@@ -30,12 +32,14 @@ export default function Dashboard() {
     setLoading(true);
     const since = new Date(Date.now() - period.days * 86400000).toISOString();
 
-    const [listings, leads, blog, pousadas] = await Promise.all([
+    const [listings, leads, blog, pousadas, funnelRes] = await Promise.all([
       supabase.from("listings").select("id, plan, status, featured, category, created_at"),
       supabase.from("lead_requests").select("id, status, category, created_at"),
       supabase.from("blog_posts").select("id, published, created_at"),
       supabase.from("pousadas").select("id, status, created_at"),
+      supabase.rpc("get_whatsapp_funnel" as any, { _days: period.days }),
     ]);
+    setFunnel(funnelRes.data ?? null);
 
     const L = listings.data ?? [];
     const Ld = leads.data ?? [];
