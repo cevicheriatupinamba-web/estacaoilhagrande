@@ -1,37 +1,61 @@
-## Realidade primeiro
+# Admin Platform — Estação Ilha Grande
 
-A solicitação "MODO DEUS" mistura ~15 frentes de trabalho independentes (imagens, layout, SEO técnico, 5 artigos novos de 1200+ palavras, link building, scanner de imagens quebradas, responsividade em 5 breakpoints, etc.). Tentar fazer tudo em uma só rodada produziria mudanças superficiais em vez de correções reais. Proponho dividir em **4 lotes** e executar **o Lote 1 já nesta rodada**. Depois você confirma se sigo para o 2, 3 e 4.
+This is a very large scope (≈18 modules, role system, payments, CRM, BI, CMS, SEO, support, marketing, growth). Building it all in one shot would produce shallow, broken modules. I'll deliver it in phases — each phase ships a usable, real (not mocked) slice connected to Lovable Cloud.
 
----
-
-## Lote 1 — AGORA (correções concretas e verificáveis)
-
-1. **Passeio VIP de Lancha** — remover duplicação, garantir imagem real de lancha premium em Ilha Grande, descrição + CTA + SEO corretos em `src/data/listings.ts` e nas páginas que o referenciam.
-2. **Scanner de imagens incoerentes** — auditar `src/lib/curatedImages.ts`, `src/lib/images.ts` e todos os `themedImage(...)` usados em Passeios, Praias, Hospedagem, Restaurantes. Trocar qualquer ID Unsplash que não represente o item (foco nos slugs já mapeados: Lopes Mendes, Lagoa Azul/Verde, Aventureiro, Parnaioca, Feiticeira, Dois Rios, etc.).
-3. **Hospedagem / Restaurantes** — substituir imagens "paisagem genérica" por categorias corretas (interior de pousada, prato, mesa).
-4. **Seção "Tem um negócio em Ilha Grande?"** (Home / Anuncie CTA) — corrigir alinhamento, espaçamento, ícones, responsividade mobile.
-5. **Confirmar remoção total** do aviso "Informações baseadas em guias públicos...". `Disclaimer.tsx` já retorna `null`, mas vou varrer o projeto para garantir que nenhum texto literal restou em outras páginas.
-
-## Lote 2 — SEO técnico global
-- Auditar todas as páginas listadas em `src/App.tsx` e garantir `<SEO>` com title, description, keywords, breadcrumbs, JSON-LD em cada uma.
-- Adicionar Schema `TouristAttraction` / `Restaurant` / `LodgingBusiness` nas páginas de detalhe.
-- Atualizar `public/sitemap.xml` com todas as rotas + posts do blog.
-- OG image padrão da marca.
-
-## Lote 3 — Conteúdo de Blog (5 artigos novos)
-- Criar 5 posts (1200+ palavras cada) via migração SQL na tabela `blog_posts`, com FAQ, links internos, imagens curadas, schema Article. Slugs propostos:
-  - `15-melhores-praias-de-ilha-grande`
-  - `onde-se-hospedar-em-ilha-grande-guia-completo`
-  - `roteiro-3-dias-ilha-grande`
-  - `melhores-restaurantes-ilha-grande`
-  - `passeios-imperdiveis-ilha-grande`
-
-## Lote 4 — Linkagem externa + QA responsivo
-- Adicionar links externos estratégicos (CCR Barcas, Booking, Google Maps, Climatempo, Prefeitura Angra, INEA) em páginas pertinentes, com `target="_blank" rel="noopener nofollow"`.
-- QA visual em 393px (mobile), 768px (tablet), 1280px+ (desktop) nas páginas chave.
+Before I start, I need a few decisions from you (see questions at the end).
 
 ---
 
-## Decisão necessária
+## Architecture
 
-Confirma que eu **executo agora o Lote 1** e, ao terminar, te devolvo um resumo + pergunto se sigo para o Lote 2? Ou prefere reordenar (ex.: priorizar Blog antes das imagens)?
+- **Route**: `/admin` (existing) becomes a full layout with collapsible sidebar (shadcn `Sidebar`), top bar, breadcrumbs.
+- **Auth/roles**: extend `app_role` enum (currently `admin`, `moderator`, `user`) → add `super_admin`, `financial_manager`, `content_manager`, `support_agent`. Keep RLS via `has_role()`.
+- **Data**: real data from existing tables (`listings`, `pousadas`, `blog_posts`, `lead_requests`, `user_roles`, `auth.users`). New tables added per phase.
+- **Charts**: `recharts` (already in stack).
+- **Map**: Leaflet + OpenStreetMap satellite tiles (no API key).
+- **Mobile**: every module responsive from day one.
+
+---
+
+## Phase 1 — Foundation (ship first)
+
+1. Role system migration: add 4 new roles, seed your account as `super_admin`, add `has_any_role()` helper, route guard, permission matrix.
+2. Admin shell: sidebar + topbar + responsive layout, dark/light, breadcrumbs.
+3. **Executive Dashboard** with real KPIs from existing tables (advertisers, plans, leads, reviews, users) + period filter (Today / 7 / 30 / 90 / YTD) + recharts visuals.
+4. **Advertiser CRM** — table over `listings` + `pousadas` with filters, profile drawer, quick actions (suspend/activate/upgrade plan/WhatsApp/email).
+5. **Activity log** table + helper to write entries from all admin mutations.
+
+## Phase 2 — Revenue & Subscriptions
+
+6. New tables: `subscriptions`, `payments`, `plans` (with grants + RLS).
+7. **Subscription Center** + **Plan Management** + **Renewal alerts** (cron-style edge function checking days-to-renew, writing notifications).
+8. **Financial Center** — gross/net, by plan, by category, charts.
+9. Payments: I recommend enabling **Lovable Payments (Stripe)** to actually charge advertisers. Confirm before I run `recommend_payment_provider` + enable.
+
+## Phase 3 — Content, Reviews, Leads
+
+10. **Lead Management** built on existing `lead_requests` with conversion funnel.
+11. New `reviews` table + **Review Moderation** workflow.
+12. **CMS** for beaches/restaurants/pousadas/tours/blog with publish/schedule/archive.
+13. **Premium Positioning Control** — feature flags on listings, homepage banner slots.
+
+## Phase 4 — Intelligence & Ops
+
+14. **Platform Map** (Leaflet satellite) with category filters, premium highlighted.
+15. **BI reports** — top viewed/contacted/converting + auto-insights.
+16. **SEO Command Center** — sitemap status, meta audit over routes, GSC data once OAuth is wired.
+17. **Support Center** — tickets table + thread UI.
+18. **Marketing Center** — coupons/campaigns + tracking.
+19. **Growth Center** — cohort/trend charts.
+20. **Security** — audit log viewer, login history, 2FA toggle scaffolding.
+
+---
+
+## What I need from you to start Phase 1
+
+1. **Scope confirmation** — OK to ship in phases as above? (Trying to build all 18 modules in one turn will produce broken UI.)
+2. **Payments** — do you want me to enable Lovable Payments (Stripe) in Phase 2 to actually bill advertisers, or keep subscriptions as manual records you mark paid?
+3. **Your super_admin email** — which email should I grant `super_admin` to in the seed migration?
+4. **Plan prices** — Basic R$97/mo confirmed. What are the Featured and Premium monthly prices (and annual discount %)?
+
+Reply with answers (or "go" + the email if you accept defaults: phased build, manual subscriptions for now, Featured R$197, Premium R$397, annual 20% off) and I'll start Phase 1 immediately.
