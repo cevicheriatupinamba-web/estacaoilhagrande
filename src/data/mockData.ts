@@ -43,6 +43,8 @@ export interface Place {
   tips: string[];
   premium?: boolean;
   tags?: string[];
+  lat?: number;
+  lng?: number;
 }
 
 export const places: Place[] = [
