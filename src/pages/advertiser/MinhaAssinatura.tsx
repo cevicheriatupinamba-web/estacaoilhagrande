@@ -38,7 +38,7 @@ function daysUntil(iso: string | null | undefined) {
   return Math.ceil(ms / (1000 * 60 * 60 * 24));
 }
 
-const WHATSAPP_SUPPORT = "5524999990000"; // change to real support number
+const WHATSAPP_SUPPORT = "5521996704427"; // Estação Ilha Grande — agência oficial
 
 export default function MinhaAssinatura() {
   const { user } = useAuth();
