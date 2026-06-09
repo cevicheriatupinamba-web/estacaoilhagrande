@@ -11,7 +11,7 @@ const FAQS = [
 ];
 
 const BEACHES = [
-  { name: "Lopes Mendes", meta: "Trilha + barco", image: themedImage("beach", "lopesmendes"), description: "Areia branca fininha e mar transparente. Uma das praias mais bonitas do Brasil.", path: "/praias/lopes-mendes" },
+  { name: "Lopes Mendes", meta: "Trilha + barco", image: themedImage("beach", "lopesmendes"), description: "Areia branca fininha e mar transparente. Uma das praias mais bonitas do Brasil.", path: "/praias/lopes-mendes", cta: { label: "Ver guia completo", to: "/praias/lopes-mendes" } },
   { name: "Praia do Aventureiro", meta: "Sul da ilha", image: themedImage("beach", "aventureiro"), description: "O famoso coqueiro inclinado, cartão-postal de Ilha Grande." },
   { name: "Lagoa Azul", meta: "Piscina natural", image: themedImage("beach", "lagoaazul"), description: "Água cristalina e peixes coloridos — perfeita para snorkel." },
   { name: "Praia do Abraãozinho", meta: "20min de caminhada", image: themedImage("beach", "abraaozinho"), description: "Vizinha da Vila, calma e com mar manso." },
