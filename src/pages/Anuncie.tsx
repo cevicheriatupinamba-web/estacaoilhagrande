@@ -102,6 +102,12 @@ const PLANOS: {
   },
 ];
 
+const PLAN_LIMITS: Record<PlanKey, { photos: number; videos: number; label: string }> = {
+  basico:   { photos: 10, videos: 0, label: "Envie até 10 fotos do seu negócio" },
+  destaque: { photos: 20, videos: 1, label: "Envie até 20 fotos e até 1 vídeo do seu negócio" },
+  premium:  { photos: 40, videos: 3, label: "Envie até 40 fotos e até 3 vídeos do seu negócio" },
+};
+
 /* -------------------- Categorias -------------------- */
 const CATEGORIAS: { grupo: string; itens: string[] }[] = [
   { grupo: "Hospedagem", itens: ["Hostel", "Pousada", "Hotel", "Suíte", "Casa de temporada", "Camping", "Airbnb", "Chalé"] },
