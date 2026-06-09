@@ -276,7 +276,9 @@ export type Database = {
       }
       listing_events: {
         Row: {
+          category: string | null
           created_at: string
+          device: string | null
           event_type: string
           id: number
           listing_id: string
@@ -286,7 +288,9 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          category?: string | null
           created_at?: string
+          device?: string | null
           event_type: string
           id?: number
           listing_id: string
@@ -296,7 +300,9 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          category?: string | null
           created_at?: string
+          device?: string | null
           event_type?: string
           id?: number
           listing_id?: string
@@ -349,6 +355,7 @@ export type Database = {
           videos: string[]
           website: string | null
           whatsapp: string | null
+          whatsapp_message: string | null
         }
         Insert: {
           address?: string | null
@@ -383,6 +390,7 @@ export type Database = {
           videos?: string[]
           website?: string | null
           whatsapp?: string | null
+          whatsapp_message?: string | null
         }
         Update: {
           address?: string | null
@@ -417,6 +425,7 @@ export type Database = {
           videos?: string[]
           website?: string | null
           whatsapp?: string | null
+          whatsapp_message?: string | null
         }
         Relationships: []
       }
@@ -762,6 +771,10 @@ export type Database = {
       }
       find_user_id_by_email: { Args: { _email: string }; Returns: string }
       get_dashboard_kpis: { Args: { _days?: number }; Returns: Json }
+      get_listing_whatsapp_stats: {
+        Args: { _days?: number; _listing_id: string }
+        Returns: Json
+      }
       get_users_with_roles: {
         Args: never
         Returns: {
@@ -773,6 +786,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_whatsapp_funnel: { Args: { _days?: number }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
