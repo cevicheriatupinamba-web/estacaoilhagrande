@@ -184,18 +184,54 @@ export function validateForPublish(d: AccommodationDraft): { ok: boolean; errors
 }
 
 /** Normalize a raw Apify dataset item (Booking/Google scrapers) into AccommodationDraft */
-export function normalizeApifyJSON(raw: string): { ok: true; data: AccommodationDraft } | { ok: false; error: string } {
+export type ApifyImportResult =
+  | { ok: true; data: AccommodationDraft; warnings: string[] }
+  | { ok: false; errors: string[] };
+
+export function normalizeApifyJSON(raw: string): ApifyImportResult {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+
+  if (!raw || !raw.trim()) {
+    return { ok: false, errors: ["Cole o JSON exportado pelo Apify antes de importar."] };
+  }
+
   let json: any;
   try {
     json = JSON.parse(raw);
-  } catch {
-    return { ok: false, error: "JSON inválido. Verifique chaves, vírgulas e aspas." };
+  } catch (e: any) {
+    return { ok: false, errors: [`JSON inválido: ${e?.message ?? "verifique chaves, vírgulas e aspas."}`] };
   }
-  if (Array.isArray(json)) json = json[0];
-  if (!json || typeof json !== "object") return { ok: false, error: "JSON precisa ser um objeto ou array de objetos." };
+  if (Array.isArray(json)) {
+    if (json.length === 0) return { ok: false, errors: ["O array do Apify está vazio — nenhum item para importar."] };
+    if (json.length > 1) warnings.push(`O JSON contém ${json.length} itens. Apenas o primeiro foi importado.`);
+    json = json[0];
+  }
+  if (!json || typeof json !== "object") {
+    return { ok: false, errors: ["O JSON precisa ser um objeto ou um array de objetos."] };
+  }
 
   const name = String(json.name ?? json.title ?? json.hotelName ?? "").trim();
-  if (!name) return { ok: false, error: "Campo 'name' não encontrado no JSON." };
+  if (!name) errors.push("Campo obrigatório ausente: 'name' (nome da pousada).");
+  if (name.length > 200) errors.push("Campo 'name' excede 200 caracteres.");
+
+  // Validate types of common fields
+  if (json.rating != null && json.rating !== "" && isNaN(Number(json.rating))) {
+    errors.push("Campo 'rating' precisa ser numérico (ex.: 8.7).");
+  }
+  if (json.images != null && !Array.isArray(json.images) && !Array.isArray(json.photos) && !Array.isArray(json.gallery)) {
+    errors.push("Campo 'images' precisa ser um array de URLs ou objetos.");
+  }
+  if (json.amenities != null && !Array.isArray(json.amenities) && !Array.isArray(json.facilities)) {
+    errors.push("Campo 'amenities' precisa ser um array.");
+  }
+  if (json.rooms != null && !Array.isArray(json.rooms) && !Array.isArray(json.roomTypes)) {
+    errors.push("Campo 'rooms' precisa ser um array.");
+  }
+
+  if (errors.length) return { ok: false, errors };
+
+
 
   const rawImages: any[] = Array.isArray(json.images)
     ? json.images
@@ -291,6 +327,11 @@ export function normalizeApifyJSON(raw: string): { ok: true; data: Accommodation
     is_featured: false,
   };
 
-  return { ok: true, data };
+  if (!photos.length) warnings.push("Nenhuma foto válida encontrada no JSON.");
+  if (!full_description) warnings.push("Descrição vazia — pousada será publicada sem texto descritivo.");
+  if (rating == null) warnings.push("Avaliação ('rating') não informada.");
+  if (!address) warnings.push("Endereço não informado.");
+
+  return { ok: true, data, warnings };
 }
 
