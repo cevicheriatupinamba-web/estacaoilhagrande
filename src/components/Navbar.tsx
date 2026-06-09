@@ -26,7 +26,7 @@ const useNavItems = () => {
 };
 
 const Navbar = () => {
-  const { user, isAdmin, logout } = useAuth();
+  const { user, isAdmin, isAdvertiser, logout } = useAuth();
   const { t } = useLanguage();
   const navItems = useNavItems();
   const displayName = (user?.user_metadata?.name as string) || user?.email?.split("@")[0] || "";
@@ -60,8 +60,14 @@ const Navbar = () => {
                 <Heart className="w-4 h-4 mr-1" /> {t("nav.favorites")}
               </Button>
               <Button variant="ghost" size="sm" onClick={() => nav("/painel-anunciante")}>{t("nav.myAds")}</Button>
+              {isAdvertiser && !isAdmin && (
+                <Button variant="hero" size="sm" onClick={() => nav("/dashboard")}>Extranet</Button>
+              )}
               {isAdmin && (
-                <Button variant="ghost" size="sm" onClick={() => nav("/admin")}>Painel Admin</Button>
+                <>
+                  <Button variant="hero" size="sm" onClick={() => nav("/dashboard")}>Extranet</Button>
+                  <Button variant="ghost" size="sm" onClick={() => nav("/admin")}>Painel Admin</Button>
+                </>
               )}
               <Button variant="ghost" size="sm" onClick={() => nav("/perfil")}>
                 <User className="w-4 h-4 mr-1" /> {displayName}
@@ -103,6 +109,7 @@ const Navbar = () => {
                     <Heart className="w-4 h-4 mr-2" /> {t("nav.favorites")}
                   </Button>
                   <Button variant="outline" onClick={() => { nav("/painel-anunciante"); setOpen(false); }}>{t("nav.myAds")}</Button>
+                  {isAdvertiser && <Button variant="hero" onClick={() => { nav("/dashboard"); setOpen(false); }}>Extranet</Button>}
                   {isAdmin && <Button variant="outline" onClick={() => { nav("/admin"); setOpen(false); }}><Shield className="w-4 h-4 mr-2" /> Painel Admin</Button>}
                   <Button variant="ghost" onClick={() => { logout(); setOpen(false); nav("/"); }}>{t("nav.logout")}</Button>
                 </>
