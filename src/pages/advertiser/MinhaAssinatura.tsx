@@ -158,6 +158,9 @@ export default function MinhaAssinatura() {
                   <MessageCircle className="w-4 h-4 mr-1" /> Renovar / mudar plano
                 </a>
               </Button>
+              <Button asChild variant="outline" className="border-amber-300/40 text-amber-100 bg-amber-300/10 hover:bg-amber-300/20 hover:text-white">
+                <Link to="/financeiro/faturas">Ver todas as faturas</Link>
+              </Button>
             </div>
           </div>
 
