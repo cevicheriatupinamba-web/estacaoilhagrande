@@ -57,8 +57,9 @@ const EditarListagem = () => {
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState<FormState | null>(null);
   const [existingPhotos, setExistingPhotos] = useState<string[]>([]);
-  const [newFiles, setNewFiles] = useState<File[]>([]);
-  const [newPreviews, setNewPreviews] = useState<string[]>([]);
+  const [existingVideos, setExistingVideos] = useState<string[]>([]);
+  const [newPhotos, setNewPhotos] = useState<File[]>([]);
+  const [newVideos, setNewVideos] = useState<File[]>([]);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
