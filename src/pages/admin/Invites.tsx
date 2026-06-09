@@ -99,18 +99,36 @@ export default function Invites() {
       <PageHeader title="Convites" subtitle="Envie convites para novos membros entrarem na plataforma com o papel correto" />
 
       <div className="rounded-2xl bg-card border border-border p-5 mb-6">
-        <div className="grid sm:grid-cols-[1fr_180px_120px_auto] gap-2">
-          <Input type="email" placeholder="email@dominio.com" value={email} onChange={e => setEmail(e.target.value)} />
-          <select className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-            value={role} onChange={e => setRole(e.target.value as AppRole)}>
-            {ASSIGNABLE.map(r => <option key={r} value={r}>{ROLE_LABEL[r]}</option>)}
-          </select>
-          <Input type="number" min={1} max={90} value={days}
-            onChange={e => setDays(parseInt(e.target.value) || 7)} placeholder="Dias" />
-          <Button onClick={create} disabled={busy}><Plus className="w-4 h-4 mr-1" />Criar convite</Button>
+        <div className="grid sm:grid-cols-[1fr_180px_180px_auto] gap-3 items-end">
+          <div>
+            <label className="block text-xs font-semibold text-muted-foreground mb-1.5">E-mail do convidado</label>
+            <Input type="email" placeholder="email@dominio.com" value={email} onChange={e => setEmail(e.target.value)} />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Cargo / Papel</label>
+            <select className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+              value={role} onChange={e => setRole(e.target.value as AppRole)}>
+              {ASSIGNABLE.map(r => <option key={r} value={r}>{ROLE_LABEL[r]}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-muted-foreground mb-1.5" title="Defina por quantos dias o convite permanecerá válido.">
+              Dias para expiração ⓘ
+            </label>
+            <select className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+              value={days} onChange={e => setDays(parseInt(e.target.value) || 7)}>
+              <option value={1}>1 dia</option>
+              <option value={3}>3 dias</option>
+              <option value={7}>7 dias (padrão)</option>
+              <option value={15}>15 dias</option>
+              <option value={30}>30 dias</option>
+              <option value={60}>60 dias</option>
+            </select>
+          </div>
+          <Button onClick={create} disabled={busy} className="h-10"><Plus className="w-4 h-4 mr-1" />Criar convite</Button>
         </div>
         <p className="text-xs text-muted-foreground mt-3">
-          O convidado não precisa estar cadastrado. Ele recebe um link único, cria a conta e o papel é aplicado automaticamente.
+          O convidado não precisa estar cadastrado. Ele recebe um link único, cria a conta e o papel é aplicado automaticamente. O convite expirará após o período definido.
         </p>
       </div>
 
