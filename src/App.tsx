@@ -57,8 +57,10 @@ import AdminRoles from "./pages/admin/Roles";
 import AdminInvites from "./pages/admin/Invites";
 import AdminPlans from "./pages/admin/Plans";
 import AdminSettings from "./pages/admin/Settings";
-import ComingSoon from "./pages/admin/ComingSoon";
+import AdminUsers from "./pages/admin/Users";
 import InviteAccept from "./pages/InviteAccept";
+import EsqueciSenha from "./pages/EsqueciSenha";
+import RedefinirSenha from "./pages/RedefinirSenha";
 import AdvertiserLayout from "@/components/advertiser/AdvertiserLayout";
 import AdvertiserDashboard from "./pages/advertiser/Dashboard";
 import MinhaEmpresa from "./pages/advertiser/MinhaEmpresa";
@@ -67,7 +69,6 @@ import CustomerLayout from "@/components/customer/CustomerLayout";
 import CustomerPerfil from "./pages/customer/Perfil";
 import CustomerFavoritos from "./pages/customer/Favoritos";
 import CustomerHistorico from "./pages/customer/Historico";
-import { CreditCard, DollarSign } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -181,6 +182,8 @@ const App = () => (
               <Route path="/perfil" element={<Perfil />} />
               <Route path="/login" element={<AuthForm mode="login" />} />
               <Route path="/cadastro" element={<AuthForm mode="signup" />} />
+              <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+              <Route path="/redefinir-senha" element={<RedefinirSenha />} />
               <Route path="/admin-legacy" element={<Admin />} />
 
               <Route path="*" element={<NotFound />} />
@@ -193,9 +196,8 @@ const App = () => (
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="usuarios" element={<AdminUsers />} />
               <Route path="anunciantes" element={<AdminCRM />} />
-              <Route path="assinaturas" element={<ComingSoon title="Assinaturas" subtitle="Centro de assinaturas e renovações" icon={CreditCard} items={["Tabela de planos por anunciante", "Alertas automáticos de renovação", "Integração com pagamentos"]} />} />
-              <Route path="financeiro" element={<ComingSoon title="Financeiro" subtitle="Receita, MRR/ARR, inadimplência" icon={DollarSign} items={["Receita bruta e líquida", "Gráficos de crescimento", "Receita por plano e categoria"]} />} />
               <Route path="solicitacoes" element={<AdminLeads />} />
               <Route path="conteudo" element={<AdminContent />} />
               <Route path="convites" element={<AdminInvites />} />
@@ -209,6 +211,8 @@ const App = () => (
               <Route path="content" element={<Navigate to="/admin/conteudo" replace />} />
               <Route path="roles" element={<Navigate to="/admin/permissoes" replace />} />
               <Route path="activity" element={<Navigate to="/admin/auditoria" replace />} />
+              <Route path="assinaturas" element={<Navigate to="/admin/planos" replace />} />
+              <Route path="financeiro" element={<Navigate to="/admin/planos" replace />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>
 

@@ -30,6 +30,7 @@ export const ROLE_COLOR: Record<AppRole, string> = {
 // Modules
 export type Module =
   | "dashboard"
+  | "users"
   | "crm"
   | "subscriptions"
   | "financial"
@@ -43,6 +44,7 @@ export type Module =
 
 export const MODULE_ACCESS: Record<Module, AppRole[]> = {
   dashboard:     ["super_admin", "admin", "financial_manager", "content_manager", "support_agent"],
+  users:         ["super_admin", "admin"],
   crm:           ["super_admin", "admin", "support_agent"],
   subscriptions: ["super_admin", "admin", "financial_manager"],
   financial:     ["super_admin", "admin", "financial_manager"],
@@ -50,7 +52,7 @@ export const MODULE_ACCESS: Record<Module, AppRole[]> = {
   content:       ["super_admin", "admin", "content_manager"],
   invites:       ["super_admin", "admin"],
   plans:         ["super_admin", "admin", "financial_manager"],
-  roles:         ["super_admin"],
+  roles:         ["super_admin", "admin"],
   settings:      ["super_admin", "admin"],
   activity:      ["super_admin", "admin"],
 };
