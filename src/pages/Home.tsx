@@ -104,7 +104,7 @@ const Home = () => {
           {portalCategories.slice(0, 6).map((c, i) => (
             <Link key={c.to} to={c.to}
               className={`group relative overflow-hidden rounded-3xl ${i === 0 ? "lg:col-span-2 lg:row-span-2 min-h-[460px]" : "min-h-[300px]"} shadow-xl hover:shadow-2xl transition-all duration-500`}>
-              <img src={c.img} alt={c.label}
+              <img src={c.img} alt={`${c.label} em Ilha Grande`}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/95 via-foreground/40 to-transparent" />
               <div className="relative z-10 h-full p-7 flex flex-col justify-end text-primary-foreground">
@@ -127,7 +127,7 @@ const Home = () => {
           {portalCategories.slice(6).map(c => (
             <Link key={c.to} to={c.to}
               className="group relative overflow-hidden rounded-2xl min-h-[180px] shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-              <img src={c.img} alt={c.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <img src={c.img} alt={`${c.label} em Ilha Grande`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/30 to-transparent" />
               <div className="relative z-10 h-full p-4 flex flex-col justify-end text-primary-foreground">
                 <h3 className="font-display font-bold text-lg drop-shadow">{c.label}</h3>

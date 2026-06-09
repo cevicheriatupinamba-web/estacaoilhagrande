@@ -20,12 +20,16 @@ const staticEntries: Entry[] = [
 
   // Hospedagem
   { path: "/onde-ficar-em-ilha-grande", changefreq: "weekly", priority: "0.9" },
+  { path: "/hospedagem", changefreq: "weekly", priority: "0.8" },
+  { path: "/onde-se-hospedar", changefreq: "weekly", priority: "0.8" },
   { path: "/pousadas-em-ilha-grande", changefreq: "weekly", priority: "0.9" },
   { path: "/hoteis-em-ilha-grande", changefreq: "weekly", priority: "0.8" },
   { path: "/hostels-em-ilha-grande", changefreq: "weekly", priority: "0.8" },
 
   // Gastronomia
   { path: "/restaurantes-em-ilha-grande", changefreq: "weekly", priority: "0.9" },
+  { path: "/restaurantes", changefreq: "weekly", priority: "0.8" },
+  { path: "/onde-comer", changefreq: "weekly", priority: "0.8" },
   { path: "/onde-comer-em-ilha-grande", changefreq: "weekly", priority: "0.8" },
 
   // Experiências

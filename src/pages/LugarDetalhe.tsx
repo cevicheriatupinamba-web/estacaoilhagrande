@@ -55,9 +55,11 @@ const LugarDetalhe = () => {
               <div className="p-3 flex gap-2">
                 {place.gallery.map((g, i) => (
                   <button key={i} onClick={() => setActive(i)}
+                    aria-label={`Ver foto ${i + 1} de ${place.gallery.length} — ${place.name}`}
+                    aria-current={i === active ? "true" : undefined}
                     className={cn("w-20 h-16 rounded-lg overflow-hidden border-2 transition-smooth",
                       i === active ? "border-primary" : "border-transparent opacity-70 hover:opacity-100")}>
-                    <img src={g} alt="" className="w-full h-full object-cover" />
+                    <img src={g} alt={`${place.name} — foto ${i + 1}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
