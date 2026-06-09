@@ -29,7 +29,7 @@ const dictionaries: Record<Lang, Dict> = {
     "home.portalKicker": "Portal Ilha Grande",
     "home.portalTitle": "Tudo da ilha em um só lugar",
     "home.portalSubtitle": "Escolha por onde começar a explorar.",
-    "home.learnMore": "Saiba Mais",
+    "home.learnMore": "Saiba mais sobre Ilha Grande",
     "home.itinerariesKicker": "Roteiros prontos",
     "home.itinerariesTitle": "Não sabe por onde começar?",
     "home.itinerariesText": "Temos roteiros para 1, 2 ou 3 dias, família, casal, aventura e econômico. Escolha o seu e siga sem stress.",
