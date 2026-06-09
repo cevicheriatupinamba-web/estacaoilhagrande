@@ -60,10 +60,10 @@ export default function WhatsAppLeadModal({
       try {
         await supabase.from("lead_requests").insert({
           name,
-          phone: contact,
-          message: when ? `Quando: ${when}` : null,
-          category: context.category ?? (context.kind === "agency" ? "agencia" : null),
-          listing_id: listingId ?? null,
+          whatsapp: contact,
+          email: "",
+          description: `[${context.kind === "agency" ? "Agência Oficial" : context.label}] ${when ? `Quando: ${when}. ` : ""}Origem: WhatsApp pré-lead.`,
+          category: context.category ?? (context.kind === "agency" ? "agencia" : context.label),
           source: context.kind === "agency" ? "whatsapp_agency" : "whatsapp_listing",
         } as any);
       } catch { /* ignore */ }
