@@ -9,10 +9,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import {
-  CATEGORY_LABEL, SUBCATEGORIES, uploadListingPhoto,
-  type ListingCategory, type ListingRow,
+  CATEGORY_LABEL, SUBCATEGORIES,
+  type ListingCategory, type ListingPlan,
 } from "@/lib/listings-api";
-import { ArrowLeft, Save, Upload, X, Clock } from "lucide-react";
+import PlanMediaUploader, { uploadPendingMedia } from "@/components/PlanMediaUploader";
+import { ArrowLeft, Save, Clock } from "lucide-react";
 import SEO from "@/components/SEO";
 
 const schema = z.object({
