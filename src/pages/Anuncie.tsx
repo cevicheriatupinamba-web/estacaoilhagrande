@@ -682,11 +682,130 @@ const Anuncie = () => {
                 </div>
               </fieldset>
 
-              {/* Mídias */}
-              <div className="rounded-2xl bg-muted/40 border border-border p-4 text-sm text-muted-foreground">
-                <strong className="text-foreground">Fotos e vídeos:</strong> após o envio do formulário,
-                nossa equipe entrará em contato pelo WhatsApp para receber suas mídias e finalizar o anúncio.
-              </div>
+              {/* Mídias — adaptativo ao plano */}
+              <fieldset className="space-y-5">
+                <legend className="font-display font-bold text-lg mb-2">6. Fotos e vídeos do seu negócio</legend>
+                <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm">
+                  <p className="font-semibold text-foreground">{limits.label}</p>
+                  <p className="text-muted-foreground text-xs mt-1">
+                    Formatos: JPG, PNG, WEBP (até {MAX_PHOTO_MB}MB){limits.videos > 0 ? ` • MP4, MOV, WEBM (até ${MAX_VIDEO_MB}MB)` : ""}.
+                  </p>
+                </div>
+
+                {/* Fotos */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label className="font-semibold">Fotos</Label>
+                    <span className="text-xs text-muted-foreground">{photos.length} / {limits.photos}</span>
+                  </div>
+                  <label className={cn(
+                    "flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-2xl p-6 cursor-pointer transition",
+                    photos.length >= limits.photos
+                      ? "border-border bg-muted/30 cursor-not-allowed opacity-60"
+                      : "border-border hover:border-primary hover:bg-primary/5"
+                  )}>
+                    <Upload className="w-6 h-6 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground text-center">
+                      {photos.length >= limits.photos
+                        ? `Limite de ${limits.photos} fotos atingido`
+                        : "Clique para selecionar fotos"}
+                    </span>
+                    <input
+                      type="file"
+                      accept={PHOTO_TYPES.join(",")}
+                      multiple
+                      className="hidden"
+                      disabled={loading || photos.length >= limits.photos}
+                      onChange={e => { addPhotos(e.target.files); e.currentTarget.value = ""; }}
+                    />
+                  </label>
+                  {photoPreviews.length > 0 && (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 mt-3">
+                      {photoPreviews.map((src, i) => (
+                        <div key={src} className="relative aspect-square rounded-xl overflow-hidden border border-border group">
+                          <img src={src} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removePhoto(i)}
+                            disabled={loading}
+                            aria-label="Remover foto"
+                            className="absolute top-1 right-1 w-6 h-6 rounded-full bg-foreground/80 text-background flex items-center justify-center hover:bg-destructive transition"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Vídeos */}
+                {limits.videos > 0 ? (
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="font-semibold">Vídeos</Label>
+                      <span className="text-xs text-muted-foreground">{videos.length} / {limits.videos}</span>
+                    </div>
+                    <label className={cn(
+                      "flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-2xl p-6 cursor-pointer transition",
+                      videos.length >= limits.videos
+                        ? "border-border bg-muted/30 cursor-not-allowed opacity-60"
+                        : "border-border hover:border-primary hover:bg-primary/5"
+                    )}>
+                      <Film className="w-6 h-6 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground text-center">
+                        {videos.length >= limits.videos
+                          ? `Limite de ${limits.videos} vídeo${limits.videos > 1 ? "s" : ""} atingido`
+                          : "Clique para selecionar vídeos"}
+                      </span>
+                      <input
+                        type="file"
+                        accept={VIDEO_TYPES.join(",")}
+                        multiple
+                        className="hidden"
+                        disabled={loading || videos.length >= limits.videos}
+                        onChange={e => { addVideos(e.target.files); e.currentTarget.value = ""; }}
+                      />
+                    </label>
+                    {videos.length > 0 && (
+                      <ul className="mt-3 space-y-2">
+                        {videos.map((f, i) => (
+                          <li key={i} className="flex items-center gap-3 rounded-xl border border-border bg-background p-2.5">
+                            <Film className="w-4 h-4 text-primary shrink-0" />
+                            <span className="text-sm truncate flex-1">{f.name}</span>
+                            <span className="text-xs text-muted-foreground shrink-0">{(f.size / 1024 / 1024).toFixed(1)} MB</span>
+                            <button
+                              type="button"
+                              onClick={() => removeVideo(i)}
+                              disabled={loading}
+                              aria-label="Remover vídeo"
+                              className="w-7 h-7 rounded-full bg-muted hover:bg-destructive hover:text-destructive-foreground flex items-center justify-center transition"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ) : (
+                  <div className="rounded-2xl border border-dashed border-border p-4 text-xs text-muted-foreground">
+                    O envio de vídeos está disponível nos planos <strong>Destaque</strong> e <strong>Premium</strong>.
+                  </div>
+                )}
+
+                {loading && (photos.length + videos.length) > 0 && (
+                  <div>
+                    <div className="flex items-center justify-between text-xs mb-1">
+                      <span className="text-muted-foreground">Enviando arquivos…</span>
+                      <span className="font-semibold">{uploadProgress}%</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-muted overflow-hidden">
+                      <div className="h-full bg-primary transition-all" style={{ width: `${uploadProgress}%` }} />
+                    </div>
+                  </div>
+                )}
+              </fieldset>
 
               {/* Consentimento */}
               <div className="flex items-start gap-3">
