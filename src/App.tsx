@@ -54,7 +54,11 @@ import AdminLeads from "./pages/admin/Leads";
 import AdminContent from "./pages/admin/Content";
 import AdminActivity from "./pages/admin/ActivityLog";
 import AdminRoles from "./pages/admin/Roles";
+import AdminInvites from "./pages/admin/Invites";
+import AdminPlans from "./pages/admin/Plans";
+import AdminSettings from "./pages/admin/Settings";
 import ComingSoon from "./pages/admin/ComingSoon";
+import InviteAccept from "./pages/InviteAccept";
 import AdvertiserLayout from "@/components/advertiser/AdvertiserLayout";
 import AdvertiserDashboard from "./pages/advertiser/Dashboard";
 import MinhaEmpresa from "./pages/advertiser/MinhaEmpresa";
@@ -63,7 +67,7 @@ import CustomerLayout from "@/components/customer/CustomerLayout";
 import CustomerPerfil from "./pages/customer/Perfil";
 import CustomerFavoritos from "./pages/customer/Favoritos";
 import CustomerHistorico from "./pages/customer/Historico";
-import { CreditCard, DollarSign, Settings } from "lucide-react";
+import { CreditCard, DollarSign } from "lucide-react";
 
 const queryClient = new QueryClient();
 
