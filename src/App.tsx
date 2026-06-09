@@ -47,6 +47,16 @@ import StaticDetalhe from "./pages/StaticDetalhe";
 import LopesMendes from "./pages/LopesMendes";
 import NotFound from "./pages/NotFound";
 
+import AdminLayout from "@/components/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminCRM from "./pages/admin/CRM";
+import AdminLeads from "./pages/admin/Leads";
+import AdminContent from "./pages/admin/Content";
+import AdminActivity from "./pages/admin/ActivityLog";
+import AdminRoles from "./pages/admin/Roles";
+import ComingSoon from "./pages/admin/ComingSoon";
+import { CreditCard, DollarSign, Star, Map as MapIcon, Search as SearchIcon, BarChart3, LifeBuoy, Megaphone, TrendingUp } from "lucide-react";
+
 const queryClient = new QueryClient();
 
 const App = () => (
