@@ -2,31 +2,25 @@ import { NavLink, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { canAccess, Module, ROLE_LABEL, ROLE_COLOR, AppRole } from "@/lib/admin/permissions";
 import {
-  LayoutDashboard, Users, CreditCard, DollarSign, MessageSquare, Star,
-  FileText, Map as MapIcon, Search, BarChart3, LifeBuoy, Megaphone,
-  TrendingUp, Shield, Activity, Menu, X, LogOut, Home, Settings,
+  LayoutDashboard, Users, CreditCard, DollarSign, MessageSquare,
+  FileText, Shield, Activity, Menu, X, LogOut, Home, Settings,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
 
-interface NavItem { to: string; label: string; icon: any; module: Module; badge?: string }
+interface NavItem { to: string; label: string; icon: any; module: Module }
 
+// Only modules with real, operational backend are listed. SEO, BI, Marketing,
+// Growth, Map, Support and Reviews are removed from navigation until shipped.
 const NAV: NavItem[] = [
   { to: "/admin/dashboard",      label: "Painel Admin",   icon: LayoutDashboard, module: "dashboard" },
   { to: "/admin/anunciantes",    label: "Anunciantes",    icon: Users,           module: "crm" },
   { to: "/admin/assinaturas",    label: "Assinaturas",    icon: CreditCard,      module: "subscriptions" },
   { to: "/admin/financeiro",     label: "Financeiro",     icon: DollarSign,      module: "financial" },
   { to: "/admin/solicitacoes",   label: "Solicitações",   icon: MessageSquare,   module: "leads" },
-  { to: "/admin/reviews",        label: "Avaliações",     icon: Star,            module: "reviews" },
   { to: "/admin/conteudo",       label: "Conteúdo",       icon: FileText,        module: "content" },
-  { to: "/admin/map",            label: "Mapa",           icon: MapIcon,         module: "map" },
-  { to: "/admin/seo",            label: "SEO",            icon: Search,          module: "seo" },
-  { to: "/admin/bi",             label: "BI",             icon: BarChart3,       module: "bi" },
-  { to: "/admin/support",        label: "Suporte",        icon: LifeBuoy,        module: "support" },
-  { to: "/admin/marketing",      label: "Marketing",      icon: Megaphone,       module: "marketing" },
-  { to: "/admin/growth",         label: "Crescimento",    icon: TrendingUp,      module: "growth" },
   { to: "/admin/roles",          label: "Permissões",     icon: Shield,          module: "roles" },
   { to: "/admin/configuracoes",  label: "Configurações",  icon: Settings,        module: "settings" },
   { to: "/admin/activity",       label: "Auditoria",      icon: Activity,        module: "activity" },
@@ -62,7 +56,6 @@ export default function AdminLayout() {
     <div className="min-h-screen flex bg-muted/30">
       <SEO title="Centro de comando · Estação Ilha Grande" description="Painel administrativo." path={loc.pathname} noIndex />
 
-      {/* Sidebar */}
       <aside className={cn(
         "fixed lg:sticky top-0 z-40 h-screen w-64 bg-slate-950 text-slate-100 border-r border-slate-800 flex flex-col transition-transform",
         open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
@@ -110,10 +103,8 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* Backdrop */}
       {open && <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" onClick={() => setOpen(false)} />}
 
-      {/* Main */}
       <div className="flex-1 min-w-0 flex flex-col">
         <header className="sticky top-0 z-20 h-16 bg-white/90 backdrop-blur border-b border-border flex items-center px-4 lg:px-8 gap-3">
           <button className="lg:hidden p-2 -ml-2" onClick={() => setOpen(true)} aria-label="Abrir menu"><Menu className="w-5 h-5" /></button>
