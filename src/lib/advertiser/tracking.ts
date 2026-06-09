@@ -1,4 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
+import { detectDevice } from "@/lib/whatsapp";
+
+
 
 export type ListingEventType =
   | "view"
@@ -56,6 +59,7 @@ export async function trackListingEvent(
       user_id: userData?.user?.id ?? null,
       referrer: typeof document !== "undefined" ? (document.referrer.slice(0, 500) || null) : null,
       user_agent: typeof navigator !== "undefined" ? navigator.userAgent.slice(0, 200) : null,
-    });
+      device: detectDevice(),
+    } as any);
   } catch { /* never block UI on tracking */ }
 }
