@@ -1,11 +1,15 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, useMemo } from "react";
 import { Session, User as SupaUser } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { AppRole, STAFF_ROLES } from "@/lib/admin/permissions";
 
 interface AuthCtx {
   user: SupaUser | null;
   session: Session | null;
   isAdmin: boolean;
+  isStaff: boolean;
+  roles: AppRole[];
+  hasRole: (r: AppRole) => boolean;
   loading: boolean;
   favorites: string[];
   login: (email: string, password: string) => Promise<{ error: string | null }>;
@@ -20,7 +24,7 @@ const Ctx = createContext<AuthCtx | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<SupaUser | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [roles, setRoles] = useState<AppRole[]>([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<string[]>([]);
 
@@ -30,44 +34,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    // Listener first
     const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setSession(newSession);
       setUser(newSession?.user ?? null);
       if (newSession?.user) {
-        // Defer to avoid deadlocks
-        setTimeout(() => checkAdmin(newSession.user.id), 0);
+        setTimeout(() => loadRoles(newSession.user.id), 0);
       } else {
-        setIsAdmin(false);
+        setRoles([]);
       }
     });
 
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
-      if (data.session?.user) checkAdmin(data.session.user.id);
+      if (data.session?.user) loadRoles(data.session.user.id);
       setLoading(false);
     });
 
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  const checkAdmin = async (userId: string) => {
-    const { data, error } = await supabase.rpc("has_role", {
-      _user_id: userId,
-      _role: "admin",
-    });
-    if (!error) setIsAdmin(!!data);
+  const loadRoles = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("user_roles").select("role").eq("user_id", userId);
+    if (!error && data) setRoles(data.map(r => r.role as AppRole));
   };
+
+  const isAdmin = roles.includes("admin") || roles.includes("super_admin");
+  const isStaff = roles.some(r => STAFF_ROLES.includes(r));
+  const hasRole = (r: AppRole) => roles.includes(r);
 
   const signup = async (name: string, email: string, password: string) => {
     const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/`,
-        data: { name },
-      },
+      email, password,
+      options: { emailRedirectTo: `${window.location.origin}/`, data: { name } },
     });
     return { error: error?.message ?? null };
   };
@@ -77,27 +77,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error: error?.message ?? null };
   };
 
-  const logout = async () => {
-    await supabase.auth.signOut();
-  };
+  const logout = async () => { await supabase.auth.signOut(); };
 
   const persistFavs = (f: string[]) => {
     setFavorites(f);
     localStorage.setItem("ilhago_favs", JSON.stringify(f));
   };
-
   const toggleFavorite = (id: string) => {
     const next = favorites.includes(id) ? favorites.filter(f => f !== id) : [...favorites, id];
     persistFavs(next);
   };
-
   const isFavorite = (id: string) => favorites.includes(id);
 
-  return (
-    <Ctx.Provider value={{ user, session, isAdmin, loading, favorites, login, signup, logout, toggleFavorite, isFavorite }}>
-      {children}
-    </Ctx.Provider>
-  );
+  const value = useMemo(() => ({
+    user, session, isAdmin, isStaff, roles, hasRole, loading,
+    favorites, login, signup, logout, toggleFavorite, isFavorite,
+  }), [user, session, roles, loading, favorites]);
+
+  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 };
 
 export const useAuth = () => {
