@@ -69,7 +69,7 @@ const Navbar = () => {
                   <Button variant="ghost" size="sm" onClick={() => nav("/admin")}>Painel Admin</Button>
                 </>
               )}
-              <Button variant="ghost" size="sm" onClick={() => nav("/perfil")}>
+              <Button variant="ghost" size="sm" onClick={() => nav("/minha-conta")}>
                 <User className="w-4 h-4 mr-1" /> {displayName}
               </Button>
               <Button variant="ghost" size="icon" onClick={() => { logout(); nav("/"); }}>

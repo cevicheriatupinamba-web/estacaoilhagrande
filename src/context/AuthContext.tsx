@@ -31,7 +31,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const f = localStorage.getItem("ilhago_favs");
-    if (f) setFavorites(JSON.parse(f));
+    if (f) {
+      try { setFavorites(JSON.parse(f)); } catch { /* ignore */ }
+    }
   }, []);
 
   useEffect(() => {
@@ -42,6 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (newSession?.user) {
         setTimeout(async () => {
           await loadRoles(newSession.user.id);
+          await loadFavorites(newSession.user.id);
           setLoading(false);
         }, 0);
       } else {
@@ -53,8 +56,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     supabase.auth.getSession().then(async ({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
-      if (data.session?.user) await loadRoles(data.session.user.id);
-      else setRoles([]);
+      if (data.session?.user) {
+        await loadRoles(data.session.user.id);
+        await loadFavorites(data.session.user.id);
+      } else setRoles([]);
       setLoading(false);
     });
 
@@ -66,6 +71,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .from("user_roles").select("role").eq("user_id", userId);
     if (!error && data) setRoles(data.map(r => r.role as AppRole));
     else setRoles([]);
+  };
+
+  const loadFavorites = async (userId: string) => {
+    const local = JSON.parse(localStorage.getItem("ilhago_favs") || "[]") as string[];
+    const { data } = await supabase.from("favorites").select("listing_id").eq("user_id", userId);
+    const remote = (data ?? []).map(r => r.listing_id);
+    const toUpload = local.filter(id => !remote.includes(id));
+    if (toUpload.length > 0) {
+      await supabase.from("favorites").insert(toUpload.map(listing_id => ({ user_id: userId, listing_id })));
+    }
+    const merged = Array.from(new Set([...remote, ...local]));
+    setFavorites(merged);
+    localStorage.setItem("ilhago_favs", JSON.stringify(merged));
   };
 
   const isAdmin = roles.includes("admin") || roles.includes("super_admin");
@@ -93,8 +111,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("ilhago_favs", JSON.stringify(f));
   };
   const toggleFavorite = (id: string) => {
-    const next = favorites.includes(id) ? favorites.filter(f => f !== id) : [...favorites, id];
+    const isFav = favorites.includes(id);
+    const next = isFav ? favorites.filter(f => f !== id) : [...favorites, id];
     persistFavs(next);
+    if (user) {
+      if (isFav) {
+        supabase.from("favorites").delete().eq("user_id", user.id).eq("listing_id", id).then(() => {});
+      } else {
+        supabase.from("favorites").insert({ user_id: user.id, listing_id: id }).then(() => {});
+      }
+    }
   };
   const isFavorite = (id: string) => favorites.includes(id);
 
