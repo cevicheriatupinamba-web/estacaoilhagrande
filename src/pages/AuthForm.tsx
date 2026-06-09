@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import logoAsset from "@/assets/logo-estacao-ilha-grande.png.asset.json";
 import SEO from "@/components/SEO";
+import GoogleSignInButton from "@/components/GoogleSignInButton";
+import { Home } from "lucide-react";
 
 interface Props { mode: "login" | "signup" }
 
@@ -72,6 +74,15 @@ const AuthForm = ({ mode }: Props) => {
             {submitting ? "Aguarde…" : mode === "login" ? "Entrar" : "Criar conta"}
           </Button>
         </form>
+
+        <div className="flex items-center gap-3 my-5">
+          <div className="flex-1 h-px bg-border" />
+          <span className="text-xs text-muted-foreground">ou</span>
+          <div className="flex-1 h-px bg-border" />
+        </div>
+
+        <GoogleSignInButton label={mode === "login" ? "Entrar com Google" : "Cadastrar com Google"} />
+
         <p className="text-sm text-muted-foreground text-center mt-5">
           {mode === "login" ? (
             <>Não tem conta? <Link to="/cadastro" className="text-primary font-medium hover:underline">Cadastre-se</Link></>
@@ -79,6 +90,11 @@ const AuthForm = ({ mode }: Props) => {
             <>Já tem conta? <Link to="/login" className="text-primary font-medium hover:underline">Entrar</Link></>
           )}
         </p>
+        <div className="text-center mt-4">
+          <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-smooth">
+            <Home className="w-3.5 h-3.5" /> Voltar para a Home
+          </Link>
+        </div>
       </div>
     </div>
     </>

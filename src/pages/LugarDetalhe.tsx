@@ -1,5 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, Star, MessageCircle, Mail, Heart, Lightbulb } from "lucide-react";
+import { ArrowLeft, MapPin, Star, MessageCircle, Mail, Heart, Lightbulb, Crown, Home } from "lucide-react";
+import SEO from "@/components/SEO";
 import { places, categories } from "@/data/mockData";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
@@ -27,9 +28,20 @@ const LugarDetalhe = () => {
 
   return (
     <div className="container py-8">
-      <button onClick={() => nav(-1)} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary mb-6">
-        <ArrowLeft className="w-4 h-4" /> Voltar
-      </button>
+      <SEO
+        title={`${place.name} — ${cat?.label ?? "Ilha Grande"} | Estação Ilha Grande`}
+        description={place.shortDescription}
+        path={`/lugar/${place.slug}`}
+        keywords={(place.tags ?? []).join(", ")}
+      />
+      <div className="flex items-center justify-between mb-6 gap-3">
+        <button onClick={() => nav(-1)} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+          <ArrowLeft className="w-4 h-4" /> Voltar
+        </button>
+        <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+          <Home className="w-4 h-4" /> Início
+        </Link>
+      </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
@@ -52,11 +64,19 @@ const LugarDetalhe = () => {
           </div>
 
           <div>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
               <span className="px-3 py-1 rounded-full bg-secondary text-xs font-medium">{cat?.emoji} {cat?.label}</span>
               <span className="text-sm font-semibold text-forest">{place.priceRange}</span>
+              {place.premium && (
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-xs font-bold shadow">
+                  <Crown className="w-3.5 h-3.5" /> ANUNCIANTE PREMIUM
+                </span>
+              )}
             </div>
-            <h1 className="font-display font-bold text-4xl md:text-5xl mb-3">{place.name}</h1>
+            <h1 className="font-display font-bold text-4xl md:text-5xl mb-3 flex items-center gap-2 flex-wrap">
+              {place.name}
+              {place.premium && <Crown className="w-7 h-7 text-amber-500" aria-label="Premium" />}
+            </h1>
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
               <span className="flex items-center gap-1"><Star className="w-4 h-4 fill-sun text-sun" /><strong className="text-foreground">{place.rating}</strong> ({place.reviewsCount} avaliações)</span>
               <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {place.location}</span>
@@ -96,9 +116,23 @@ const LugarDetalhe = () => {
             <div className="space-y-2">
               {place.whatsapp && (
                 <Button asChild variant="sunset" className="w-full justify-start">
-                  <a href={`https://wa.me/${place.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={`https://wa.me/${place.whatsapp.replace(/\D/g, '')}${place.whatsappMessage ? `?text=${encodeURIComponent(place.whatsappMessage)}` : ""}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <MessageCircle className="w-4 h-4" /> WhatsApp
                   </a>
+                </Button>
+              )}
+              {place.instagram && (
+                <Button asChild variant="outline" className="w-full justify-start">
+                  <a href={place.instagram} target="_blank" rel="noopener noreferrer">📸 Instagram</a>
+                </Button>
+              )}
+              {place.website && (
+                <Button asChild variant="outline" className="w-full justify-start">
+                  <a href={place.website} target="_blank" rel="noopener noreferrer">🌐 Site oficial</a>
                 </Button>
               )}
               {place.email && (

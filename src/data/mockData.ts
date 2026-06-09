@@ -36,8 +36,13 @@ export interface Place {
   image: string;
   gallery: string[];
   whatsapp?: string;
+  whatsappMessage?: string;
+  instagram?: string;
+  website?: string;
   email?: string;
   tips: string[];
+  premium?: boolean;
+  tags?: string[];
 }
 
 export const places: Place[] = [
@@ -112,14 +117,20 @@ export const places: Place[] = [
     tips: ["Faça reserva com 1 mês de antecedência em alta temporada", "Café da manhã até 10h", "Aceita pets pequenos"],
   },
   {
-    id: "8", slug: "ilha-grande-aventura",
-    name: "Ilha Grande Aventura — Receptivo", category: "agencias",
-    shortDescription: "Pacotes completos: transfer, passeios e hospedagem.",
-    fullDescription: "Agência receptiva com mais de 15 anos. Organiza transfer Rio↔Ilha, passeios de escuna privativos, trilhas com guia e pacotes de hospedagem.",
-    rating: 4.8, reviewsCount: 612, priceRange: "$$",
-    location: "Atendimento online", image: barco,
-    gallery: [barco], whatsapp: "55-24-99999-4444", email: "contato@exemplo.com.br",
-    tips: ["Peça orçamento personalizado", "Atendimento por WhatsApp"],
+    id: "8", slug: "salt-experience-tour",
+    name: "Salt Experience Tour", category: "agencias",
+    shortDescription: "Navegue pelo paraíso a bordo do Barco Mar Azul 2 — passeios náuticos exclusivos pelas praias mais belas de Ilha Grande.",
+    fullDescription: "Passeios náuticos exclusivos pelas praias mais belas de Ilha Grande a bordo do Barco Mar Azul 2, com capacidade para até 19 pessoas, conforto premium e atendimento personalizado. Roteiros privativos por Lagoa Azul, Lopes Mendes, Aventureiro e enseadas reservadas, com tripulação experiente e total segurança.",
+    rating: 5.0, reviewsCount: 218, priceRange: "$$$",
+    location: "Ilha Grande / Angra dos Reis", image: barco,
+    gallery: [barco],
+    whatsapp: "55-21-99004-4435",
+    whatsappMessage: "Olá, estou vindo através do Estação Ilha Grande e gostaria de mais informações.",
+    instagram: "https://www.instagram.com/salt.experience",
+    website: "https://saltexperiencetour.com.br/salt-boat",
+    tips: ["Capacidade para até 19 pessoas", "Roteiros privativos e personalizados", "Reserva via WhatsApp"],
+    premium: true,
+    tags: ["passeio de barco ilha grande", "passeio de lancha ilha grande", "passeio nautico ilha grande", "barco privativo", "barco mar azul 2", "salt experience tour", "turismo nautico ilha grande"],
   },
 ];
 
