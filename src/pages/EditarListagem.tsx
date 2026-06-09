@@ -103,26 +103,9 @@ const EditarListagem = () => {
 
   const update = <K extends keyof FormState>(k: K, v: FormState[K]) => setForm(p => p ? { ...p, [k]: v } : p);
 
-  const handleFiles = (list: FileList | null) => {
-    if (!list) return;
-    const remaining = 8 - existingPhotos.length - newFiles.length;
-    const arr = Array.from(list).slice(0, Math.max(0, remaining));
-    setNewFiles(p => [...p, ...arr]);
-    setNewPreviews(p => [...p, ...arr.map(f => URL.createObjectURL(f))]);
-  };
-
-  const removeExisting = (i: number) => setExistingPhotos(p => p.filter((_, idx) => idx !== i));
-  const removeNew = (i: number) => {
-    setNewFiles(p => p.filter((_, idx) => idx !== i));
-    setNewPreviews(p => p.filter((_, idx) => idx !== i));
-  };
-  const moveExistingUp = (i: number) => {
-    if (i === 0) return;
-    setExistingPhotos(p => { const a = [...p]; [a[i-1], a[i]] = [a[i], a[i-1]]; return a; });
-  };
-
   const isLive = listing.status === "approved";
   const hasPending = !!listing.pending_changes && Object.keys(listing.pending_changes).length > 0;
+  const plan = ((listing.pending_changes?.plan as ListingPlan | undefined) ?? listing.plan) as ListingPlan;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
