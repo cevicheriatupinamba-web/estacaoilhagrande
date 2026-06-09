@@ -191,7 +191,7 @@ export default function PousadaDetalhe() {
           {/* Map */}
           <section>
             <h2 className="font-display text-xl font-bold mb-3">Localização</h2>
-            <LocationMap query={`${p.name} ${p.location || "Ilha Grande"}`} />
+            <LocationMap name={p.name} location={p.location || "Ilha Grande"} lat={p.latitude ?? undefined} lng={p.longitude ?? undefined} showTitle={false} />
           </section>
         </div>
 

@@ -72,6 +72,7 @@ export default function ImportarPousada() {
       setDraft(null);
       return;
     }
+    if (!parsed.ok) return;
     if (!parsed.data.slug && parsed.data.name) parsed.data.slug = slugify(parsed.data.name);
     setDraft(parsed.data);
     toast.success("Prévia gerada");
