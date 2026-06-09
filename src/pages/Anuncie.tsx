@@ -5,12 +5,19 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Check, Sparkles, Loader2, MessageCircle, ShieldCheck, MapPin, Star, Crown, Award } from "lucide-react";
+import { Check, Sparkles, Loader2, MessageCircle, ShieldCheck, MapPin, Star, Crown, Award, Upload, X, Film } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { WHATSAPP_NUMBER } from "@/components/WhatsAppFAB";
+import { slugify } from "@/lib/listings-api";
 import SEO from "@/components/SEO";
+
+/* -------------------- Limites de mídia por plano -------------------- */
+const PHOTO_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+const VIDEO_TYPES = ["video/mp4", "video/quicktime", "video/webm"];
+const MAX_PHOTO_MB = 10;
+const MAX_VIDEO_MB = 100;
 
 /* -------------------- Planos -------------------- */
 type PlanKey = "basico" | "destaque" | "premium";
@@ -95,6 +102,12 @@ const PLANOS: {
   },
 ];
 
+const PLAN_LIMITS: Record<PlanKey, { photos: number; videos: number; label: string }> = {
+  basico:   { photos: 10, videos: 0, label: "Envie até 10 fotos do seu negócio" },
+  destaque: { photos: 20, videos: 1, label: "Envie até 20 fotos e até 1 vídeo do seu negócio" },
+  premium:  { photos: 40, videos: 3, label: "Envie até 40 fotos e até 3 vídeos do seu negócio" },
+};
+
 /* -------------------- Categorias -------------------- */
 const CATEGORIAS: { grupo: string; itens: string[] }[] = [
   { grupo: "Hospedagem", itens: ["Hostel", "Pousada", "Hotel", "Suíte", "Casa de temporada", "Camping", "Airbnb", "Chalé"] },
@@ -156,7 +169,7 @@ const planoLabel = (k: PlanKey) => {
   return `${p.name} — ${p.price}${p.period}`;
 };
 
-const buildMessage = (f: Form) => `Olá, quero anunciar meu negócio na Estação Ilha Grande.
+const buildMessage = (f: Form, photoUrls: string[] = [], videoUrls: string[] = []) => `Olá, quero anunciar meu negócio na Estação Ilha Grande.
 
 *PLANO ESCOLHIDO:* ${planoLabel(f.plano)}
 
@@ -186,14 +199,17 @@ Faixa de preço: ${f.faixaPreco || "-"}
 Serviços/produtos oferecidos: ${f.servicos || "-"}
 Link de reserva: ${f.reservaLink || "-"}
 
-*MÍDIAS*
-Estou ciente de que enviarei fotos e vídeos pelo WhatsApp após este cadastro.
+*MÍDIAS ENVIADAS*
+Fotos enviadas: ${photoUrls.length}
+Vídeos enviados: ${videoUrls.length}
+${photoUrls.length ? `\nLinks das fotos:\n${photoUrls.map((u, i) => `${i + 1}. ${u}`).join("\n")}` : ""}
+${videoUrls.length ? `\nLinks dos vídeos:\n${videoUrls.map((u, i) => `${i + 1}. ${u}`).join("\n")}` : ""}
 
 *AUTORIZAÇÃO*
 Confirmo que autorizo a criação do anúncio no portal Estação Ilha Grande.`;
 
-const waLink = (f: Form) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage(f))}`;
+const waLink = (f: Form, photoUrls: string[] = [], videoUrls: string[] = []) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage(f, photoUrls, videoUrls))}`;
 
 /* -------------------- Componente -------------------- */
 const Anuncie = () => {
@@ -201,6 +217,11 @@ const Anuncie = () => {
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
+  const [videos, setVideos] = useState<File[]>([]);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [finalWaLink, setFinalWaLink] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
   const update = <K extends keyof Form>(k: K, v: Form[K]) => {
@@ -210,10 +231,118 @@ const Anuncie = () => {
 
   const escolherPlano = (k: PlanKey) => {
     update("plano", k);
+    // Ajusta limites: corta excedente ao trocar de plano
+    const lim = PLAN_LIMITS[k];
+    setPhotos(prev => prev.slice(0, lim.photos));
+    setPhotoPreviews(prev => prev.slice(0, lim.photos));
+    setVideos(prev => prev.slice(0, lim.videos));
     setTimeout(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
   };
 
   const planoSelecionado = PLANOS.find(p => p.key === form.plano)!;
+  const limits = PLAN_LIMITS[form.plano];
+
+  const addPhotos = (list: FileList | null) => {
+    if (!list) return;
+    const arr = Array.from(list);
+    const accepted: File[] = [];
+    for (const f of arr) {
+      if (!PHOTO_TYPES.includes(f.type)) {
+        toast.error(`"${f.name}": formato não suportado. Use JPG, PNG ou WEBP.`);
+        continue;
+      }
+      if (f.size > MAX_PHOTO_MB * 1024 * 1024) {
+        toast.error(`"${f.name}": maior que ${MAX_PHOTO_MB}MB.`);
+        continue;
+      }
+      accepted.push(f);
+    }
+    const space = limits.photos - photos.length;
+    if (accepted.length > space) {
+      toast.error(`Este plano permite até ${limits.photos} fotos${limits.videos ? ` e ${limits.videos} vídeo${limits.videos > 1 ? "s" : ""}` : ""}.`);
+    }
+    const toAdd = accepted.slice(0, Math.max(0, space));
+    setPhotos(p => [...p, ...toAdd]);
+    setPhotoPreviews(p => [...p, ...toAdd.map(f => URL.createObjectURL(f))]);
+  };
+
+  const addVideos = (list: FileList | null) => {
+    if (!list) return;
+    if (limits.videos === 0) {
+      toast.error("Este plano não permite envio de vídeos. Faça upgrade para Destaque ou Premium.");
+      return;
+    }
+    const arr = Array.from(list);
+    const accepted: File[] = [];
+    for (const f of arr) {
+      if (!VIDEO_TYPES.includes(f.type)) {
+        toast.error(`"${f.name}": formato não suportado. Use MP4, MOV ou WEBM.`);
+        continue;
+      }
+      if (f.size > MAX_VIDEO_MB * 1024 * 1024) {
+        toast.error(`"${f.name}": maior que ${MAX_VIDEO_MB}MB.`);
+        continue;
+      }
+      accepted.push(f);
+    }
+    const space = limits.videos - videos.length;
+    if (accepted.length > space) {
+      toast.error(`Este plano permite até ${limits.videos} vídeo${limits.videos > 1 ? "s" : ""}.`);
+    }
+    setVideos(v => [...v, ...accepted.slice(0, Math.max(0, space))]);
+  };
+
+  const removePhoto = (i: number) => {
+    setPhotos(p => p.filter((_, idx) => idx !== i));
+    setPhotoPreviews(p => p.filter((_, idx) => idx !== i));
+  };
+  const removeVideo = (i: number) => setVideos(v => v.filter((_, idx) => idx !== i));
+
+  const uploadAll = async (negocioSlug: string): Promise<{ photoUrls: string[]; videoUrls: string[] }> => {
+    const submissionId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+    const base = `submissions/${submissionId}/${negocioSlug}`;
+    const total = photos.length + videos.length;
+    let done = 0;
+    const photoPaths: string[] = [];
+    const videoPaths: string[] = [];
+
+    for (const f of photos) {
+      const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
+      const path = `${base}/fotos/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
+      const { error } = await supabase.storage.from("anuncio-uploads").upload(path, f, {
+        cacheControl: "3600", upsert: false, contentType: f.type,
+      });
+      if (error) throw new Error(`Falha no upload de ${f.name}: ${error.message}`);
+      photoPaths.push(path);
+      done++; setUploadProgress(Math.round((done / Math.max(1, total)) * 100));
+    }
+    for (const f of videos) {
+      const ext = (f.name.split(".").pop() || "mp4").toLowerCase();
+      const path = `${base}/videos/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
+      const { error } = await supabase.storage.from("anuncio-uploads").upload(path, f, {
+        cacheControl: "3600", upsert: false, contentType: f.type,
+      });
+      if (error) throw new Error(`Falha no upload de ${f.name}: ${error.message}`);
+      videoPaths.push(path);
+      done++; setUploadProgress(Math.round((done / Math.max(1, total)) * 100));
+    }
+
+    // 1 ano de validade
+    const expires = 60 * 60 * 24 * 365;
+    const photoUrls: string[] = [];
+    const videoUrls: string[] = [];
+    if (photoPaths.length) {
+      const { data, error } = await supabase.storage.from("anuncio-uploads").createSignedUrls(photoPaths, expires);
+      if (error) throw error;
+      data?.forEach(d => d.signedUrl && photoUrls.push(d.signedUrl));
+    }
+    if (videoPaths.length) {
+      const { data, error } = await supabase.storage.from("anuncio-uploads").createSignedUrls(videoPaths, expires);
+      if (error) throw error;
+      data?.forEach(d => d.signedUrl && videoUrls.push(d.signedUrl));
+    }
+    return { photoUrls, videoUrls };
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -229,9 +358,17 @@ const Anuncie = () => {
       return;
     }
     setLoading(true);
+    setUploadProgress(0);
+    let photoUrls: string[] = [];
+    let videoUrls: string[] = [];
     try {
-      // Persiste no banco
-      const fullDesc = buildMessage(parsed.data);
+      if (photos.length + videos.length > 0) {
+        const slug = slugify(parsed.data.nomeNegocio || "anunciante");
+        const up = await uploadAll(slug);
+        photoUrls = up.photoUrls;
+        videoUrls = up.videoUrls;
+      }
+      const fullDesc = buildMessage(parsed.data, photoUrls, videoUrls);
       const { error } = await supabase.from("lead_requests").insert({
         name: `${parsed.data.nomeNegocio} (${parsed.data.responsavel})`,
         category: parsed.data.categoria,
@@ -241,15 +378,17 @@ const Anuncie = () => {
         source: `anuncie:${parsed.data.plano}`,
       });
       if (error) throw error;
-      // Abre WhatsApp
-      window.open(waLink(parsed.data), "_blank", "noopener,noreferrer");
+      const link = waLink(parsed.data, photoUrls, videoUrls);
+      setFinalWaLink(link);
+      window.open(link, "_blank", "noopener,noreferrer");
       setSent(true);
-      toast.success("Cadastro enviado! Finalize a conversa pelo WhatsApp.");
+      toast.success("Cadastro enviado com sucesso!");
     } catch (err: any) {
       console.error("[Anuncie] submit error", err);
-      // Mesmo com falha no banco, abre WhatsApp para não perder o lead
-      window.open(waLink(parsed.data), "_blank", "noopener,noreferrer");
-      toast.message("Enviamos seus dados direto pelo WhatsApp.");
+      const link = waLink(parsed.data, photoUrls, videoUrls);
+      setFinalWaLink(link);
+      window.open(link, "_blank", "noopener,noreferrer");
+      toast.message(err?.message || "Enviamos seus dados direto pelo WhatsApp.");
       setSent(true);
     } finally {
       setLoading(false);
@@ -275,16 +414,15 @@ const Anuncie = () => {
             </div>
             <h1 className="font-display font-bold text-3xl md:text-4xl">Cadastro enviado com sucesso!</h1>
             <p className="text-muted-foreground text-lg">
-              Agora nossa equipe vai receber suas informações pelo WhatsApp e entrar em contato
-              para finalizar seu anúncio na Estação Ilha Grande.
+              Nossa equipe recebeu suas informações e entrará em contato pelo WhatsApp.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
               <Button asChild variant="hero" size="lg">
-                <a href={waLink(form)} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="w-5 h-5" /> Falar novamente no WhatsApp
+                <a href={finalWaLink || waLink(form)} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="w-5 h-5" /> Falar no WhatsApp
                 </a>
               </Button>
-              <Button variant="outline" size="lg" onClick={() => { setSent(false); setForm(initial); }}>
+              <Button variant="outline" size="lg" onClick={() => { setSent(false); setForm(initial); setPhotos([]); setPhotoPreviews([]); setVideos([]); setFinalWaLink(""); }}>
                 Enviar outro cadastro
               </Button>
             </div>
@@ -544,11 +682,130 @@ const Anuncie = () => {
                 </div>
               </fieldset>
 
-              {/* Mídias */}
-              <div className="rounded-2xl bg-muted/40 border border-border p-4 text-sm text-muted-foreground">
-                <strong className="text-foreground">Fotos e vídeos:</strong> após o envio do formulário,
-                nossa equipe entrará em contato pelo WhatsApp para receber suas mídias e finalizar o anúncio.
-              </div>
+              {/* Mídias — adaptativo ao plano */}
+              <fieldset className="space-y-5">
+                <legend className="font-display font-bold text-lg mb-2">6. Fotos e vídeos do seu negócio</legend>
+                <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm">
+                  <p className="font-semibold text-foreground">{limits.label}</p>
+                  <p className="text-muted-foreground text-xs mt-1">
+                    Formatos: JPG, PNG, WEBP (até {MAX_PHOTO_MB}MB){limits.videos > 0 ? ` • MP4, MOV, WEBM (até ${MAX_VIDEO_MB}MB)` : ""}.
+                  </p>
+                </div>
+
+                {/* Fotos */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label className="font-semibold">Fotos</Label>
+                    <span className="text-xs text-muted-foreground">{photos.length} / {limits.photos}</span>
+                  </div>
+                  <label className={cn(
+                    "flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-2xl p-6 cursor-pointer transition",
+                    photos.length >= limits.photos
+                      ? "border-border bg-muted/30 cursor-not-allowed opacity-60"
+                      : "border-border hover:border-primary hover:bg-primary/5"
+                  )}>
+                    <Upload className="w-6 h-6 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground text-center">
+                      {photos.length >= limits.photos
+                        ? `Limite de ${limits.photos} fotos atingido`
+                        : "Clique para selecionar fotos"}
+                    </span>
+                    <input
+                      type="file"
+                      accept={PHOTO_TYPES.join(",")}
+                      multiple
+                      className="hidden"
+                      disabled={loading || photos.length >= limits.photos}
+                      onChange={e => { addPhotos(e.target.files); e.currentTarget.value = ""; }}
+                    />
+                  </label>
+                  {photoPreviews.length > 0 && (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 mt-3">
+                      {photoPreviews.map((src, i) => (
+                        <div key={src} className="relative aspect-square rounded-xl overflow-hidden border border-border group">
+                          <img src={src} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removePhoto(i)}
+                            disabled={loading}
+                            aria-label="Remover foto"
+                            className="absolute top-1 right-1 w-6 h-6 rounded-full bg-foreground/80 text-background flex items-center justify-center hover:bg-destructive transition"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Vídeos */}
+                {limits.videos > 0 ? (
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="font-semibold">Vídeos</Label>
+                      <span className="text-xs text-muted-foreground">{videos.length} / {limits.videos}</span>
+                    </div>
+                    <label className={cn(
+                      "flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-2xl p-6 cursor-pointer transition",
+                      videos.length >= limits.videos
+                        ? "border-border bg-muted/30 cursor-not-allowed opacity-60"
+                        : "border-border hover:border-primary hover:bg-primary/5"
+                    )}>
+                      <Film className="w-6 h-6 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground text-center">
+                        {videos.length >= limits.videos
+                          ? `Limite de ${limits.videos} vídeo${limits.videos > 1 ? "s" : ""} atingido`
+                          : "Clique para selecionar vídeos"}
+                      </span>
+                      <input
+                        type="file"
+                        accept={VIDEO_TYPES.join(",")}
+                        multiple
+                        className="hidden"
+                        disabled={loading || videos.length >= limits.videos}
+                        onChange={e => { addVideos(e.target.files); e.currentTarget.value = ""; }}
+                      />
+                    </label>
+                    {videos.length > 0 && (
+                      <ul className="mt-3 space-y-2">
+                        {videos.map((f, i) => (
+                          <li key={i} className="flex items-center gap-3 rounded-xl border border-border bg-background p-2.5">
+                            <Film className="w-4 h-4 text-primary shrink-0" />
+                            <span className="text-sm truncate flex-1">{f.name}</span>
+                            <span className="text-xs text-muted-foreground shrink-0">{(f.size / 1024 / 1024).toFixed(1)} MB</span>
+                            <button
+                              type="button"
+                              onClick={() => removeVideo(i)}
+                              disabled={loading}
+                              aria-label="Remover vídeo"
+                              className="w-7 h-7 rounded-full bg-muted hover:bg-destructive hover:text-destructive-foreground flex items-center justify-center transition"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ) : (
+                  <div className="rounded-2xl border border-dashed border-border p-4 text-xs text-muted-foreground">
+                    O envio de vídeos está disponível nos planos <strong>Destaque</strong> e <strong>Premium</strong>.
+                  </div>
+                )}
+
+                {loading && (photos.length + videos.length) > 0 && (
+                  <div>
+                    <div className="flex items-center justify-between text-xs mb-1">
+                      <span className="text-muted-foreground">Enviando arquivos…</span>
+                      <span className="font-semibold">{uploadProgress}%</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-muted overflow-hidden">
+                      <div className="h-full bg-primary transition-all" style={{ width: `${uploadProgress}%` }} />
+                    </div>
+                  </div>
+                )}
+              </fieldset>
 
               {/* Consentimento */}
               <div className="flex items-start gap-3">
