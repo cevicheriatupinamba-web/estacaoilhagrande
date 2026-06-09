@@ -1,61 +1,96 @@
-# Admin Platform — Estação Ilha Grande
+# Reestruturação Estação Ilha Grande — Fase 1
 
-This is a very large scope (≈18 modules, role system, payments, CRM, BI, CMS, SEO, support, marketing, growth). Building it all in one shot would produce shallow, broken modules. I'll deliver it in phases — each phase ships a usable, real (not mocked) slice connected to Lovable Cloud.
+Vou implementar apenas o que tem backend real funcionando hoje. Tudo que for "em construção" sai do menu, da navegação e dos cards. Sem placeholders.
 
-Before I start, I need a few decisions from you (see questions at the end).
+## 1. Limpeza imediata (sai do ar)
 
----
+**Admin** — remover do menu lateral e das rotas:
+- SEO, BI, Marketing, Crescimento, Mapa, Suporte, Avaliações
 
-## Architecture
+**Mantidos no Admin** (têm dados reais ou função operacional):
+- Painel Admin (dashboard)
+- Anunciantes (CRM)
+- Assinaturas
+- Financeiro
+- Solicitações (leads — já existe tabela `lead_requests`)
+- Conteúdo (blog)
+- Permissões
+- Configurações
+- Auditoria (activity_logs)
 
-- **Route**: `/admin` (existing) becomes a full layout with collapsible sidebar (shadcn `Sidebar`), top bar, breadcrumbs.
-- **Auth/roles**: extend `app_role` enum (currently `admin`, `moderator`, `user`) → add `super_admin`, `financial_manager`, `content_manager`, `support_agent`. Keep RLS via `has_role()`.
-- **Data**: real data from existing tables (`listings`, `pousadas`, `blog_posts`, `lead_requests`, `user_roles`, `auth.users`). New tables added per phase.
-- **Charts**: `recharts` (already in stack).
-- **Map**: Leaflet + OpenStreetMap satellite tiles (no API key).
-- **Mobile**: every module responsive from day one.
+**Anunciante** — menu fica só com o que funciona:
+- Visão geral, Minha empresa, Meu plano, Financeiro
 
----
+## 2. Papéis e permissões
 
-## Phase 1 — Foundation (ship first)
+Enum `app_role` já tem: super_admin, admin, financial_manager, content_manager, support_agent, advertiser, user.
 
-1. Role system migration: add 4 new roles, seed your account as `super_admin`, add `has_any_role()` helper, route guard, permission matrix.
-2. Admin shell: sidebar + topbar + responsive layout, dark/light, breadcrumbs.
-3. **Executive Dashboard** with real KPIs from existing tables (advertisers, plans, leads, reviews, users) + period filter (Today / 7 / 30 / 90 / YTD) + recharts visuals.
-4. **Advertiser CRM** — table over `listings` + `pousadas` with filters, profile drawer, quick actions (suspend/activate/upgrade plan/WhatsApp/email).
-5. **Activity log** table + helper to write entries from all admin mutations.
+Ações:
+- Renomear semanticamente `user` → tratado como **customer** na UI (sem mudar o enum, evita migração quebrada).
+- Confirmar guards: `AdminLayout` (super_admin/admin), `AdvertiserLayout` (advertiser + admin), novo `CustomerLayout` (qualquer usuário logado) para `/minha-conta`.
+- RLS já existe nas tabelas principais; revisar `listings`, `subscriptions`, `lead_requests` para garantir que o anunciante só lê o que é dele (`owner_id = auth.uid()`).
 
-## Phase 2 — Revenue & Subscriptions
+## 3. Três ecossistemas (rotas)
 
-6. New tables: `subscriptions`, `payments`, `plans` (with grants + RLS).
-7. **Subscription Center** + **Plan Management** + **Renewal alerts** (cron-style edge function checking days-to-renew, writing notifications).
-8. **Financial Center** — gross/net, by plan, by category, charts.
-9. Payments: I recommend enabling **Lovable Payments (Stripe)** to actually charge advertisers. Confirm before I run `recommend_payment_provider` + enable.
+```text
+/admin/*          → Super Admin / staff
+/dashboard,
+/minha-empresa,
+/minha-assinatura → Anunciante (extranet)
+/minha-conta/*    → Turista (customer)
+```
 
-## Phase 3 — Content, Reviews, Leads
+## 4. Ecossistema Turista — novo
 
-10. **Lead Management** built on existing `lead_requests` with conversion funnel.
-11. New `reviews` table + **Review Moderation** workflow.
-12. **CMS** for beaches/restaurants/pousadas/tours/blog with publish/schedule/archive.
-13. **Premium Positioning Control** — feature flags on listings, homepage banner slots.
+Criar `/minha-conta` com:
+- **Perfil**: nome, email, whatsapp, cidade, país, idioma (tabela `profiles` nova, ligada a `auth.users`).
+- **Favoritos**: já existem em localStorage; migrar para tabela `favorites` (user_id, listing_id) com RLS por dono.
+- **Histórico**: lista de favoritos + avaliações futuras (Fase 2).
 
-## Phase 4 — Intelligence & Ops
+Layout próprio com navegação simples (sem sidebar pesado). Mobile-first.
 
-14. **Platform Map** (Leaflet satellite) with category filters, premium highlighted.
-15. **BI reports** — top viewed/contacted/converting + auto-insights.
-16. **SEO Command Center** — sitemap status, meta audit over routes, GSC data once OAuth is wired.
-17. **Support Center** — tickets table + thread UI.
-18. **Marketing Center** — coupons/campaigns + tracking.
-19. **Growth Center** — cohort/trend charts.
-20. **Security** — audit log viewer, login history, 2FA toggle scaffolding.
+## 5. Ecossistema Anunciante — completar Fase 1
 
----
+Já existe Dashboard + Minha Empresa + Minha Assinatura. Adicionar:
+- **Galeria** (`/minha-galeria`): upload múltiplo, drag&drop, reordenar, marcar capa. Usa bucket `listing-photos` + tabela `pousada_imagens` (já existe) — generalizar para listings também.
+- **Financeiro** (`/meu-financeiro`): histórico de `subscription_payments` com download de recibo (PDF gerado client-side simples) e botão "Renovar via WhatsApp".
+- **Minha Empresa**: expandir formulário com horário, serviços, diferenciais, redes sociais completas, localização no mapa (campos lat/lng já existem em listings).
 
-## What I need from you to start Phase 1
+Dashboard ganha:
+- Filtros de período (hoje / 7d / 30d / 90d / ano) — já parcialmente feito.
+- KPIs: visualizações, cliques WhatsApp, Instagram, telefone, favoritos, solicitações.
+- Comparativo vs período anterior (% delta).
 
-1. **Scope confirmation** — OK to ship in phases as above? (Trying to build all 18 modules in one turn will produce broken UI.)
-2. **Payments** — do you want me to enable Lovable Payments (Stripe) in Phase 2 to actually bill advertisers, or keep subscriptions as manual records you mark paid?
-3. **Your super_admin email** — which email should I grant `super_admin` to in the seed migration?
-4. **Plan prices** — Basic R$97/mo confirmed. What are the Featured and Premium monthly prices (and annual discount %)?
+## 6. Ecossistema Super Admin — ajustes
 
-Reply with answers (or "go" + the email if you accept defaults: phased build, manual subscriptions for now, Featured R$197, Premium R$397, annual 20% off) and I'll start Phase 1 immediately.
+- **Permissões** (`/admin/roles`): trocar exibição de UUIDs por nome+email+cargo+status+data, com ações Editar/Remover. Join `user_roles` + `auth.users` via função SECURITY DEFINER `get_users_with_roles()`.
+- **Dashboard Executivo**: KPIs reais (MRR, ativos, cancelados, novos no mês, leads do mês) a partir de `subscriptions` e `lead_requests`. Sem gráficos falsos — só o que sai do banco.
+
+## 7. Banco — migrações necessárias
+
+1. `profiles` (user_id PK, name, whatsapp, city, country, language, avatar_url) + RLS dono.
+2. `favorites` (user_id, listing_id, created_at) + RLS dono + GRANTs.
+3. Função `get_users_with_roles()` SECURITY DEFINER para painel de permissões.
+4. Revisão RLS: anunciante só vê `subscriptions`/`subscription_payments`/`lead_requests`/`listing_events` dos seus listings.
+
+## 8. O que NÃO entra nesta fase
+
+Avaliações, Reservas, Cupons, Promoções, SEO Center, BI avançado, Heatmap, Ranking, Suporte interno, Notificações, Pagamento online. Ficam para Fase 2/3 conforme roadmap — e **não aparecem na UI** até estarem prontos.
+
+## Detalhes técnicos
+
+- Stack mantida: React 18 + Vite + Tailwind + shadcn + Supabase.
+- Sem novas dependências pesadas (recharts já está). Upload de imagem usa `supabase.storage` existente.
+- Recibo PDF: `window.print()` em página dedicada com CSS print (sem libs).
+- Mobile-first: revisar Navbar para mostrar bottom-nav no turista logado.
+- Tudo via design tokens em `index.css` (sem cores hardcoded).
+
+## Ordem de execução
+
+1. Migração: `profiles`, `favorites`, função `get_users_with_roles`, ajustes RLS.
+2. Limpeza Admin (menu + rotas mortas).
+3. Painel `/admin/roles` reescrito com dados úteis.
+4. Anunciante: Galeria + Meu Financeiro + Minha Empresa expandida + Dashboard com comparativo.
+5. Turista: `/minha-conta` (Perfil + Favoritos no banco + Histórico).
+6. Bottom-nav mobile para turista logado.
+7. QA: testar 3 contas (super_admin, advertiser, customer) e validar isolamento.
