@@ -182,3 +182,115 @@ export function validateForPublish(d: AccommodationDraft): { ok: boolean; errors
   if (!d.short_description && !d.full_description) warnings.push("Nenhuma descrição preenchida.");
   return { ok: errors.length === 0, errors, warnings };
 }
+
+/** Normalize a raw Apify dataset item (Booking/Google scrapers) into AccommodationDraft */
+export function normalizeApifyJSON(raw: string): { ok: true; data: AccommodationDraft } | { ok: false; error: string } {
+  let json: any;
+  try {
+    json = JSON.parse(raw);
+  } catch {
+    return { ok: false, error: "JSON inválido. Verifique chaves, vírgulas e aspas." };
+  }
+  if (Array.isArray(json)) json = json[0];
+  if (!json || typeof json !== "object") return { ok: false, error: "JSON precisa ser um objeto ou array de objetos." };
+
+  const name = String(json.name ?? json.title ?? json.hotelName ?? "").trim();
+  if (!name) return { ok: false, error: "Campo 'name' não encontrado no JSON." };
+
+  const rawImages: any[] = Array.isArray(json.images)
+    ? json.images
+    : Array.isArray(json.photos) ? json.photos
+    : Array.isArray(json.gallery) ? json.gallery : [];
+  const photos: AccommodationPhoto[] = rawImages
+    .map((p: any) => {
+      if (!p) return null;
+      if (typeof p === "string") return { url: p, alt: name, is_cover: false };
+      const url = p.url ?? p.image ?? p.src ?? p.imageUrl ?? p.thumbnail ?? "";
+      return url ? { url: String(url), alt: String(p.alt ?? p.caption ?? name), is_cover: false } : null;
+    })
+    .filter(Boolean) as AccommodationPhoto[];
+  if (photos.length) photos[0].is_cover = true;
+
+  let address = "", city = "", state = "", country = "", neighborhood = "";
+  if (typeof json.address === "string") {
+    address = json.address;
+  } else if (json.address && typeof json.address === "object") {
+    address = json.address.full ?? json.address.street ?? json.address.addressLine ?? "";
+    city = json.address.city ?? "";
+    state = json.address.region ?? json.address.state ?? "";
+    country = json.address.country ?? "";
+    neighborhood = json.address.neighborhood ?? json.address.district ?? "";
+  }
+  city = city || json.city || "Ilha Grande";
+  state = state || json.region || json.state || "Rio de Janeiro";
+  country = country || json.country || "Brasil";
+  neighborhood = neighborhood || json.neighborhood || "";
+  const location = [neighborhood, city].filter(Boolean).join(", ") || city;
+
+  const full_description = String(json.description ?? json.fullDescription ?? json.about ?? json.summary ?? "").trim();
+  const short_description = String(json.shortDescription ?? json.tagline ?? full_description.split(/\n|\. /)[0] ?? "").slice(0, 240);
+
+  const ratingRaw = json.rating ?? json.score ?? json.stars ?? null;
+  const rating = ratingRaw != null && ratingRaw !== "" ? Number(ratingRaw) : null;
+  const reviewsRaw = json.reviews ?? json.reviewsCount ?? json.reviewCount ?? json.numberOfReviews ?? null;
+  const review_count = typeof reviewsRaw === "number" ? reviewsRaw
+    : typeof reviewsRaw === "string" && reviewsRaw ? (Number(String(reviewsRaw).replace(/\D/g, "")) || null)
+    : Array.isArray(reviewsRaw) ? reviewsRaw.length : null;
+
+  const rawAmenities: any[] = Array.isArray(json.amenities) ? json.amenities
+    : Array.isArray(json.facilities) ? json.facilities : [];
+  const amenities: string[] = rawAmenities
+    .flatMap((a: any) => {
+      if (!a) return [];
+      if (typeof a === "string") return [a];
+      if (Array.isArray(a.items)) return a.items.map((i: any) => (typeof i === "string" ? i : i?.name)).filter(Boolean);
+      return [a.name ?? a.title ?? a.label].filter(Boolean);
+    })
+    .map(String);
+
+  const rawRooms: any[] = Array.isArray(json.rooms) ? json.rooms : Array.isArray(json.roomTypes) ? json.roomTypes : [];
+  const rooms: AccommodationRoom[] = rawRooms.map((r: any) => ({
+    name: String(r.name ?? r.title ?? r.type ?? "Quarto"),
+    description: String(r.description ?? ""),
+    capacity: r.capacity ? String(r.capacity) : r.persons ? String(r.persons) : "",
+    amenities: Array.isArray(r.amenities) ? r.amenities.map(String) : [],
+    photos: Array.isArray(r.photos) ? r.photos.map((p: any) => (typeof p === "string" ? p : p?.url ?? "")).filter(Boolean) : [],
+  }));
+
+  const checkin = String(json.checkIn ?? json.checkin ?? json.check_in ?? json.checkInTime ?? "");
+  const checkout = String(json.checkOut ?? json.checkout ?? json.check_out ?? json.checkOutTime ?? "");
+  const house_rules: AccommodationHouseRules = {
+    checkin, checkout,
+    pets: String(json.pets ?? json.petsPolicy ?? ""),
+    children: String(json.children ?? json.childrenPolicy ?? ""),
+    payment: String(json.payment ?? json.paymentMethods ?? ""),
+    cancellation: String(json.cancellation ?? json.cancellationPolicy ?? ""),
+  };
+
+  const slug = slugify(name);
+  const seo_title = `${name} — Pousada em ${city} | Estação Ilha Grande`.slice(0, 70);
+  const seo_description = (short_description || `Conheça ${name} em ${location}. Reserve sua estadia na Ilha Grande.`).slice(0, 160);
+
+  const data: AccommodationDraft = {
+    name, slug, category: "Pousada",
+    source_url: String(json.url ?? json.source_url ?? ""),
+    source_platform: json.source_platform ?? (String(json.url ?? "").includes("booking.com") ? "Booking.com" : "Apify"),
+    location, address, neighborhood, city, state, country,
+    latitude: json.latitude ?? json.lat ?? json.location?.lat ?? null,
+    longitude: json.longitude ?? json.lng ?? json.location?.lng ?? null,
+    short_description, full_description,
+    rating, review_count,
+    amenities, photos, rooms, house_rules,
+    checkin_time: checkin, checkout_time: checkout,
+    whatsapp: String(json.whatsapp ?? json.phone ?? ""),
+    instagram: String(json.instagram ?? ""),
+    website: String(json.website ?? json.url ?? ""),
+    seo_title, seo_description,
+    seo_keywords: [name, "pousada", city, "Ilha Grande"].join(", "),
+    status: "draft",
+    is_featured: false,
+  };
+
+  return { ok: true, data };
+}
+

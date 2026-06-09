@@ -12,10 +12,12 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   AccommodationDraft,
   buildTemplateFromBookingUrl,
+  normalizeApifyJSON,
   parseAccommodationJSON,
   slugify,
   validateForPublish,
 } from "@/lib/accommodations/parser";
+import { Download, Image as ImageIcon2, BedDouble, ListChecks } from "lucide-react";
 
 const SAMPLE_JSON = JSON.stringify(
   {
@@ -203,16 +205,58 @@ export default function ImportarPousada() {
             className="font-mono text-xs h-72"
             spellCheck={false}
           />
-          <div className="flex gap-2">
-            <Button onClick={generatePreview} className="flex-1">
+          <div className="flex gap-2 flex-wrap">
+            <Button onClick={generatePreview} className="flex-1 min-w-[140px]">
               <Wand2 className="w-4 h-4 mr-2" /> Gerar prévia
+            </Button>
+            <Button
+              variant="default"
+              className="bg-amber-500 hover:bg-amber-600 text-white flex-1 min-w-[160px]"
+              onClick={() => {
+                const r = normalizeApifyJSON(jsonText);
+                if (r.ok === false) { toast.error(r.error); return; }
+                setDraft(r.data);
+                setJsonText(JSON.stringify(r.data, null, 2));
+                toast.success(`Importado: ${r.data.photos.length} fotos, ${r.data.amenities.length} comodidades, ${r.data.rooms.length} quartos`);
+              }}
+            >
+              <Download className="w-4 h-4 mr-2" /> Importar JSON Apify
             </Button>
             <Button variant="outline" onClick={() => setJsonText(SAMPLE_JSON)}>
               Resetar
             </Button>
           </div>
+          <p className="text-xs text-muted-foreground">
+            Cole o JSON exportado pelo Apify (Booking/Google) — nome, descrição, endereço, avaliação, fotos, check-in/out são preenchidos automaticamente.
+          </p>
         </Card>
       </div>
+
+      {draft && (
+        <div className="grid grid-cols-3 gap-3">
+          <Card className="p-4 flex items-center gap-3">
+            <ImageIcon2 className="w-5 h-5 text-emerald-600" />
+            <div>
+              <div className="text-2xl font-bold">{draft.photos.length}</div>
+              <div className="text-xs text-muted-foreground">Fotos encontradas</div>
+            </div>
+          </Card>
+          <Card className="p-4 flex items-center gap-3">
+            <ListChecks className="w-5 h-5 text-sky-600" />
+            <div>
+              <div className="text-2xl font-bold">{draft.amenities.length}</div>
+              <div className="text-xs text-muted-foreground">Comodidades</div>
+            </div>
+          </Card>
+          <Card className="p-4 flex items-center gap-3">
+            <BedDouble className="w-5 h-5 text-violet-600" />
+            <div>
+              <div className="text-2xl font-bold">{draft.rooms.length}</div>
+              <div className="text-xs text-muted-foreground">Quartos</div>
+            </div>
+          </Card>
+        </div>
+      )}
 
       {draft && (
         <Card className="overflow-hidden">
