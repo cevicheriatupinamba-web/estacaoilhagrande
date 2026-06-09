@@ -47,6 +47,45 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_log: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          after: Json | null
+          before: Json | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          resource_id: string | null
+          resource_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          after?: Json | null
+          before?: Json | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          after?: Json | null
+          before?: Json | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+        }
+        Relationships: []
+      }
       blog_categories: {
         Row: {
           created_at: string
@@ -154,6 +193,45 @@ export type Database = {
           id?: string
           listing_id?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      invites: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          status: string
+          token: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          invited_by?: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          status?: string
+          token: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invited_by?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          status?: string
+          token?: string
         }
         Relationships: []
       }
@@ -339,6 +417,75 @@ export type Database = {
           videos?: string[]
           website?: string | null
           whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      plans: {
+        Row: {
+          active: boolean
+          benefits: Json
+          billing_period: string
+          created_at: string
+          currency: string
+          id: string
+          name: string
+          price_cents: number
+          slug: string
+          sort_order: number
+          trial_days: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          benefits?: Json
+          billing_period?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          name: string
+          price_cents?: number
+          slug: string
+          sort_order?: number
+          trial_days?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          benefits?: Json
+          billing_period?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          name?: string
+          price_cents?: number
+          slug?: string
+          sort_order?: number
+          trial_days?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      platform_settings: {
+        Row: {
+          is_public: boolean
+          key: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          is_public?: boolean
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          is_public?: boolean
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
         }
         Relationships: []
       }
@@ -593,7 +740,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_invite: {
+        Args: { _token: string }
+        Returns: {
+          message: string
+          role: Database["public"]["Enums"]["app_role"]
+          success: boolean
+        }[]
+      }
+      create_invite: {
+        Args: {
+          _days?: number
+          _email: string
+          _role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: {
+          expires_at: string
+          id: string
+          token: string
+        }[]
+      }
       find_user_id_by_email: { Args: { _email: string }; Returns: string }
+      get_dashboard_kpis: { Args: { _days?: number }; Returns: Json }
       get_users_with_roles: {
         Args: never
         Returns: {

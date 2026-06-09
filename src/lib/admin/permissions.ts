@@ -34,14 +34,9 @@ export type Module =
   | "subscriptions"
   | "financial"
   | "leads"
-  | "reviews"
   | "content"
-  | "map"
-  | "seo"
-  | "bi"
-  | "support"
-  | "marketing"
-  | "growth"
+  | "invites"
+  | "plans"
   | "roles"
   | "settings"
   | "activity";
@@ -52,14 +47,9 @@ export const MODULE_ACCESS: Record<Module, AppRole[]> = {
   subscriptions: ["super_admin", "admin", "financial_manager"],
   financial:     ["super_admin", "admin", "financial_manager"],
   leads:         ["super_admin", "admin", "support_agent"],
-  reviews:       ["super_admin", "admin", "content_manager", "support_agent"],
   content:       ["super_admin", "admin", "content_manager"],
-  map:           ["super_admin", "admin", "financial_manager", "content_manager", "support_agent"],
-  seo:           ["super_admin", "admin", "content_manager"],
-  bi:            ["super_admin", "admin", "financial_manager"],
-  support:       ["super_admin", "admin", "support_agent"],
-  marketing:     ["super_admin", "admin", "content_manager"],
-  growth:        ["super_admin", "admin", "financial_manager"],
+  invites:       ["super_admin", "admin"],
+  plans:         ["super_admin", "admin", "financial_manager"],
   roles:         ["super_admin"],
   settings:      ["super_admin", "admin"],
   activity:      ["super_admin", "admin"],

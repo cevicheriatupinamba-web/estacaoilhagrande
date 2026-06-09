@@ -54,7 +54,11 @@ import AdminLeads from "./pages/admin/Leads";
 import AdminContent from "./pages/admin/Content";
 import AdminActivity from "./pages/admin/ActivityLog";
 import AdminRoles from "./pages/admin/Roles";
+import AdminInvites from "./pages/admin/Invites";
+import AdminPlans from "./pages/admin/Plans";
+import AdminSettings from "./pages/admin/Settings";
 import ComingSoon from "./pages/admin/ComingSoon";
+import InviteAccept from "./pages/InviteAccept";
 import AdvertiserLayout from "@/components/advertiser/AdvertiserLayout";
 import AdvertiserDashboard from "./pages/advertiser/Dashboard";
 import MinhaEmpresa from "./pages/advertiser/MinhaEmpresa";
@@ -63,7 +67,7 @@ import CustomerLayout from "@/components/customer/CustomerLayout";
 import CustomerPerfil from "./pages/customer/Perfil";
 import CustomerFavoritos from "./pages/customer/Favoritos";
 import CustomerHistorico from "./pages/customer/Historico";
-import { CreditCard, DollarSign, Settings } from "lucide-react";
+import { CreditCard, DollarSign } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -182,6 +186,9 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Route>
 
+            {/* Public invite acceptance */}
+            <Route path="/invite/:token" element={<InviteAccept />} />
+
             {/* Admin platform (own layout, no public navbar/footer) */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
@@ -191,13 +198,17 @@ const App = () => (
               <Route path="financeiro" element={<ComingSoon title="Financeiro" subtitle="Receita, MRR/ARR, inadimplência" icon={DollarSign} items={["Receita bruta e líquida", "Gráficos de crescimento", "Receita por plano e categoria"]} />} />
               <Route path="solicitacoes" element={<AdminLeads />} />
               <Route path="conteudo" element={<AdminContent />} />
-              <Route path="configuracoes" element={<ComingSoon title="Configurações" subtitle="Parâmetros centrais da administração" icon={Settings} items={["Preferências operacionais", "Dados institucionais", "Regras de acesso e governança"]} />} />
-              <Route path="activity" element={<AdminActivity />} />
-              <Route path="roles" element={<AdminRoles />} />
+              <Route path="convites" element={<AdminInvites />} />
+              <Route path="permissoes" element={<AdminRoles />} />
+              <Route path="planos" element={<AdminPlans />} />
+              <Route path="configuracoes" element={<AdminSettings />} />
+              <Route path="auditoria" element={<AdminActivity />} />
               {/* legacy aliases */}
               <Route path="crm" element={<Navigate to="/admin/anunciantes" replace />} />
               <Route path="leads" element={<Navigate to="/admin/solicitacoes" replace />} />
               <Route path="content" element={<Navigate to="/admin/conteudo" replace />} />
+              <Route path="roles" element={<Navigate to="/admin/permissoes" replace />} />
+              <Route path="activity" element={<Navigate to="/admin/auditoria" replace />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>
 

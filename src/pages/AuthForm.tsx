@@ -32,8 +32,10 @@ const AuthForm = ({ mode }: Props) => {
       return;
     }
     toast({ title: mode === "login" ? "Bem-vindo!" : "Conta criada!" });
+    const params = new URLSearchParams(loc.search);
+    const redirect = params.get("redirect");
     const from = (loc.state as { from?: { pathname?: string } } | null)?.from?.pathname;
-    nav(mode === "login" && from ? from : "/");
+    nav(redirect || from || "/");
   };
 
   return (
