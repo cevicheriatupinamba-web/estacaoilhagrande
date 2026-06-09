@@ -217,6 +217,11 @@ const Anuncie = () => {
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
+  const [videos, setVideos] = useState<File[]>([]);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [finalWaLink, setFinalWaLink] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
   const update = <K extends keyof Form>(k: K, v: Form[K]) => {
@@ -226,10 +231,118 @@ const Anuncie = () => {
 
   const escolherPlano = (k: PlanKey) => {
     update("plano", k);
+    // Ajusta limites: corta excedente ao trocar de plano
+    const lim = PLAN_LIMITS[k];
+    setPhotos(prev => prev.slice(0, lim.photos));
+    setPhotoPreviews(prev => prev.slice(0, lim.photos));
+    setVideos(prev => prev.slice(0, lim.videos));
     setTimeout(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
   };
 
   const planoSelecionado = PLANOS.find(p => p.key === form.plano)!;
+  const limits = PLAN_LIMITS[form.plano];
+
+  const addPhotos = (list: FileList | null) => {
+    if (!list) return;
+    const arr = Array.from(list);
+    const accepted: File[] = [];
+    for (const f of arr) {
+      if (!PHOTO_TYPES.includes(f.type)) {
+        toast.error(`"${f.name}": formato não suportado. Use JPG, PNG ou WEBP.`);
+        continue;
+      }
+      if (f.size > MAX_PHOTO_MB * 1024 * 1024) {
+        toast.error(`"${f.name}": maior que ${MAX_PHOTO_MB}MB.`);
+        continue;
+      }
+      accepted.push(f);
+    }
+    const space = limits.photos - photos.length;
+    if (accepted.length > space) {
+      toast.error(`Este plano permite até ${limits.photos} fotos${limits.videos ? ` e ${limits.videos} vídeo${limits.videos > 1 ? "s" : ""}` : ""}.`);
+    }
+    const toAdd = accepted.slice(0, Math.max(0, space));
+    setPhotos(p => [...p, ...toAdd]);
+    setPhotoPreviews(p => [...p, ...toAdd.map(f => URL.createObjectURL(f))]);
+  };
+
+  const addVideos = (list: FileList | null) => {
+    if (!list) return;
+    if (limits.videos === 0) {
+      toast.error("Este plano não permite envio de vídeos. Faça upgrade para Destaque ou Premium.");
+      return;
+    }
+    const arr = Array.from(list);
+    const accepted: File[] = [];
+    for (const f of arr) {
+      if (!VIDEO_TYPES.includes(f.type)) {
+        toast.error(`"${f.name}": formato não suportado. Use MP4, MOV ou WEBM.`);
+        continue;
+      }
+      if (f.size > MAX_VIDEO_MB * 1024 * 1024) {
+        toast.error(`"${f.name}": maior que ${MAX_VIDEO_MB}MB.`);
+        continue;
+      }
+      accepted.push(f);
+    }
+    const space = limits.videos - videos.length;
+    if (accepted.length > space) {
+      toast.error(`Este plano permite até ${limits.videos} vídeo${limits.videos > 1 ? "s" : ""}.`);
+    }
+    setVideos(v => [...v, ...accepted.slice(0, Math.max(0, space))]);
+  };
+
+  const removePhoto = (i: number) => {
+    setPhotos(p => p.filter((_, idx) => idx !== i));
+    setPhotoPreviews(p => p.filter((_, idx) => idx !== i));
+  };
+  const removeVideo = (i: number) => setVideos(v => v.filter((_, idx) => idx !== i));
+
+  const uploadAll = async (negocioSlug: string): Promise<{ photoUrls: string[]; videoUrls: string[] }> => {
+    const submissionId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+    const base = `submissions/${submissionId}/${negocioSlug}`;
+    const total = photos.length + videos.length;
+    let done = 0;
+    const photoPaths: string[] = [];
+    const videoPaths: string[] = [];
+
+    for (const f of photos) {
+      const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
+      const path = `${base}/fotos/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
+      const { error } = await supabase.storage.from("anuncio-uploads").upload(path, f, {
+        cacheControl: "3600", upsert: false, contentType: f.type,
+      });
+      if (error) throw new Error(`Falha no upload de ${f.name}: ${error.message}`);
+      photoPaths.push(path);
+      done++; setUploadProgress(Math.round((done / Math.max(1, total)) * 100));
+    }
+    for (const f of videos) {
+      const ext = (f.name.split(".").pop() || "mp4").toLowerCase();
+      const path = `${base}/videos/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
+      const { error } = await supabase.storage.from("anuncio-uploads").upload(path, f, {
+        cacheControl: "3600", upsert: false, contentType: f.type,
+      });
+      if (error) throw new Error(`Falha no upload de ${f.name}: ${error.message}`);
+      videoPaths.push(path);
+      done++; setUploadProgress(Math.round((done / Math.max(1, total)) * 100));
+    }
+
+    // 1 ano de validade
+    const expires = 60 * 60 * 24 * 365;
+    const photoUrls: string[] = [];
+    const videoUrls: string[] = [];
+    if (photoPaths.length) {
+      const { data, error } = await supabase.storage.from("anuncio-uploads").createSignedUrls(photoPaths, expires);
+      if (error) throw error;
+      data?.forEach(d => d.signedUrl && photoUrls.push(d.signedUrl));
+    }
+    if (videoPaths.length) {
+      const { data, error } = await supabase.storage.from("anuncio-uploads").createSignedUrls(videoPaths, expires);
+      if (error) throw error;
+      data?.forEach(d => d.signedUrl && videoUrls.push(d.signedUrl));
+    }
+    return { photoUrls, videoUrls };
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -245,9 +358,17 @@ const Anuncie = () => {
       return;
     }
     setLoading(true);
+    setUploadProgress(0);
+    let photoUrls: string[] = [];
+    let videoUrls: string[] = [];
     try {
-      // Persiste no banco
-      const fullDesc = buildMessage(parsed.data);
+      if (photos.length + videos.length > 0) {
+        const slug = slugify(parsed.data.nomeNegocio || "anunciante");
+        const up = await uploadAll(slug);
+        photoUrls = up.photoUrls;
+        videoUrls = up.videoUrls;
+      }
+      const fullDesc = buildMessage(parsed.data, photoUrls, videoUrls);
       const { error } = await supabase.from("lead_requests").insert({
         name: `${parsed.data.nomeNegocio} (${parsed.data.responsavel})`,
         category: parsed.data.categoria,
@@ -257,15 +378,17 @@ const Anuncie = () => {
         source: `anuncie:${parsed.data.plano}`,
       });
       if (error) throw error;
-      // Abre WhatsApp
-      window.open(waLink(parsed.data), "_blank", "noopener,noreferrer");
+      const link = waLink(parsed.data, photoUrls, videoUrls);
+      setFinalWaLink(link);
+      window.open(link, "_blank", "noopener,noreferrer");
       setSent(true);
-      toast.success("Cadastro enviado! Finalize a conversa pelo WhatsApp.");
+      toast.success("Cadastro enviado com sucesso!");
     } catch (err: any) {
       console.error("[Anuncie] submit error", err);
-      // Mesmo com falha no banco, abre WhatsApp para não perder o lead
-      window.open(waLink(parsed.data), "_blank", "noopener,noreferrer");
-      toast.message("Enviamos seus dados direto pelo WhatsApp.");
+      const link = waLink(parsed.data, photoUrls, videoUrls);
+      setFinalWaLink(link);
+      window.open(link, "_blank", "noopener,noreferrer");
+      toast.message(err?.message || "Enviamos seus dados direto pelo WhatsApp.");
       setSent(true);
     } finally {
       setLoading(false);
