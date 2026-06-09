@@ -12,10 +12,12 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   AccommodationDraft,
   buildTemplateFromBookingUrl,
+  normalizeApifyJSON,
   parseAccommodationJSON,
   slugify,
   validateForPublish,
 } from "@/lib/accommodations/parser";
+import { Download, Image as ImageIcon2, BedDouble, ListChecks } from "lucide-react";
 
 const SAMPLE_JSON = JSON.stringify(
   {
