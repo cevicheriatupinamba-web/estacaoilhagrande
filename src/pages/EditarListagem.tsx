@@ -92,6 +92,7 @@ const EditarListagem = () => {
         services: (v("services", data.services ?? []) as string[]).join(", "),
       });
       setExistingPhotos(v("photos", data.photos ?? []) as string[]);
+      setExistingVideos(v("videos", (data as any).videos ?? []) as string[]);
       setLoading(false);
     })();
   }, [id, user, nav, toast]);
