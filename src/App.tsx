@@ -44,6 +44,7 @@ import BlogPost from "./pages/BlogPost";
 import EmpresaRedirect from "./pages/EmpresaRedirect";
 import Servicos from "./pages/Servicos";
 import StaticDetalhe from "./pages/StaticDetalhe";
+import LopesMendes from "./pages/LopesMendes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
