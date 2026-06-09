@@ -8,6 +8,7 @@ interface AuthCtx {
   session: Session | null;
   isAdmin: boolean;
   isStaff: boolean;
+  isAdvertiser: boolean;
   roles: AppRole[];
   hasRole: (r: AppRole) => boolean;
   loading: boolean;
@@ -69,6 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const isAdmin = roles.includes("admin") || roles.includes("super_admin");
   const isStaff = roles.some(r => STAFF_ROLES.includes(r));
+  const isAdvertiser = roles.includes("advertiser") || isAdmin;
   const hasRole = (r: AppRole) => roles.includes(r);
 
   const signup = async (name: string, email: string, password: string) => {
@@ -97,7 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isFavorite = (id: string) => favorites.includes(id);
 
   const value = useMemo(() => ({
-    user, session, isAdmin, isStaff, roles, hasRole, loading,
+    user, session, isAdmin, isStaff, isAdvertiser, roles, hasRole, loading,
     favorites, login, signup, logout, toggleFavorite, isFavorite,
   }), [user, session, roles, loading, favorites]);
 
