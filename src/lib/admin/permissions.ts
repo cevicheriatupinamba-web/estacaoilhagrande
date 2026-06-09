@@ -40,21 +40,23 @@ export type Module =
   | "plans"
   | "roles"
   | "settings"
-  | "activity";
+  | "activity"
+  | "accommodations";
 
 export const MODULE_ACCESS: Record<Module, AppRole[]> = {
-  dashboard:     ["super_admin", "admin", "financial_manager", "content_manager", "support_agent"],
-  users:         ["super_admin", "admin"],
-  crm:           ["super_admin", "admin", "support_agent"],
-  subscriptions: ["super_admin", "admin", "financial_manager"],
-  financial:     ["super_admin", "admin", "financial_manager"],
-  leads:         ["super_admin", "admin", "support_agent"],
-  content:       ["super_admin", "admin", "content_manager"],
-  invites:       ["super_admin", "admin"],
-  plans:         ["super_admin", "admin", "financial_manager"],
-  roles:         ["super_admin", "admin"],
-  settings:      ["super_admin", "admin"],
-  activity:      ["super_admin", "admin"],
+  dashboard:      ["super_admin", "admin", "financial_manager", "content_manager", "support_agent"],
+  users:          ["super_admin", "admin"],
+  crm:            ["super_admin", "admin", "support_agent"],
+  subscriptions:  ["super_admin", "admin", "financial_manager"],
+  financial:      ["super_admin", "admin", "financial_manager"],
+  leads:          ["super_admin", "admin", "support_agent"],
+  content:        ["super_admin", "admin", "content_manager"],
+  invites:        ["super_admin", "admin"],
+  plans:          ["super_admin", "admin", "financial_manager"],
+  roles:          ["super_admin", "admin"],
+  settings:       ["super_admin", "admin"],
+  activity:       ["super_admin", "admin"],
+  accommodations: ["super_admin", "admin", "content_manager"],
 };
 
 export const canAccess = (roles: AppRole[], mod: Module) =>

@@ -59,6 +59,8 @@ import AdminInvites from "./pages/admin/Invites";
 import AdminPlans from "./pages/admin/Plans";
 import AdminSettings from "./pages/admin/Settings";
 import AdminUsers from "./pages/admin/Users";
+import ImportarPousada from "./pages/admin/ImportarPousada";
+import PousadaDetalhe from "./pages/PousadaDetalhe";
 import InviteAccept from "./pages/InviteAccept";
 import EsqueciSenha from "./pages/EsqueciSenha";
 import RedefinirSenha from "./pages/RedefinirSenha";
