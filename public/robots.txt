@@ -6,6 +6,8 @@ Disallow: /perfil
 Disallow: /favoritos
 Disallow: /login
 Disallow: /cadastro
+Disallow: /cadastro-empresa
+Disallow: /conta
 
 User-agent: Googlebot
 Allow: /
