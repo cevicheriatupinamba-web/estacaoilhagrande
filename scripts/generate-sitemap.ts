@@ -36,6 +36,7 @@ const staticEntries: Entry[] = [
   { path: "/o-que-fazer-em-ilha-grande", changefreq: "weekly", priority: "0.9" },
   { path: "/passeios-em-ilha-grande", changefreq: "weekly", priority: "0.9" },
   { path: "/praias-de-ilha-grande", changefreq: "weekly", priority: "0.9" },
+  { path: "/praias/lopes-mendes", changefreq: "monthly", priority: "0.9" },
   { path: "/trilhas-em-ilha-grande", changefreq: "weekly", priority: "0.8" },
   { path: "/vida-noturna", changefreq: "monthly", priority: "0.6" },
 
