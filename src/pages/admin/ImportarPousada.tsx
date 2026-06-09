@@ -214,9 +214,17 @@ export default function ImportarPousada() {
               className="bg-amber-500 hover:bg-amber-600 text-white flex-1 min-w-[160px]"
               onClick={() => {
                 const r = normalizeApifyJSON(jsonText);
-                if (r.ok === false) { toast.error(r.error); return; }
+                if (r.ok === false) {
+                  toast.error("Não foi possível importar o JSON", {
+                    description: r.errors.join("\n"),
+                  });
+                  return;
+                }
                 setDraft(r.data);
                 setJsonText(JSON.stringify(r.data, null, 2));
+                if (r.warnings.length) {
+                  toast.warning("Importado com avisos", { description: r.warnings.join("\n") });
+                }
                 toast.success(`Importado: ${r.data.photos.length} fotos, ${r.data.amenities.length} comodidades, ${r.data.rooms.length} quartos`);
               }}
             >
