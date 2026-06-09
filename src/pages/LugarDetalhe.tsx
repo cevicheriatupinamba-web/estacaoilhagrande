@@ -3,6 +3,7 @@ import { ArrowLeft, MapPin, Star, MessageCircle, Mail, Heart, Lightbulb, Crown, 
 import SEO from "@/components/SEO";
 import { places, categories } from "@/data/mockData";
 import { Button } from "@/components/ui/button";
+import LocationMap from "@/components/LocationMap";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
