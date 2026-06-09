@@ -96,9 +96,23 @@ const LugarDetalhe = () => {
             <div className="space-y-2">
               {place.whatsapp && (
                 <Button asChild variant="sunset" className="w-full justify-start">
-                  <a href={`https://wa.me/${place.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={`https://wa.me/${place.whatsapp.replace(/\D/g, '')}${place.whatsappMessage ? `?text=${encodeURIComponent(place.whatsappMessage)}` : ""}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <MessageCircle className="w-4 h-4" /> WhatsApp
                   </a>
+                </Button>
+              )}
+              {place.instagram && (
+                <Button asChild variant="outline" className="w-full justify-start">
+                  <a href={place.instagram} target="_blank" rel="noopener noreferrer">📸 Instagram</a>
+                </Button>
+              )}
+              {place.website && (
+                <Button asChild variant="outline" className="w-full justify-start">
+                  <a href={place.website} target="_blank" rel="noopener noreferrer">🌐 Site oficial</a>
                 </Button>
               )}
               {place.email && (
