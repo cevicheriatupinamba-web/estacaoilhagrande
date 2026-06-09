@@ -248,20 +248,19 @@ const ListagemDetalhe = () => {
             </div>
           )}
 
-          {embedMap && (
-            <div className="mt-8">
-              <h2 className="font-display font-bold text-xl mb-3">Localização</h2>
-              <div className="aspect-[16/9] rounded-2xl overflow-hidden border border-border">
-                <iframe
-                  src={embedMap}
-                  loading="lazy"
-                  title={`Mapa de ${l.name}`}
-                  className="w-full h-full"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
+          <div className="mt-8">
+            <h2 className="font-display font-bold text-xl mb-3">Localização</h2>
+            <div className="aspect-[16/9] rounded-2xl overflow-hidden border border-border shadow-card">
+              <iframe
+                src={embedMap}
+                loading="lazy"
+                title={`Mapa de ${l.name}`}
+                className="w-full h-full"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
             </div>
-          )}
+          </div>
         </div>
 
         <aside className="lg:sticky lg:top-24 self-start space-y-4">
