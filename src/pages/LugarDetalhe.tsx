@@ -97,16 +97,13 @@ const LugarDetalhe = () => {
             </div>
           )}
 
-          {/* Mapa placeholder */}
-          <div className="rounded-3xl bg-card border border-border overflow-hidden">
-            <div className="aspect-[16/9] bg-gradient-to-br from-primary/10 to-forest/20 grid place-items-center text-center p-6">
-              <div>
-                <MapPin className="w-10 h-10 mx-auto text-primary mb-2" />
-                <p className="font-semibold">{place.location}</p>
-                <p className="text-sm text-muted-foreground">Mapa interativo em breve</p>
-              </div>
-            </div>
-          </div>
+          {/* Mapa interativo (satélite) */}
+          <LocationMap
+            name={place.name}
+            location={place.location}
+            lat={place.lat}
+            lng={place.lng}
+          />
         </div>
 
         {/* Sidebar contato */}
