@@ -186,6 +186,9 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Route>
 
+            {/* Public invite acceptance */}
+            <Route path="/invite/:token" element={<InviteAccept />} />
+
             {/* Admin platform (own layout, no public navbar/footer) */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
@@ -195,13 +198,17 @@ const App = () => (
               <Route path="financeiro" element={<ComingSoon title="Financeiro" subtitle="Receita, MRR/ARR, inadimplência" icon={DollarSign} items={["Receita bruta e líquida", "Gráficos de crescimento", "Receita por plano e categoria"]} />} />
               <Route path="solicitacoes" element={<AdminLeads />} />
               <Route path="conteudo" element={<AdminContent />} />
-              <Route path="configuracoes" element={<ComingSoon title="Configurações" subtitle="Parâmetros centrais da administração" icon={Settings} items={["Preferências operacionais", "Dados institucionais", "Regras de acesso e governança"]} />} />
-              <Route path="activity" element={<AdminActivity />} />
-              <Route path="roles" element={<AdminRoles />} />
+              <Route path="convites" element={<AdminInvites />} />
+              <Route path="permissoes" element={<AdminRoles />} />
+              <Route path="planos" element={<AdminPlans />} />
+              <Route path="configuracoes" element={<AdminSettings />} />
+              <Route path="auditoria" element={<AdminActivity />} />
               {/* legacy aliases */}
               <Route path="crm" element={<Navigate to="/admin/anunciantes" replace />} />
               <Route path="leads" element={<Navigate to="/admin/solicitacoes" replace />} />
               <Route path="content" element={<Navigate to="/admin/conteudo" replace />} />
+              <Route path="roles" element={<Navigate to="/admin/permissoes" replace />} />
+              <Route path="activity" element={<Navigate to="/admin/auditoria" replace />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>
 
