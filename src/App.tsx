@@ -46,6 +46,7 @@ import Servicos from "./pages/Servicos";
 import StaticDetalhe from "./pages/StaticDetalhe";
 import LopesMendes from "./pages/LopesMendes";
 import NotFound from "./pages/NotFound";
+import AgenciaOficial from "./pages/AgenciaOficial";
 
 import AdminLayout from "@/components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -167,6 +168,8 @@ const App = () => (
               <Route path="/dicas/:slug" element={<StaticDetalhe categoryKey="dicas" />} />
               <Route path="/nao-fazer" element={<NaoFazer />} />
               <Route path="/anuncie" element={<Anuncie />} />
+              <Route path="/agencia-oficial" element={<AgenciaOficial />} />
+              <Route path="/agencia" element={<AgenciaOficial />} />
 
               {/* Páginas individuais — categorias estáticas */}
               <Route path="/onde-comer/:slug" element={<StaticDetalhe categoryKey="onde-comer" />} />

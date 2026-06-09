@@ -34,6 +34,7 @@ const schema = z.object({
   longitude: z.string().trim().optional(),
   amenities: z.string().trim().max(500).optional(),
   services: z.string().trim().max(500).optional(),
+  whatsapp_message: z.string().trim().max(400).optional(),
 });
 
 const CATEGORIES: ListingCategory[] = ["hospedagem", "restaurante", "passeio", "experiencia"];
@@ -45,6 +46,7 @@ type FormState = {
   instagram: string; email: string; website: string; price_range: string;
   opening_hours: string; latitude: string; longitude: string;
   amenities: string; services: string;
+  whatsapp_message: string;
 };
 
 const EditarListagem = () => {
@@ -90,6 +92,7 @@ const EditarListagem = () => {
         longitude: pending.longitude != null ? String(pending.longitude) : (data.longitude != null ? String(data.longitude) : ""),
         amenities: (v("amenities", data.amenities ?? []) as string[]).join(", "),
         services: (v("services", data.services ?? []) as string[]).join(", "),
+        whatsapp_message: v("whatsapp_message", (data as any).whatsapp_message ?? ""),
       });
       setExistingPhotos(v("photos", data.photos ?? []) as string[]);
       setExistingVideos(v("videos", (data as any).videos ?? []) as string[]);
@@ -141,6 +144,7 @@ const EditarListagem = () => {
         longitude: form.longitude ? Number(form.longitude) : null,
         amenities: toArr(form.amenities),
         services: toArr(form.services),
+        whatsapp_message: form.whatsapp_message?.trim() || null,
         photos: finalPhotos,
         videos: finalVideos,
       };
@@ -262,6 +266,11 @@ const EditarListagem = () => {
             <div>
               <Label>WhatsApp</Label>
               <Input placeholder="55 24 99999-0000" value={form.whatsapp} onChange={e => update("whatsapp", e.target.value)} />
+            </div>
+            <div className="sm:col-span-2">
+              <Label>Mensagem padrão do WhatsApp <span className="text-muted-foreground text-xs">(opcional — aparece para quem clica em "Falar no WhatsApp")</span></Label>
+              <Textarea rows={2} maxLength={400} placeholder={`Olá! Vim pela Estação Ilha Grande e gostaria de mais informações sobre ${form.name || "seu negócio"}.`}
+                value={form.whatsapp_message} onChange={e => update("whatsapp_message", e.target.value)} />
             </div>
             <div>
               <Label>Instagram</Label>
