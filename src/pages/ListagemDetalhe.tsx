@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import DbListingCard from "@/components/DbListingCard";
+import { trackListingEvent } from "@/lib/advertiser/tracking";
 
 const CATEGORY_PATH: Record<string, string> = {
   hospedagem: "/hospedagem",
@@ -35,6 +36,9 @@ const ListagemDetalhe = () => {
     setActive(0);
     fetchListingBySlug(slug).then(setL).finally(() => setLoading(false));
   }, [slug]);
+
+  // Track view once listing is loaded
+  useEffect(() => { if (l?.id) trackListingEvent(l.id, "view"); }, [l?.id]);
 
   // related (same category, excluding current), ranked by plan
   useEffect(() => {
@@ -93,6 +97,7 @@ const ListagemDetalhe = () => {
 
   const share = async () => {
     const url = window.location.href;
+    trackListingEvent(l.id, "share");
     if (navigator.share) {
       try { await navigator.share({ title: l.name, url }); } catch {}
     } else {
@@ -289,45 +294,45 @@ const ListagemDetalhe = () => {
             )}
             {waLink && (
               <Button asChild variant="hero" className="w-full">
-                <a href={waLink} target="_blank" rel="noopener noreferrer">
+                <a href={waLink} target="_blank" rel="noopener noreferrer" onClick={() => trackListingEvent(l.id, "whatsapp")}>
                   <MessageCircle className="w-4 h-4 mr-2" /> Falar no WhatsApp
                 </a>
               </Button>
             )}
             {l.phone && (
               <Button asChild variant="outline" className="w-full">
-                <a href={`tel:${l.phone}`}><Phone className="w-4 h-4 mr-2" /> {l.phone}</a>
+                <a href={`tel:${l.phone}`} onClick={() => trackListingEvent(l.id, "phone")}><Phone className="w-4 h-4 mr-2" /> {l.phone}</a>
               </Button>
             )}
             {igLink && (
               <Button asChild variant="outline" className="w-full">
-                <a href={igLink} target="_blank" rel="noopener noreferrer">
+                <a href={igLink} target="_blank" rel="noopener noreferrer" onClick={() => trackListingEvent(l.id, "instagram")}>
                   <Instagram className="w-4 h-4 mr-2" /> Instagram
                 </a>
               </Button>
             )}
             {l.website && (
               <Button asChild variant="outline" className="w-full">
-                <a href={l.website} target="_blank" rel="noopener noreferrer">
+                <a href={l.website} target="_blank" rel="noopener noreferrer" onClick={() => trackListingEvent(l.id, "website")}>
                   <Globe className="w-4 h-4 mr-2" /> Site oficial
                 </a>
               </Button>
             )}
             {l.email && (
               <Button asChild variant="outline" className="w-full">
-                <a href={`mailto:${l.email}`}><Mail className="w-4 h-4 mr-2" /> E-mail</a>
+                <a href={`mailto:${l.email}`} onClick={() => trackListingEvent(l.id, "email")}><Mail className="w-4 h-4 mr-2" /> E-mail</a>
               </Button>
             )}
             {mapsLink && (
               <Button asChild variant="outline" className="w-full">
-                <a href={mapsLink} target="_blank" rel="noopener noreferrer">
+                <a href={mapsLink} target="_blank" rel="noopener noreferrer" onClick={() => trackListingEvent(l.id, "map")}>
                   <MapPin className="w-4 h-4 mr-2" /> Ver no Google Maps
                 </a>
               </Button>
             )}
             {directionsLink && (
               <Button asChild variant="outline" className="w-full">
-                <a href={directionsLink} target="_blank" rel="noopener noreferrer">
+                <a href={directionsLink} target="_blank" rel="noopener noreferrer" onClick={() => trackListingEvent(l.id, "directions")}>
                   <MapPin className="w-4 h-4 mr-2" /> Como chegar
                 </a>
               </Button>

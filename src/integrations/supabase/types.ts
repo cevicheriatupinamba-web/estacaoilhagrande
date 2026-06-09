@@ -175,6 +175,47 @@ export type Database = {
         }
         Relationships: []
       }
+      listing_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: number
+          listing_id: string
+          referrer: string | null
+          session_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: number
+          listing_id: string
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: number
+          listing_id?: string
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_events_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       listings: {
         Row: {
           address: string | null
@@ -360,6 +401,115 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          notes: string | null
+          paid_at: string | null
+          payment_method: string | null
+          period_end: string | null
+          period_start: string | null
+          reference: string | null
+          status: string
+          subscription_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          payment_method?: string | null
+          period_end?: string | null
+          period_start?: string | null
+          reference?: string | null
+          status?: string
+          subscription_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          payment_method?: string | null
+          period_end?: string | null
+          period_start?: string | null
+          reference?: string | null
+          status?: string
+          subscription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_payments_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          annual_amount: number | null
+          billing_cycle: string
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string
+          id: string
+          listing_id: string
+          monthly_amount: number | null
+          notes: string | null
+          owner_id: string
+          plan: Database["public"]["Enums"]["listing_plan"]
+          started_at: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          annual_amount?: number | null
+          billing_cycle?: string
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string
+          id?: string
+          listing_id: string
+          monthly_amount?: number | null
+          notes?: string | null
+          owner_id: string
+          plan?: Database["public"]["Enums"]["listing_plan"]
+          started_at?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          annual_amount?: number | null
+          billing_cycle?: string
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string
+          id?: string
+          listing_id?: string
+          monthly_amount?: number | null
+          notes?: string | null
+          owner_id?: string
+          plan?: Database["public"]["Enums"]["listing_plan"]
+          started_at?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -403,6 +553,7 @@ export type Database = {
         | "financial_manager"
         | "content_manager"
         | "support_agent"
+        | "advertiser"
       listing_category: "hospedagem" | "restaurante" | "passeio" | "experiencia"
       listing_plan: "gratuito" | "destaque" | "premium"
       listing_status: "pending" | "approved" | "rejected"
@@ -540,6 +691,7 @@ export const Constants = {
         "financial_manager",
         "content_manager",
         "support_agent",
+        "advertiser",
       ],
       listing_category: ["hospedagem", "restaurante", "passeio", "experiencia"],
       listing_plan: ["gratuito", "destaque", "premium"],

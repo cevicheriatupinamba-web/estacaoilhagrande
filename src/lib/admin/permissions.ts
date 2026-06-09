@@ -4,6 +4,7 @@ export type AppRole =
   | "financial_manager"
   | "content_manager"
   | "support_agent"
+  | "advertiser"
   | "user";
 
 export const ROLE_LABEL: Record<AppRole, string> = {
@@ -12,6 +13,7 @@ export const ROLE_LABEL: Record<AppRole, string> = {
   financial_manager: "Financeiro",
   content_manager: "Conteúdo",
   support_agent: "Suporte",
+  advertiser: "Anunciante",
   user: "Usuário",
 };
 
@@ -21,6 +23,7 @@ export const ROLE_COLOR: Record<AppRole, string> = {
   financial_manager: "bg-emerald-600 text-white",
   content_manager: "bg-sky-600 text-white",
   support_agent: "bg-violet-600 text-white",
+  advertiser: "bg-amber-500 text-white",
   user: "bg-secondary text-foreground",
 };
 
