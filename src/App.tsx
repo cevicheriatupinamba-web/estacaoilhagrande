@@ -59,8 +59,11 @@ import AdvertiserLayout from "@/components/advertiser/AdvertiserLayout";
 import AdvertiserDashboard from "./pages/advertiser/Dashboard";
 import MinhaEmpresa from "./pages/advertiser/MinhaEmpresa";
 import MinhaAssinatura from "./pages/advertiser/MinhaAssinatura";
-import AdvertiserComingSoon from "./pages/advertiser/ComingSoon";
-import { CreditCard, DollarSign, Star, Map as MapIcon, Search as SearchIcon, BarChart3, LifeBuoy, Megaphone, TrendingUp, Settings, CalendarRange, Ticket, Image as ImageIcon } from "lucide-react";
+import CustomerLayout from "@/components/customer/CustomerLayout";
+import CustomerPerfil from "./pages/customer/Perfil";
+import CustomerFavoritos from "./pages/customer/Favoritos";
+import CustomerHistorico from "./pages/customer/Historico";
+import { CreditCard, DollarSign, Settings } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -184,40 +187,32 @@ const App = () => (
               <Route index element={<AdminDashboard />} />
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="anunciantes" element={<AdminCRM />} />
-              <Route path="assinaturas" element={<ComingSoon title="Assinaturas" subtitle="Centro de assinaturas e renovações" icon={CreditCard} items={["Tabela de planos por anunciante", "Alertas automáticos de renovação (30/15/7/3/1 dias)", "Integração com pagamentos"]} />} />
+              <Route path="assinaturas" element={<ComingSoon title="Assinaturas" subtitle="Centro de assinaturas e renovações" icon={CreditCard} items={["Tabela de planos por anunciante", "Alertas automáticos de renovação", "Integração com pagamentos"]} />} />
               <Route path="financeiro" element={<ComingSoon title="Financeiro" subtitle="Receita, MRR/ARR, inadimplência" icon={DollarSign} items={["Receita bruta e líquida", "Gráficos de crescimento", "Receita por plano e categoria"]} />} />
               <Route path="solicitacoes" element={<AdminLeads />} />
               <Route path="conteudo" element={<AdminContent />} />
               <Route path="configuracoes" element={<ComingSoon title="Configurações" subtitle="Parâmetros centrais da administração" icon={Settings} items={["Preferências operacionais", "Dados institucionais", "Regras de acesso e governança"]} />} />
-              <Route path="crm" element={<AdminCRM />} />
-              <Route path="leads" element={<AdminLeads />} />
-              <Route path="content" element={<AdminContent />} />
               <Route path="activity" element={<AdminActivity />} />
               <Route path="roles" element={<AdminRoles />} />
-              <Route path="subscriptions" element={<ComingSoon title="Assinaturas" subtitle="Centro de assinaturas e renovações" icon={CreditCard} items={["Tabela de planos por anunciante", "Alertas automáticos de renovação (30/15/7/3/1 dias)", "Integração com pagamentos"]} />} />
-              <Route path="financial" element={<ComingSoon title="Financeiro" subtitle="Receita, MRR/ARR, inadimplência" icon={DollarSign} items={["Receita bruta e líquida", "Gráficos de crescimento", "Receita por plano e categoria"]} />} />
-              <Route path="reviews" element={<ComingSoon title="Avaliações" subtitle="Moderação de reviews dos visitantes" icon={Star} items={["Aprovar, recusar e destacar reviews", "Sinalizar reviews suspeitos", "Notas médias por estabelecimento"]} />} />
-              <Route path="map" element={<ComingSoon title="Mapa da plataforma" subtitle="Visão satélite em tempo real de Ilha Grande" icon={MapIcon} items={["Pins por categoria", "Premium em destaque", "Filtros e camadas"]} />} />
-              <Route path="seo" element={<ComingSoon title="SEO Command Center" subtitle="Indexação, sitemap e estrutura" icon={SearchIcon} items={["Status do Search Console (após OAuth)", "Auditoria de meta tags por rota", "Páginas indexadas e top queries"]} />} />
-              <Route path="bi" element={<ComingSoon title="Business Intelligence" subtitle="Insights automáticos do ecossistema" icon={BarChart3} items={["Negócios mais vistos e contatados", "Categorias mais lucrativas", "Insights gerados automaticamente"]} />} />
-              <Route path="support" element={<ComingSoon title="Suporte" subtitle="Central de tickets entre plataforma e anunciantes" icon={LifeBuoy} items={["Tickets abertos, em andamento e resolvidos", "Conversas encadeadas", "SLA e categorização"]} />} />
-              <Route path="marketing" element={<ComingSoon title="Marketing" subtitle="Cupons, campanhas e destaques patrocinados" icon={Megaphone} items={["Cupons e promoções", "Campanhas patrocinadas", "Tracking de cliques e conversões"]} />} />
-              <Route path="growth" element={<ComingSoon title="Crescimento" subtitle="Evolução de usuários, anunciantes e receita" icon={TrendingUp} items={["Cohort analysis", "Crescimento de leads e reservas", "Análise de tendências"]} />} />
+              {/* legacy aliases */}
+              <Route path="crm" element={<Navigate to="/admin/anunciantes" replace />} />
+              <Route path="leads" element={<Navigate to="/admin/solicitacoes" replace />} />
+              <Route path="content" element={<Navigate to="/admin/conteudo" replace />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>
 
-            {/* Advertiser extranet */}
+            {/* Advertiser extranet — only routes with real backend */}
             <Route element={<AdvertiserLayout />}>
               <Route path="/dashboard" element={<AdvertiserDashboard />} />
               <Route path="/minha-empresa" element={<MinhaEmpresa />} />
               <Route path="/minha-assinatura" element={<MinhaAssinatura />} />
-              <Route path="/minhas-metricas" element={<AdvertiserComingSoon title="Métricas avançadas" subtitle="Analytics completo do seu anúncio" icon={BarChart3} items={["Funil de visualização → contato → conversão","Comparativos por período","Origem de tráfego e dispositivo","Exportação CSV"]} />} />
-              <Route path="/minhas-avaliacoes" element={<AdvertiserComingSoon title="Avaliações" subtitle="Reviews e respostas" icon={Star} items={["Nota média e evolução","Responder avaliações","Destacar resposta","Denunciar abuso"]} />} />
-              <Route path="/minhas-reservas" element={<AdvertiserComingSoon title="Reservas" subtitle="Central de reservas" icon={CalendarRange} items={["Solicitações novas","Confirmadas e concluídas","Calendário e canais"]} />} />
-              <Route path="/promocoes" element={<AdvertiserComingSoon title="Promoções" subtitle="Crie ofertas e campanhas" icon={Megaphone} items={["Promoções relâmpago","Campanhas sazonais","Banners em destaque"]} />} />
-              <Route path="/cupons" element={<AdvertiserComingSoon title="Cupons" subtitle="Gere códigos de desconto" icon={Ticket} items={["Cupons únicos ou em lote","Resgates e conversão","Validade e limite"]} />} />
-              <Route path="/fotos" element={<AdvertiserComingSoon title="Fotos & mídia" subtitle="Galeria, vídeos e Reels" icon={ImageIcon} items={["Upload múltiplo","Reordenar imagens","Definir capa","Inserir Reels e YouTube"]} />} />
-              <Route path="/configuracoes" element={<AdvertiserComingSoon title="Configurações" subtitle="Conta e notificações" icon={Settings} items={["Alterar senha","Preferências de notificação","Privacidade"]} />} />
+            </Route>
+
+            {/* Customer (turista) area */}
+            <Route path="/minha-conta" element={<CustomerLayout />}>
+              <Route index element={<CustomerPerfil />} />
+              <Route path="favoritos" element={<CustomerFavoritos />} />
+              <Route path="historico" element={<CustomerHistorico />} />
             </Route>
           </Routes>
         </AuthProvider>
