@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import LocationMap from "@/components/LocationMap";
 import {
   CATEGORY_BASE_PATH, CATEGORY_LABEL, STATIC_ITEMS, TIER_LABEL, TIER_MAX_PHOTOS,
   getStaticItem, tierByIndex, type StaticCategoryKey,
@@ -160,6 +161,10 @@ const StaticDetalhe = ({ categoryKey }: Props) => {
               </ul>
             </div>
           )}
+
+          <div className="mt-8">
+            <LocationMap name={item.name} location={item.location} />
+          </div>
         </div>
 
         <aside className="lg:sticky lg:top-24 self-start space-y-4">

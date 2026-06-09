@@ -86,10 +86,10 @@ const ListagemDetalhe = () => {
       ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(l.address + " Ilha Grande RJ")}`
       : null;
   const embedMap = hasCoords
-    ? `https://maps.google.com/maps?q=${l.latitude},${l.longitude}&z=15&output=embed`
+    ? `https://maps.google.com/maps?q=${l.latitude},${l.longitude}&t=k&z=15&hl=pt-BR&output=embed`
     : l.address
-      ? `https://maps.google.com/maps?q=${encodeURIComponent(l.address + " Ilha Grande RJ")}&z=15&output=embed`
-      : null;
+      ? `https://maps.google.com/maps?q=${encodeURIComponent(l.address + " Ilha Grande RJ")}&t=k&z=15&hl=pt-BR&output=embed`
+      : `https://maps.google.com/maps?q=${encodeURIComponent(l.name + " Ilha Grande RJ")}&t=k&z=15&hl=pt-BR&output=embed`;
 
   const share = async () => {
     const url = window.location.href;
@@ -248,20 +248,19 @@ const ListagemDetalhe = () => {
             </div>
           )}
 
-          {embedMap && (
-            <div className="mt-8">
-              <h2 className="font-display font-bold text-xl mb-3">Localização</h2>
-              <div className="aspect-[16/9] rounded-2xl overflow-hidden border border-border">
-                <iframe
-                  src={embedMap}
-                  loading="lazy"
-                  title={`Mapa de ${l.name}`}
-                  className="w-full h-full"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
+          <div className="mt-8">
+            <h2 className="font-display font-bold text-xl mb-3">Localização</h2>
+            <div className="aspect-[16/9] rounded-2xl overflow-hidden border border-border shadow-card">
+              <iframe
+                src={embedMap}
+                loading="lazy"
+                title={`Mapa de ${l.name}`}
+                className="w-full h-full"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
             </div>
-          )}
+          </div>
         </div>
 
         <aside className="lg:sticky lg:top-24 self-start space-y-4">

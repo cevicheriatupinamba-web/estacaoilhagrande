@@ -43,6 +43,8 @@ export interface Place {
   tips: string[];
   premium?: boolean;
   tags?: string[];
+  lat?: number;
+  lng?: number;
 }
 
 export const places: Place[] = [
@@ -55,6 +57,7 @@ export const places: Place[] = [
     location: "Costa do Atlântico", image: lopesMendes,
     gallery: [lopesMendes, aventureiro, lagoaAzul],
     tips: ["Leve água e lanche — não há comércio", "Use calçado confortável para a trilha", "Volte com tempo para o último barco", "Sem sinal de celular"],
+    lat: -23.1858, lng: -44.1394,
   },
   {
     id: "2", slug: "praia-do-aventureiro",
@@ -65,6 +68,7 @@ export const places: Place[] = [
     location: "Sul da Ilha", image: aventureiro,
     gallery: [aventureiro, lopesMendes],
     tips: ["Dia inteiro com escuna saindo de Abraão", "Leve dinheiro em espécie", "Respeite a comunidade caiçara"],
+    lat: -23.1922, lng: -44.3372,
   },
   {
     id: "3", slug: "lagoa-azul",
@@ -75,6 +79,7 @@ export const places: Place[] = [
     location: "Norte da Ilha", image: lagoaAzul,
     gallery: [lagoaAzul, barco],
     tips: ["Vá cedo para evitar multidão", "Leve máscara e snorkel próprios", "Cuidado com o sol — refletido na água queima dobrado"],
+    lat: -23.0958, lng: -44.2197,
   },
   {
     id: "4", slug: "trilha-pico-do-papagaio",
