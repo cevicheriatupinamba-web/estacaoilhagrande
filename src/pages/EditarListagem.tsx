@@ -307,56 +307,19 @@ const EditarListagem = () => {
         </section>
 
         <section>
-          <h3 className="font-display font-bold text-lg mb-3">
-            Fotos <span className="text-sm text-muted-foreground font-normal">(até 8 — a primeira é a capa)</span>
-          </h3>
-
-          {existingPhotos.length > 0 && (
-            <>
-              <p className="text-xs text-muted-foreground mb-2">Fotos atuais — clique no X para remover ou ↑ para mover para a capa.</p>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-4">
-                {existingPhotos.map((src, i) => (
-                  <div key={src} className="relative aspect-square rounded-xl overflow-hidden border border-border group">
-                    <img src={src} alt="" className="w-full h-full object-cover" />
-                    <button type="button" onClick={() => removeExisting(i)}
-                      className="absolute top-1 right-1 w-6 h-6 rounded-full bg-foreground/80 text-background flex items-center justify-center">
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                    {i > 0 && (
-                      <button type="button" onClick={() => moveExistingUp(i)}
-                        className="absolute top-1 left-1 px-1.5 h-6 rounded-full bg-foreground/80 text-background text-[10px] font-bold">
-                        ↑
-                      </button>
-                    )}
-                    {i === 0 && (
-                      <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[9px] font-bold uppercase">Capa</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-
-          <label className="flex items-center justify-center gap-2 border-2 border-dashed border-border rounded-2xl p-6 cursor-pointer hover:border-primary hover:bg-primary/5 transition">
-            <Upload className="w-5 h-5 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Adicionar novas fotos</span>
-            <input type="file" accept="image/*" multiple className="hidden" onChange={e => handleFiles(e.target.files)} />
-          </label>
-
-          {newPreviews.length > 0 && (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
-              {newPreviews.map((src, i) => (
-                <div key={src} className="relative aspect-square rounded-xl overflow-hidden border border-primary/40">
-                  <img src={src} alt="" className="w-full h-full object-cover" />
-                  <button type="button" onClick={() => removeNew(i)}
-                    className="absolute top-1 right-1 w-6 h-6 rounded-full bg-foreground/80 text-background flex items-center justify-center">
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                  <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[9px] font-bold uppercase">Nova</span>
-                </div>
-              ))}
-            </div>
-          )}
+          <h3 className="font-display font-bold text-lg mb-3">Fotos & vídeos</h3>
+          <PlanMediaUploader
+            plan={plan}
+            existingPhotos={existingPhotos}
+            existingVideos={existingVideos}
+            newPhotos={newPhotos}
+            newVideos={newVideos}
+            onChangeExistingPhotos={setExistingPhotos}
+            onChangeExistingVideos={setExistingVideos}
+            onChangeNewPhotos={setNewPhotos}
+            onChangeNewVideos={setNewVideos}
+            disabled={saving}
+          />
         </section>
 
         <div className="flex gap-3">
