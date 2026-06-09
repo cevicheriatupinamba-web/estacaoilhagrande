@@ -86,10 +86,10 @@ const ListagemDetalhe = () => {
       ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(l.address + " Ilha Grande RJ")}`
       : null;
   const embedMap = hasCoords
-    ? `https://maps.google.com/maps?q=${l.latitude},${l.longitude}&z=15&output=embed`
+    ? `https://maps.google.com/maps?q=${l.latitude},${l.longitude}&t=k&z=15&hl=pt-BR&output=embed`
     : l.address
-      ? `https://maps.google.com/maps?q=${encodeURIComponent(l.address + " Ilha Grande RJ")}&z=15&output=embed`
-      : null;
+      ? `https://maps.google.com/maps?q=${encodeURIComponent(l.address + " Ilha Grande RJ")}&t=k&z=15&hl=pt-BR&output=embed`
+      : `https://maps.google.com/maps?q=${encodeURIComponent(l.name + " Ilha Grande RJ")}&t=k&z=15&hl=pt-BR&output=embed`;
 
   const share = async () => {
     const url = window.location.href;
