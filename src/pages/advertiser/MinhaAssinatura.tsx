@@ -38,7 +38,7 @@ function daysUntil(iso: string | null | undefined) {
   return Math.ceil(ms / (1000 * 60 * 60 * 24));
 }
 
-const WHATSAPP_SUPPORT = "5524999990000"; // change to real support number
+const WHATSAPP_SUPPORT = "5521996704427"; // Estação Ilha Grande — agência oficial
 
 export default function MinhaAssinatura() {
   const { user } = useAuth();
@@ -157,6 +157,9 @@ export default function MinhaAssinatura() {
                 <a href={supportLink} target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="w-4 h-4 mr-1" /> Renovar / mudar plano
                 </a>
+              </Button>
+              <Button asChild variant="outline" className="border-amber-300/40 text-amber-100 bg-amber-300/10 hover:bg-amber-300/20 hover:text-white">
+                <Link to="/financeiro/faturas">Ver todas as faturas</Link>
               </Button>
             </div>
           </div>

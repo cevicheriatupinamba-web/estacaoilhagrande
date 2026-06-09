@@ -3,7 +3,7 @@ import { useAuth } from "@/context/AuthContext";
 import { canAccess, Module, ROLE_LABEL, ROLE_COLOR, AppRole } from "@/lib/admin/permissions";
 import {
   LayoutDashboard, Users, MessageSquare,
-  FileText, Shield, Activity, Menu, X, LogOut, Home, Settings, Mail, Package, UserCog, BedDouble,
+  FileText, Shield, Activity, Menu, X, LogOut, Home, Settings, Mail, Package, UserCog, BedDouble, DollarSign,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ const NAV: NavItem[] = [
   { to: "/admin/permissoes",        label: "Permissões",        icon: Shield,          module: "roles" },
   { to: "/admin/convites",          label: "Convites",          icon: Mail,            module: "invites" },
   { to: "/admin/anunciantes",       label: "Anunciantes",       icon: Users,           module: "crm" },
+  { to: "/admin/financeiro",        label: "Financeiro",        icon: DollarSign,      module: "financial" },
   { to: "/admin/importar-pousada",  label: "Importar Pousada",  icon: BedDouble,       module: "accommodations" },
   { to: "/admin/solicitacoes",      label: "Solicitações",      icon: MessageSquare,   module: "leads" },
   { to: "/admin/conteudo",          label: "Conteúdo",          icon: FileText,        module: "content" },

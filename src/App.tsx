@@ -60,7 +60,9 @@ import AdminPlans from "./pages/admin/Plans";
 import AdminSettings from "./pages/admin/Settings";
 import AdminUsers from "./pages/admin/Users";
 import ImportarPousada from "./pages/admin/ImportarPousada";
+import AdminFinanceiro from "./pages/admin/Financeiro";
 import PousadaDetalhe from "./pages/PousadaDetalhe";
+import Faturas from "./pages/advertiser/Faturas";
 import InviteAccept from "./pages/InviteAccept";
 import EsqueciSenha from "./pages/EsqueciSenha";
 import RedefinirSenha from "./pages/RedefinirSenha";
@@ -205,6 +207,7 @@ const App = () => (
               <Route path="usuarios" element={<AdminUsers />} />
               <Route path="importar-pousada" element={<ImportarPousada />} />
               <Route path="anunciantes" element={<AdminCRM />} />
+              <Route path="financeiro" element={<AdminFinanceiro />} />
               <Route path="solicitacoes" element={<AdminLeads />} />
               <Route path="conteudo" element={<AdminContent />} />
               <Route path="convites" element={<AdminInvites />} />
@@ -218,8 +221,7 @@ const App = () => (
               <Route path="content" element={<Navigate to="/admin/conteudo" replace />} />
               <Route path="roles" element={<Navigate to="/admin/permissoes" replace />} />
               <Route path="activity" element={<Navigate to="/admin/auditoria" replace />} />
-              <Route path="assinaturas" element={<Navigate to="/admin/planos" replace />} />
-              <Route path="financeiro" element={<Navigate to="/admin/planos" replace />} />
+              <Route path="assinaturas" element={<Navigate to="/admin/financeiro" replace />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>
 
@@ -228,6 +230,8 @@ const App = () => (
               <Route path="/dashboard" element={<AdvertiserDashboard />} />
               <Route path="/minha-empresa" element={<MinhaEmpresa />} />
               <Route path="/minha-assinatura" element={<MinhaAssinatura />} />
+              <Route path="/financeiro" element={<MinhaAssinatura />} />
+              <Route path="/financeiro/faturas" element={<Faturas />} />
             </Route>
 
             {/* Customer (turista) area */}

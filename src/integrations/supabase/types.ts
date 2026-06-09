@@ -546,45 +546,60 @@ export type Database = {
       plans: {
         Row: {
           active: boolean
+          badge: string | null
           benefits: Json
           billing_period: string
           created_at: string
           currency: string
+          description: string | null
+          featured_in_search: boolean
           id: string
           name: string
+          photo_limit: number
           price_cents: number
           slug: string
           sort_order: number
           trial_days: number
           updated_at: string
+          video_limit: number
         }
         Insert: {
           active?: boolean
+          badge?: string | null
           benefits?: Json
           billing_period?: string
           created_at?: string
           currency?: string
+          description?: string | null
+          featured_in_search?: boolean
           id?: string
           name: string
+          photo_limit?: number
           price_cents?: number
           slug: string
           sort_order?: number
           trial_days?: number
           updated_at?: string
+          video_limit?: number
         }
         Update: {
           active?: boolean
+          badge?: string | null
           benefits?: Json
           billing_period?: string
           created_at?: string
           currency?: string
+          description?: string | null
+          featured_in_search?: boolean
           id?: string
           name?: string
+          photo_limit?: number
           price_cents?: number
           slug?: string
           sort_order?: number
           trial_days?: number
           updated_at?: string
+          video_limit?: number
         }
         Relationships: []
       }
@@ -732,7 +747,9 @@ export type Database = {
         Row: {
           amount: number
           created_at: string
+          due_date: string | null
           id: string
+          invoice_number: string | null
           notes: string | null
           paid_at: string | null
           payment_method: string | null
@@ -745,7 +762,9 @@ export type Database = {
         Insert: {
           amount: number
           created_at?: string
+          due_date?: string | null
           id?: string
+          invoice_number?: string | null
           notes?: string | null
           paid_at?: string | null
           payment_method?: string | null
@@ -758,7 +777,9 @@ export type Database = {
         Update: {
           amount?: number
           created_at?: string
+          due_date?: string | null
           id?: string
+          invoice_number?: string | null
           notes?: string | null
           paid_at?: string | null
           payment_method?: string | null
@@ -781,6 +802,7 @@ export type Database = {
       subscriptions: {
         Row: {
           annual_amount: number | null
+          auto_renew: boolean
           billing_cycle: string
           created_at: string
           current_period_end: string | null
@@ -791,12 +813,15 @@ export type Database = {
           notes: string | null
           owner_id: string
           plan: Database["public"]["Enums"]["listing_plan"]
+          sequence_number: number
           started_at: string
           status: string
+          trial_end: string | null
           updated_at: string
         }
         Insert: {
           annual_amount?: number | null
+          auto_renew?: boolean
           billing_cycle?: string
           created_at?: string
           current_period_end?: string | null
@@ -807,12 +832,15 @@ export type Database = {
           notes?: string | null
           owner_id: string
           plan?: Database["public"]["Enums"]["listing_plan"]
+          sequence_number?: number
           started_at?: string
           status?: string
+          trial_end?: string | null
           updated_at?: string
         }
         Update: {
           annual_amount?: number | null
+          auto_renew?: boolean
           billing_cycle?: string
           created_at?: string
           current_period_end?: string | null
@@ -823,8 +851,10 @@ export type Database = {
           notes?: string | null
           owner_id?: string
           plan?: Database["public"]["Enums"]["listing_plan"]
+          sequence_number?: number
           started_at?: string
           status?: string
+          trial_end?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -871,6 +901,39 @@ export type Database = {
           success: boolean
         }[]
       }
+      admin_confirm_payment: {
+        Args: {
+          _amount: number
+          _method?: string
+          _months?: number
+          _notes?: string
+          _subscription_id: string
+        }
+        Returns: Json
+      }
+      admin_list_subscriptions: {
+        Args: never
+        Returns: {
+          auto_renew: boolean
+          billing_cycle: string
+          current_period_end: string
+          current_period_start: string
+          days_remaining: number
+          id: string
+          last_payment_at: string
+          listing_id: string
+          listing_name: string
+          monthly_amount: number
+          owner_email: string
+          owner_id: string
+          owner_name: string
+          plan: string
+          started_at: string
+          status: string
+          total_paid: number
+          trial_end: string
+        }[]
+      }
       create_invite: {
         Args: {
           _days?: number
@@ -884,7 +947,9 @@ export type Database = {
         }[]
       }
       find_user_id_by_email: { Args: { _email: string }; Returns: string }
+      get_advertiser_financials: { Args: never; Returns: Json }
       get_dashboard_kpis: { Args: { _days?: number }; Returns: Json }
+      get_financial_kpis: { Args: { _days?: number }; Returns: Json }
       get_listing_whatsapp_stats: {
         Args: { _days?: number; _listing_id: string }
         Returns: Json

@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
+import SubscriptionBanner from "@/components/advertiser/SubscriptionBanner";
 
 interface NavItem { to: string; label: string; icon: any }
 
@@ -17,7 +18,7 @@ interface NavItem { to: string; label: string; icon: any }
 const NAV: NavItem[] = [
   { to: "/dashboard",         label: "Visão geral",       icon: LayoutDashboard },
   { to: "/minha-empresa",     label: "Minha empresa",     icon: Building2 },
-  { to: "/minha-assinatura",  label: "Assinatura",        icon: CreditCard },
+  { to: "/financeiro",        label: "Financeiro",        icon: CreditCard },
 ];
 
 export default function AdvertiserLayout() {
@@ -115,6 +116,7 @@ export default function AdvertiserLayout() {
           </div>
         </header>
         <main className="flex-1 p-4 lg:p-8">
+          <SubscriptionBanner />
           <Outlet />
         </main>
       </div>
