@@ -5,12 +5,19 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Check, Sparkles, Loader2, MessageCircle, ShieldCheck, MapPin, Star, Crown, Award } from "lucide-react";
+import { Check, Sparkles, Loader2, MessageCircle, ShieldCheck, MapPin, Star, Crown, Award, Upload, X, Film } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { WHATSAPP_NUMBER } from "@/components/WhatsAppFAB";
+import { slugify } from "@/lib/listings-api";
 import SEO from "@/components/SEO";
+
+/* -------------------- Limites de mídia por plano -------------------- */
+const PHOTO_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+const VIDEO_TYPES = ["video/mp4", "video/quicktime", "video/webm"];
+const MAX_PHOTO_MB = 10;
+const MAX_VIDEO_MB = 100;
 
 /* -------------------- Planos -------------------- */
 type PlanKey = "basico" | "destaque" | "premium";
