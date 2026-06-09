@@ -67,14 +67,14 @@ export default function ImportarPousada() {
 
   const generatePreview = () => {
     const parsed = parseAccommodationJSON(jsonText);
-    if (!parsed.ok) {
+    if (parsed.ok === false) {
       toast.error(parsed.error);
       setDraft(null);
       return;
     }
-    if (!parsed.ok) return;
-    if (!parsed.data.slug && parsed.data.name) parsed.data.slug = slugify(parsed.data.name);
-    setDraft(parsed.data);
+    const data = parsed.data;
+    if (!data.slug && data.name) data.slug = slugify(data.name);
+    setDraft(data);
     toast.success("Prévia gerada");
   };
 
