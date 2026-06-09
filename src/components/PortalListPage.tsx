@@ -11,6 +11,8 @@ interface SimpleItem {
   meta?: string;
   image: string;
   cta?: { label: string; to: string };
+  /** Optional canonical path — used by JSON-LD consumers, not rendered. */
+  path?: string;
 }
 
 interface Props {
