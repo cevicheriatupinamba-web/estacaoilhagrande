@@ -12,6 +12,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { themedImage } from "@/lib/images";
 import { curatedTourImage } from "@/lib/curatedImages";
 import { STATIC_ITEMS, tierByIndex, slugify } from "@/lib/staticDetails";
+import { itemListLd } from "@/lib/jsonld";
 
 const PASSEIOS_FAQS = [
   { question: "Qual o melhor passeio de barco em Ilha Grande?", answer: "A 'Volta à Ilha' é o passeio mais completo, visitando Aventureiro, Parnaioca, Lagoa Azul e outras praias paradisíacas em um único dia." },
