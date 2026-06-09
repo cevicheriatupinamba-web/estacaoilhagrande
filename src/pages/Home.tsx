@@ -104,7 +104,7 @@ const Home = () => {
           {portalCategories.slice(0, 6).map((c, i) => (
             <Link key={c.to} to={c.to}
               className={`group relative overflow-hidden rounded-3xl ${i === 0 ? "lg:col-span-2 lg:row-span-2 min-h-[460px]" : "min-h-[300px]"} shadow-xl hover:shadow-2xl transition-all duration-500`}>
-              <img src={c.img} alt={c.label}
+              <img src={c.img} alt={`${c.label} em Ilha Grande`}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/95 via-foreground/40 to-transparent" />
               <div className="relative z-10 h-full p-7 flex flex-col justify-end text-primary-foreground">
