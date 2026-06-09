@@ -15,6 +15,8 @@ import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import DbListingCard from "@/components/DbListingCard";
 import { trackListingEvent } from "@/lib/advertiser/tracking";
+import WhatsAppLeadModal from "@/components/WhatsAppLeadModal";
+import { sanitizeWhatsappNumber } from "@/lib/whatsapp";
 
 const CATEGORY_PATH: Record<string, string> = {
   hospedagem: "/hospedagem",
@@ -30,6 +32,7 @@ const ListagemDetalhe = () => {
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState(0);
   const [related, setRelated] = useState<ListingRow[]>([]);
+  const [waOpen, setWaOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -75,8 +78,9 @@ const ListagemDetalhe = () => {
   );
 
   const cover = galleryPhotos[active] || galleryPhotos[0];
-  const waMsg = `Olá! Vim pela Estação Ilha Grande e gostaria de mais informações sobre ${l.name}.`;
-  const waLink = l.whatsapp ? `https://wa.me/${l.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(waMsg)}` : null;
+  const waNumber = sanitizeWhatsappNumber(l.whatsapp);
+  const waMsg = (l as any).whatsapp_message?.trim()
+    || `Olá! Vim pela Estação Ilha Grande e gostaria de mais informações sobre ${l.name}.`;
   const igLink = l.instagram ? `https://instagram.com/${l.instagram.replace(/^@/, "")}` : null;
   const hasCoords = typeof l.latitude === "number" && typeof l.longitude === "number";
   const mapsLink = hasCoords
@@ -292,11 +296,9 @@ const ListagemDetalhe = () => {
                 <Clock className="w-4 h-4 text-primary mt-0.5 shrink-0" /> {l.opening_hours}
               </div>
             )}
-            {waLink && (
-              <Button asChild variant="hero" className="w-full">
-                <a href={waLink} target="_blank" rel="noopener noreferrer" onClick={() => trackListingEvent(l.id, "whatsapp")}>
-                  <MessageCircle className="w-4 h-4 mr-2" /> Falar no WhatsApp
-                </a>
+            {waNumber && (
+              <Button variant="hero" className="w-full" onClick={() => setWaOpen(true)}>
+                <MessageCircle className="w-4 h-4 mr-2" /> Falar no WhatsApp
               </Button>
             )}
             {l.phone && (
