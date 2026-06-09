@@ -32,13 +32,27 @@ const NAV: NavItem[] = [
 ];
 
 export default function AdminLayout() {
-  const { user, isStaff, roles, loading, logout } = useAuth();
+  const { user, isAdmin, roles, loading, logout } = useAuth();
   const [open, setOpen] = useState(false);
   const loc = useLocation();
 
   if (loading) return <div className="min-h-screen grid place-items-center text-muted-foreground">Carregando…</div>;
   if (!user) return <Navigate to="/login" replace state={{ from: loc }} />;
-  if (!isStaff) return <Navigate to="/" replace />;
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen grid place-items-center bg-muted/30 px-5">
+        <SEO title="Acesso restrito · Estação Ilha Grande" description="Área administrativa restrita." path={loc.pathname} noIndex />
+        <div className="max-w-md rounded-2xl border border-border bg-card p-8 text-center shadow-card">
+          <Shield className="mx-auto mb-4 h-10 w-10 text-muted-foreground" />
+          <h1 className="font-display text-2xl font-bold">Acesso restrito</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Esta área é exclusiva para Super Admins e Admins.</p>
+          <Button asChild className="mt-6" variant="outline">
+            <NavLink to="/">Voltar ao site</NavLink>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   const items = NAV.filter(n => canAccess(roles as AppRole[], n.module));
   const primaryRole = (roles[0] ?? "user") as AppRole;

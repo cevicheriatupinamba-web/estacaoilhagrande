@@ -1,7 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { Heart, LogOut, User as UserIcon } from "lucide-react";
+import { Heart, LogOut, Shield } from "lucide-react";
 import SEO from "@/components/SEO";
 
 const PerfilSEO = () => <SEO title="Perfil" description="Sua conta na Estação Ilha Grande." path="/perfil" noIndex />;
@@ -41,7 +41,7 @@ const Perfil = () => {
           </Button>
           {isAdmin && (
             <Button variant="outline" asChild className="justify-start">
-              <Link to="/admin"><UserIcon className="w-4 h-4" /> Painel admin</Link>
+              <Link to="/admin"><Shield className="w-4 h-4" /> Painel Admin</Link>
             </Button>
           )}
           <Button variant="ghost" onClick={() => { logout(); nav("/"); }} className="justify-start text-destructive sm:col-span-2">
