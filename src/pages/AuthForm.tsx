@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import logoAsset from "@/assets/logo-estacao-ilha-grande.png.asset.json";
 import SEO from "@/components/SEO";
 import GoogleSignInButton from "@/components/GoogleSignInButton";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Home } from "lucide-react";
 
 interface Props { mode: "login" | "signup" }
@@ -72,7 +73,12 @@ const AuthForm = ({ mode }: Props) => {
           </div>
           <div>
             <Label htmlFor="pw">Senha</Label>
-            <Input id="pw" type="password" required minLength={6} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} />
+            <PasswordInput id="pw" required minLength={6} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} />
+            {mode === "login" && (
+              <div className="text-right mt-1">
+                <Link to="/esqueci-senha" className="text-xs text-primary hover:underline">Esqueci minha senha</Link>
+              </div>
+            )}
           </div>
           <Button type="submit" variant="hero" className="w-full" size="lg" disabled={submitting}>
             {submitting ? "Aguarde…" : mode === "login" ? "Entrar" : "Criar conta"}

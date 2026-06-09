@@ -2,8 +2,8 @@ import { NavLink, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { canAccess, Module, ROLE_LABEL, ROLE_COLOR, AppRole } from "@/lib/admin/permissions";
 import {
-  LayoutDashboard, Users, CreditCard, DollarSign, MessageSquare,
-  FileText, Shield, Activity, Menu, X, LogOut, Home, Settings, Mail, Package,
+  LayoutDashboard, Users, MessageSquare,
+  FileText, Shield, Activity, Menu, X, LogOut, Home, Settings, Mail, Package, UserCog,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,13 +14,12 @@ interface NavItem { to: string; label: string; icon: any; module: Module }
 
 const NAV: NavItem[] = [
   { to: "/admin/dashboard",      label: "Dashboard",      icon: LayoutDashboard, module: "dashboard" },
+  { to: "/admin/usuarios",       label: "Usuários",       icon: UserCog,         module: "users" },
+  { to: "/admin/permissoes",     label: "Permissões",     icon: Shield,          module: "roles" },
+  { to: "/admin/convites",       label: "Convites",       icon: Mail,            module: "invites" },
   { to: "/admin/anunciantes",    label: "Anunciantes",    icon: Users,           module: "crm" },
-  { to: "/admin/assinaturas",    label: "Assinaturas",    icon: CreditCard,      module: "subscriptions" },
-  { to: "/admin/financeiro",     label: "Financeiro",     icon: DollarSign,      module: "financial" },
   { to: "/admin/solicitacoes",   label: "Solicitações",   icon: MessageSquare,   module: "leads" },
   { to: "/admin/conteudo",       label: "Conteúdo",       icon: FileText,        module: "content" },
-  { to: "/admin/convites",       label: "Convites",       icon: Mail,            module: "invites" },
-  { to: "/admin/permissoes",     label: "Permissões",     icon: Shield,          module: "roles" },
   { to: "/admin/planos",         label: "Planos",         icon: Package,         module: "plans" },
   { to: "/admin/configuracoes",  label: "Configurações",  icon: Settings,        module: "settings" },
   { to: "/admin/auditoria",      label: "Auditoria",      icon: Activity,        module: "activity" },
