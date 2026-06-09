@@ -173,6 +173,7 @@ export type Database = {
           status: Database["public"]["Enums"]["listing_status"]
           subcategory: string | null
           updated_at: string
+          videos: string[]
           website: string | null
           whatsapp: string | null
         }
@@ -206,6 +207,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["listing_status"]
           subcategory?: string | null
           updated_at?: string
+          videos?: string[]
           website?: string | null
           whatsapp?: string | null
         }
@@ -239,6 +241,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["listing_status"]
           subcategory?: string | null
           updated_at?: string
+          videos?: string[]
           website?: string | null
           whatsapp?: string | null
         }

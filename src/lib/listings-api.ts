@@ -90,9 +90,34 @@ export async function uploadListingPhoto(file: File, userId: string): Promise<st
   const ext = file.name.split(".").pop() || "jpg";
   const path = `${userId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
   const { error } = await supabase.storage.from("listing-photos").upload(path, file, {
-    cacheControl: "3600", upsert: false,
+    cacheControl: "3600", upsert: false, contentType: file.type,
   });
   if (error) throw error;
   const { data } = supabase.storage.from("listing-photos").getPublicUrl(path);
   return data.publicUrl;
 }
+
+export async function uploadListingVideo(file: File, userId: string): Promise<string> {
+  const ext = file.name.split(".").pop() || "mp4";
+  const path = `${userId}/videos/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const { error } = await supabase.storage.from("listing-photos").upload(path, file, {
+    cacheControl: "3600", upsert: false, contentType: file.type,
+  });
+  if (error) throw error;
+  const { data } = supabase.storage.from("listing-photos").getPublicUrl(path);
+  return data.publicUrl;
+}
+
+export const PLAN_MEDIA_LIMITS: Record<ListingPlan, { photos: number; videos: number; label: string }> = {
+  gratuito: { photos: 10, videos: 0, label: "Envie até 10 fotos do seu negócio" },
+  destaque: { photos: 20, videos: 1, label: "Envie até 20 fotos e até 1 vídeo do seu negócio" },
+  premium:  { photos: 40, videos: 3, label: "Envie até 40 fotos e até 3 vídeos do seu negócio" },
+};
+
+export const MEDIA_LIMITS = {
+  photoTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp"],
+  videoTypes: ["video/mp4", "video/quicktime", "video/webm"],
+  maxPhotoMb: 10,
+  maxVideoMb: 100,
+};
+

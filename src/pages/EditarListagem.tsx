@@ -9,10 +9,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import {
-  CATEGORY_LABEL, SUBCATEGORIES, uploadListingPhoto,
-  type ListingCategory, type ListingRow,
+  CATEGORY_LABEL, SUBCATEGORIES,
+  type ListingCategory, type ListingPlan,
 } from "@/lib/listings-api";
-import { ArrowLeft, Save, Upload, X, Clock } from "lucide-react";
+import PlanMediaUploader, { uploadPendingMedia } from "@/components/PlanMediaUploader";
+import { ArrowLeft, Save, Clock } from "lucide-react";
 import SEO from "@/components/SEO";
 
 const schema = z.object({
@@ -56,8 +57,9 @@ const EditarListagem = () => {
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState<FormState | null>(null);
   const [existingPhotos, setExistingPhotos] = useState<string[]>([]);
-  const [newFiles, setNewFiles] = useState<File[]>([]);
-  const [newPreviews, setNewPreviews] = useState<string[]>([]);
+  const [existingVideos, setExistingVideos] = useState<string[]>([]);
+  const [newPhotos, setNewPhotos] = useState<File[]>([]);
+  const [newVideos, setNewVideos] = useState<File[]>([]);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -90,6 +92,7 @@ const EditarListagem = () => {
         services: (v("services", data.services ?? []) as string[]).join(", "),
       });
       setExistingPhotos(v("photos", data.photos ?? []) as string[]);
+      setExistingVideos(v("videos", (data as any).videos ?? []) as string[]);
       setLoading(false);
     })();
   }, [id, user, nav, toast]);
@@ -100,26 +103,9 @@ const EditarListagem = () => {
 
   const update = <K extends keyof FormState>(k: K, v: FormState[K]) => setForm(p => p ? { ...p, [k]: v } : p);
 
-  const handleFiles = (list: FileList | null) => {
-    if (!list) return;
-    const remaining = 8 - existingPhotos.length - newFiles.length;
-    const arr = Array.from(list).slice(0, Math.max(0, remaining));
-    setNewFiles(p => [...p, ...arr]);
-    setNewPreviews(p => [...p, ...arr.map(f => URL.createObjectURL(f))]);
-  };
-
-  const removeExisting = (i: number) => setExistingPhotos(p => p.filter((_, idx) => idx !== i));
-  const removeNew = (i: number) => {
-    setNewFiles(p => p.filter((_, idx) => idx !== i));
-    setNewPreviews(p => p.filter((_, idx) => idx !== i));
-  };
-  const moveExistingUp = (i: number) => {
-    if (i === 0) return;
-    setExistingPhotos(p => { const a = [...p]; [a[i-1], a[i]] = [a[i], a[i-1]]; return a; });
-  };
-
   const isLive = listing.status === "approved";
   const hasPending = !!listing.pending_changes && Object.keys(listing.pending_changes).length > 0;
+  const plan = ((listing.pending_changes?.plan as ListingPlan | undefined) ?? listing.plan) as ListingPlan;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,12 +117,9 @@ const EditarListagem = () => {
     }
     setSaving(true);
     try {
-      const uploaded: string[] = [];
-      for (const f of newFiles) {
-        const url = await uploadListingPhoto(f, user.id);
-        uploaded.push(url);
-      }
-      const finalPhotos = [...existingPhotos, ...uploaded];
+      const { photoUrls, videoUrls } = await uploadPendingMedia(user.id, newPhotos, newVideos);
+      const finalPhotos = [...existingPhotos, ...photoUrls];
+      const finalVideos = [...existingVideos, ...videoUrls];
       const toArr = (s: string) => s.split(",").map(x => x.trim()).filter(Boolean).slice(0, 30);
 
       const payload = {
@@ -159,6 +142,7 @@ const EditarListagem = () => {
         amenities: toArr(form.amenities),
         services: toArr(form.services),
         photos: finalPhotos,
+        videos: finalVideos,
       };
 
       if (isLive) {
@@ -323,56 +307,19 @@ const EditarListagem = () => {
         </section>
 
         <section>
-          <h3 className="font-display font-bold text-lg mb-3">
-            Fotos <span className="text-sm text-muted-foreground font-normal">(até 8 — a primeira é a capa)</span>
-          </h3>
-
-          {existingPhotos.length > 0 && (
-            <>
-              <p className="text-xs text-muted-foreground mb-2">Fotos atuais — clique no X para remover ou ↑ para mover para a capa.</p>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-4">
-                {existingPhotos.map((src, i) => (
-                  <div key={src} className="relative aspect-square rounded-xl overflow-hidden border border-border group">
-                    <img src={src} alt="" className="w-full h-full object-cover" />
-                    <button type="button" onClick={() => removeExisting(i)}
-                      className="absolute top-1 right-1 w-6 h-6 rounded-full bg-foreground/80 text-background flex items-center justify-center">
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                    {i > 0 && (
-                      <button type="button" onClick={() => moveExistingUp(i)}
-                        className="absolute top-1 left-1 px-1.5 h-6 rounded-full bg-foreground/80 text-background text-[10px] font-bold">
-                        ↑
-                      </button>
-                    )}
-                    {i === 0 && (
-                      <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[9px] font-bold uppercase">Capa</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-
-          <label className="flex items-center justify-center gap-2 border-2 border-dashed border-border rounded-2xl p-6 cursor-pointer hover:border-primary hover:bg-primary/5 transition">
-            <Upload className="w-5 h-5 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Adicionar novas fotos</span>
-            <input type="file" accept="image/*" multiple className="hidden" onChange={e => handleFiles(e.target.files)} />
-          </label>
-
-          {newPreviews.length > 0 && (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
-              {newPreviews.map((src, i) => (
-                <div key={src} className="relative aspect-square rounded-xl overflow-hidden border border-primary/40">
-                  <img src={src} alt="" className="w-full h-full object-cover" />
-                  <button type="button" onClick={() => removeNew(i)}
-                    className="absolute top-1 right-1 w-6 h-6 rounded-full bg-foreground/80 text-background flex items-center justify-center">
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                  <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[9px] font-bold uppercase">Nova</span>
-                </div>
-              ))}
-            </div>
-          )}
+          <h3 className="font-display font-bold text-lg mb-3">Fotos & vídeos</h3>
+          <PlanMediaUploader
+            plan={plan}
+            existingPhotos={existingPhotos}
+            existingVideos={existingVideos}
+            newPhotos={newPhotos}
+            newVideos={newVideos}
+            onChangeExistingPhotos={setExistingPhotos}
+            onChangeExistingVideos={setExistingVideos}
+            onChangeNewPhotos={setNewPhotos}
+            onChangeNewVideos={setNewVideos}
+            disabled={saving}
+          />
         </section>
 
         <div className="flex gap-3">

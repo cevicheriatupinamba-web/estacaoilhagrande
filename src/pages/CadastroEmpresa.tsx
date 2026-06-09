@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 import { z } from "zod";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,10 +9,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import {
-  CATEGORY_LABEL, SUBCATEGORIES, slugify, uploadListingPhoto,
-  type ListingCategory,
+  CATEGORY_LABEL, SUBCATEGORIES, slugify, PLAN_MEDIA_LIMITS,
+  type ListingCategory, type ListingPlan,
 } from "@/lib/listings-api";
-import { Sparkles, Upload, X } from "lucide-react";
+import PlanMediaUploader, { uploadPendingMedia } from "@/components/PlanMediaUploader";
+import { Sparkles, Crown, Star, Award } from "lucide-react";
+import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
 
 const schema = z.object({
@@ -43,32 +45,34 @@ const initial = {
   latitude: "", longitude: "",
 };
 
+const PLAN_OPTIONS: { key: ListingPlan; name: string; price: string; icon: typeof Crown; tagline: string }[] = [
+  { key: "gratuito", name: "Básico",   price: "R$ 97/mês",  icon: Award, tagline: "Para começar a aparecer" },
+  { key: "destaque", name: "Destaque", price: "R$ 197/mês", icon: Star,  tagline: "Mais visibilidade + 1 vídeo" },
+  { key: "premium",  name: "Premium",  price: "R$ 297/mês", icon: Crown, tagline: "Prioridade máxima + 3 vídeos" },
+];
+
 const CadastroEmpresa = () => {
   const { user, loading } = useAuth();
   const { toast } = useToast();
   const nav = useNavigate();
   const [form, setForm] = useState(initial);
-  const [files, setFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [plan, setPlan] = useState<ListingPlan>("gratuito");
+  const [newPhotos, setNewPhotos] = useState<File[]>([]);
+  const [newVideos, setNewVideos] = useState<File[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
   if (loading) return <div className="container py-20 text-center text-muted-foreground">Carregando…</div>;
   if (!user) return <Navigate to="/login?next=/cadastro-empresa" replace />;
 
-  const handleFiles = (list: FileList | null) => {
-    if (!list) return;
-    const arr = Array.from(list).slice(0, 8 - files.length);
-    setFiles(prev => [...prev, ...arr]);
-    setPreviews(prev => [...prev, ...arr.map(f => URL.createObjectURL(f))]);
-  };
-
-  const removeFile = (i: number) => {
-    setFiles(prev => prev.filter((_, idx) => idx !== i));
-    setPreviews(prev => prev.filter((_, idx) => idx !== i));
-  };
-
   const update = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
     setForm(p => ({ ...p, [k]: v }));
+
+  const choosePlan = (k: ListingPlan) => {
+    const lim = PLAN_MEDIA_LIMITS[k];
+    setPlan(k);
+    setNewPhotos(prev => prev.slice(0, lim.photos));
+    setNewVideos(prev => prev.slice(0, lim.videos));
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,11 +84,7 @@ const CadastroEmpresa = () => {
     }
     setSubmitting(true);
     try {
-      const photos: string[] = [];
-      for (const f of files) {
-        const url = await uploadListingPhoto(f, user.id);
-        photos.push(url);
-      }
+      const { photoUrls, videoUrls } = await uploadPendingMedia(user.id, newPhotos, newVideos);
       const baseSlug = slugify(form.name);
       const slug = `${baseSlug}-${Math.random().toString(36).slice(2, 6)}`;
       const { error } = await supabase.from("listings").insert({
@@ -106,7 +106,8 @@ const CadastroEmpresa = () => {
         opening_hours: form.opening_hours || null,
         latitude: form.latitude ? Number(form.latitude) : null,
         longitude: form.longitude ? Number(form.longitude) : null,
-        photos,
+        photos: photoUrls,
+        videos: videoUrls,
       });
       if (error) throw error;
       toast({
@@ -136,6 +137,42 @@ const CadastroEmpresa = () => {
       </header>
 
       <form onSubmit={submit} className="bg-card border border-border rounded-3xl p-6 md:p-8 shadow-soft space-y-6">
+        {/* Plano */}
+        <section>
+          <h3 className="font-display font-bold text-lg mb-3">Plano de anúncio</h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            O plano define os limites de fotos e vídeos. A equipe confirma sua assinatura após a aprovação. <Link to="/anuncie" className="underline">Ver detalhes dos planos</Link>.
+          </p>
+          <div className="grid sm:grid-cols-3 gap-3">
+            {PLAN_OPTIONS.map(p => {
+              const ativo = plan === p.key;
+              const Icon = p.icon;
+              const lim = PLAN_MEDIA_LIMITS[p.key];
+              return (
+                <button
+                  type="button"
+                  key={p.key}
+                  onClick={() => choosePlan(p.key)}
+                  className={cn(
+                    "text-left rounded-2xl border-2 p-4 transition",
+                    ativo ? "border-primary bg-primary/5 ring-2 ring-primary/30" : "border-border hover:border-primary/40"
+                  )}
+                >
+                  <div className="flex items-center gap-2 mb-1 text-primary">
+                    <Icon className="w-4 h-4" />
+                    <span className="font-display font-bold">{p.name}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-1">{p.tagline}</p>
+                  <p className="text-sm font-semibold">{p.price}</p>
+                  <p className="text-[11px] text-muted-foreground mt-1">
+                    Até {lim.photos} fotos{lim.videos > 0 ? ` + ${lim.videos} vídeo${lim.videos > 1 ? "s" : ""}` : ""}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
         <section className="grid sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
             <Label>Nome do estabelecimento *</Label>
@@ -221,7 +258,6 @@ const CadastroEmpresa = () => {
               <p className="text-xs text-muted-foreground mb-3">
                 Abra o <a className="underline" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer">Google Maps</a>,
                 clique com o botão direito sobre o local e copie a latitude e longitude.
-                Salvar essas coordenadas garante que seu negócio apareça no futuro mapa interativo do portal.
               </p>
               <div className="grid sm:grid-cols-2 gap-3">
                 <div>
@@ -240,29 +276,19 @@ const CadastroEmpresa = () => {
         </section>
 
         <section>
-          <h3 className="font-display font-bold text-lg mb-3">Fotos <span className="text-sm text-muted-foreground font-normal">(até 8 — a primeira será a capa)</span></h3>
-          <label className="flex items-center justify-center gap-2 border-2 border-dashed border-border rounded-2xl p-6 cursor-pointer hover:border-primary hover:bg-primary/5 transition">
-            <Upload className="w-5 h-5 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Clique para adicionar fotos</span>
-            <input type="file" accept="image/*" multiple className="hidden"
-              onChange={e => handleFiles(e.target.files)} />
-          </label>
-          {previews.length > 0 && (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
-              {previews.map((src, i) => (
-                <div key={src} className="relative aspect-square rounded-xl overflow-hidden border border-border">
-                  <img src={src} alt="" className="w-full h-full object-cover" />
-                  <button type="button" onClick={() => removeFile(i)}
-                    className="absolute top-1 right-1 w-6 h-6 rounded-full bg-foreground/80 text-background flex items-center justify-center">
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                  {i === 0 && (
-                    <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[9px] font-bold uppercase">Capa</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+          <h3 className="font-display font-bold text-lg mb-3">Fotos & vídeos</h3>
+          <PlanMediaUploader
+            plan={plan}
+            existingPhotos={[]}
+            existingVideos={[]}
+            newPhotos={newPhotos}
+            newVideos={newVideos}
+            onChangeExistingPhotos={() => {}}
+            onChangeExistingVideos={() => {}}
+            onChangeNewPhotos={setNewPhotos}
+            onChangeNewVideos={setNewVideos}
+            disabled={submitting}
+          />
         </section>
 
         <div className="rounded-2xl bg-secondary/60 p-4 text-sm text-muted-foreground">
