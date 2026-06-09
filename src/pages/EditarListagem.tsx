@@ -117,12 +117,9 @@ const EditarListagem = () => {
     }
     setSaving(true);
     try {
-      const uploaded: string[] = [];
-      for (const f of newFiles) {
-        const url = await uploadListingPhoto(f, user.id);
-        uploaded.push(url);
-      }
-      const finalPhotos = [...existingPhotos, ...uploaded];
+      const { photoUrls, videoUrls } = await uploadPendingMedia(user.id, newPhotos, newVideos);
+      const finalPhotos = [...existingPhotos, ...photoUrls];
+      const finalVideos = [...existingVideos, ...videoUrls];
       const toArr = (s: string) => s.split(",").map(x => x.trim()).filter(Boolean).slice(0, 30);
 
       const payload = {
@@ -145,6 +142,7 @@ const EditarListagem = () => {
         amenities: toArr(form.amenities),
         services: toArr(form.services),
         photos: finalPhotos,
+        videos: finalVideos,
       };
 
       if (isLive) {
