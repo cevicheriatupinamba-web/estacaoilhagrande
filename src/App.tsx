@@ -47,6 +47,16 @@ import StaticDetalhe from "./pages/StaticDetalhe";
 import LopesMendes from "./pages/LopesMendes";
 import NotFound from "./pages/NotFound";
 
+import AdminLayout from "@/components/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminCRM from "./pages/admin/CRM";
+import AdminLeads from "./pages/admin/Leads";
+import AdminContent from "./pages/admin/Content";
+import AdminActivity from "./pages/admin/ActivityLog";
+import AdminRoles from "./pages/admin/Roles";
+import ComingSoon from "./pages/admin/ComingSoon";
+import { CreditCard, DollarSign, Star, Map as MapIcon, Search as SearchIcon, BarChart3, LifeBuoy, Megaphone, TrendingUp } from "lucide-react";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -159,9 +169,28 @@ const App = () => (
               <Route path="/perfil" element={<Perfil />} />
               <Route path="/login" element={<AuthForm mode="login" />} />
               <Route path="/cadastro" element={<AuthForm mode="signup" />} />
-              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin-legacy" element={<Admin />} />
 
               <Route path="*" element={<NotFound />} />
+            </Route>
+
+            {/* Admin platform (own layout, no public navbar/footer) */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="crm" element={<AdminCRM />} />
+              <Route path="leads" element={<AdminLeads />} />
+              <Route path="content" element={<AdminContent />} />
+              <Route path="activity" element={<AdminActivity />} />
+              <Route path="roles" element={<AdminRoles />} />
+              <Route path="subscriptions" element={<ComingSoon title="Assinaturas" subtitle="Centro de assinaturas e renovações" icon={CreditCard} items={["Tabela de planos por anunciante", "Alertas automáticos de renovação (30/15/7/3/1 dias)", "Integração com pagamentos"]} />} />
+              <Route path="financial" element={<ComingSoon title="Financeiro" subtitle="Receita, MRR/ARR, inadimplência" icon={DollarSign} items={["Receita bruta e líquida", "Gráficos de crescimento", "Receita por plano e categoria"]} />} />
+              <Route path="reviews" element={<ComingSoon title="Avaliações" subtitle="Moderação de reviews dos visitantes" icon={Star} items={["Aprovar, recusar e destacar reviews", "Sinalizar reviews suspeitos", "Notas médias por estabelecimento"]} />} />
+              <Route path="map" element={<ComingSoon title="Mapa da plataforma" subtitle="Visão satélite em tempo real de Ilha Grande" icon={MapIcon} items={["Pins por categoria", "Premium em destaque", "Filtros e camadas"]} />} />
+              <Route path="seo" element={<ComingSoon title="SEO Command Center" subtitle="Indexação, sitemap e estrutura" icon={SearchIcon} items={["Status do Search Console (após OAuth)", "Auditoria de meta tags por rota", "Páginas indexadas e top queries"]} />} />
+              <Route path="bi" element={<ComingSoon title="Business Intelligence" subtitle="Insights automáticos do ecossistema" icon={BarChart3} items={["Negócios mais vistos e contatados", "Categorias mais lucrativas", "Insights gerados automaticamente"]} />} />
+              <Route path="support" element={<ComingSoon title="Suporte" subtitle="Central de tickets entre plataforma e anunciantes" icon={LifeBuoy} items={["Tickets abertos, em andamento e resolvidos", "Conversas encadeadas", "SLA e categorização"]} />} />
+              <Route path="marketing" element={<ComingSoon title="Marketing" subtitle="Cupons, campanhas e destaques patrocinados" icon={Megaphone} items={["Cupons e promoções", "Campanhas patrocinadas", "Tracking de cliques e conversões"]} />} />
+              <Route path="growth" element={<ComingSoon title="Crescimento" subtitle="Evolução de usuários, anunciantes e receita" icon={TrendingUp} items={["Cohort analysis", "Crescimento de leads e reservas", "Análise de tendências"]} />} />
             </Route>
           </Routes>
         </AuthProvider>
@@ -172,3 +201,4 @@ const App = () => (
 );
 
 export default App;
+

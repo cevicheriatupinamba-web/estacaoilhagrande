@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_logs: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          resource_id: string | null
+          resource_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+        }
+        Relationships: []
+      }
       blog_categories: {
         Row: {
           created_at: string
@@ -360,9 +393,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role:
+        | "admin"
+        | "user"
+        | "super_admin"
+        | "financial_manager"
+        | "content_manager"
+        | "support_agent"
       listing_category: "hospedagem" | "restaurante" | "passeio" | "experiencia"
       listing_plan: "gratuito" | "destaque" | "premium"
       listing_status: "pending" | "approved" | "rejected"
@@ -493,7 +533,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: [
+        "admin",
+        "user",
+        "super_admin",
+        "financial_manager",
+        "content_manager",
+        "support_agent",
+      ],
       listing_category: ["hospedagem", "restaurante", "passeio", "experiencia"],
       listing_plan: ["gratuito", "destaque", "premium"],
       listing_status: ["pending", "approved", "rejected"],
