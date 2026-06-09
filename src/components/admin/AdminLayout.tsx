@@ -4,7 +4,7 @@ import { canAccess, Module, ROLE_LABEL, ROLE_COLOR, AppRole } from "@/lib/admin/
 import {
   LayoutDashboard, Users, CreditCard, DollarSign, MessageSquare, Star,
   FileText, Map as MapIcon, Search, BarChart3, LifeBuoy, Megaphone,
-  TrendingUp, Shield, Activity, Menu, X, LogOut, Home,
+  TrendingUp, Shield, Activity, Menu, X, LogOut, Home, Settings,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,13 +14,13 @@ import SEO from "@/components/SEO";
 interface NavItem { to: string; label: string; icon: any; module: Module; badge?: string }
 
 const NAV: NavItem[] = [
-  { to: "/admin",                label: "Dashboard",      icon: LayoutDashboard, module: "dashboard" },
-  { to: "/admin/crm",            label: "Anunciantes",    icon: Users,           module: "crm" },
-  { to: "/admin/subscriptions",  label: "Assinaturas",    icon: CreditCard,      module: "subscriptions" },
-  { to: "/admin/financial",      label: "Financeiro",     icon: DollarSign,      module: "financial" },
-  { to: "/admin/leads",          label: "Leads",          icon: MessageSquare,   module: "leads" },
+  { to: "/admin/dashboard",      label: "Painel Admin",   icon: LayoutDashboard, module: "dashboard" },
+  { to: "/admin/anunciantes",    label: "Anunciantes",    icon: Users,           module: "crm" },
+  { to: "/admin/assinaturas",    label: "Assinaturas",    icon: CreditCard,      module: "subscriptions" },
+  { to: "/admin/financeiro",     label: "Financeiro",     icon: DollarSign,      module: "financial" },
+  { to: "/admin/solicitacoes",   label: "Solicitações",   icon: MessageSquare,   module: "leads" },
   { to: "/admin/reviews",        label: "Avaliações",     icon: Star,            module: "reviews" },
-  { to: "/admin/content",        label: "Conteúdo",       icon: FileText,        module: "content" },
+  { to: "/admin/conteudo",       label: "Conteúdo",       icon: FileText,        module: "content" },
   { to: "/admin/map",            label: "Mapa",           icon: MapIcon,         module: "map" },
   { to: "/admin/seo",            label: "SEO",            icon: Search,          module: "seo" },
   { to: "/admin/bi",             label: "BI",             icon: BarChart3,       module: "bi" },
@@ -28,6 +28,7 @@ const NAV: NavItem[] = [
   { to: "/admin/marketing",      label: "Marketing",      icon: Megaphone,       module: "marketing" },
   { to: "/admin/growth",         label: "Crescimento",    icon: TrendingUp,      module: "growth" },
   { to: "/admin/roles",          label: "Permissões",     icon: Shield,          module: "roles" },
+  { to: "/admin/configuracoes",  label: "Configurações",  icon: Settings,        module: "settings" },
   { to: "/admin/activity",       label: "Auditoria",      icon: Activity,        module: "activity" },
 ];
 
