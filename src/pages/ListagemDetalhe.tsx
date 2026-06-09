@@ -376,6 +376,17 @@ const ListagemDetalhe = () => {
           </Button>
         </div>
       </section>
+
+      {waNumber && (
+        <WhatsAppLeadModal
+          open={waOpen}
+          onOpenChange={setWaOpen}
+          number={waNumber}
+          message={waMsg}
+          listingId={l.id}
+          context={{ kind: "listing", label: l.name, category: l.category }}
+        />
+      )}
     </>
   );
 };
