@@ -6,6 +6,7 @@ import TieredCard from "@/components/TieredCard";
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { STATIC_ITEMS, tierByIndex } from "@/lib/staticDetails";
+import { itemListLd } from "@/lib/jsonld";
 
 const FAQS = [
   { question: "Quais as melhores pousadas em Ilha Grande?", answer: "As melhores pousadas ficam na Vila do Abraão (mais movimentada), Araçatiba e Provetá. A Estação Ilha Grande lista pousadas, hotéis e hostels verificados com fotos, contato e localização." },
