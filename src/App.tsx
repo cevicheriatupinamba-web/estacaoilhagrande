@@ -55,7 +55,12 @@ import AdminContent from "./pages/admin/Content";
 import AdminActivity from "./pages/admin/ActivityLog";
 import AdminRoles from "./pages/admin/Roles";
 import ComingSoon from "./pages/admin/ComingSoon";
-import { CreditCard, DollarSign, Star, Map as MapIcon, Search as SearchIcon, BarChart3, LifeBuoy, Megaphone, TrendingUp, Settings } from "lucide-react";
+import AdvertiserLayout from "@/components/advertiser/AdvertiserLayout";
+import AdvertiserDashboard from "./pages/advertiser/Dashboard";
+import MinhaEmpresa from "./pages/advertiser/MinhaEmpresa";
+import MinhaAssinatura from "./pages/advertiser/MinhaAssinatura";
+import AdvertiserComingSoon from "./pages/advertiser/ComingSoon";
+import { CreditCard, DollarSign, Star, Map as MapIcon, Search as SearchIcon, BarChart3, LifeBuoy, Megaphone, TrendingUp, Settings, CalendarRange, Ticket, Image as ImageIcon } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -199,6 +204,20 @@ const App = () => (
               <Route path="marketing" element={<ComingSoon title="Marketing" subtitle="Cupons, campanhas e destaques patrocinados" icon={Megaphone} items={["Cupons e promoções", "Campanhas patrocinadas", "Tracking de cliques e conversões"]} />} />
               <Route path="growth" element={<ComingSoon title="Crescimento" subtitle="Evolução de usuários, anunciantes e receita" icon={TrendingUp} items={["Cohort analysis", "Crescimento de leads e reservas", "Análise de tendências"]} />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
+            </Route>
+
+            {/* Advertiser extranet */}
+            <Route element={<AdvertiserLayout />}>
+              <Route path="/dashboard" element={<AdvertiserDashboard />} />
+              <Route path="/minha-empresa" element={<MinhaEmpresa />} />
+              <Route path="/minha-assinatura" element={<MinhaAssinatura />} />
+              <Route path="/minhas-metricas" element={<AdvertiserComingSoon title="Métricas avançadas" subtitle="Analytics completo do seu anúncio" icon={BarChart3} items={["Funil de visualização → contato → conversão","Comparativos por período","Origem de tráfego e dispositivo","Exportação CSV"]} />} />
+              <Route path="/minhas-avaliacoes" element={<AdvertiserComingSoon title="Avaliações" subtitle="Reviews e respostas" icon={Star} items={["Nota média e evolução","Responder avaliações","Destacar resposta","Denunciar abuso"]} />} />
+              <Route path="/minhas-reservas" element={<AdvertiserComingSoon title="Reservas" subtitle="Central de reservas" icon={CalendarRange} items={["Solicitações novas","Confirmadas e concluídas","Calendário e canais"]} />} />
+              <Route path="/promocoes" element={<AdvertiserComingSoon title="Promoções" subtitle="Crie ofertas e campanhas" icon={Megaphone} items={["Promoções relâmpago","Campanhas sazonais","Banners em destaque"]} />} />
+              <Route path="/cupons" element={<AdvertiserComingSoon title="Cupons" subtitle="Gere códigos de desconto" icon={Ticket} items={["Cupons únicos ou em lote","Resgates e conversão","Validade e limite"]} />} />
+              <Route path="/fotos" element={<AdvertiserComingSoon title="Fotos & mídia" subtitle="Galeria, vídeos e Reels" icon={ImageIcon} items={["Upload múltiplo","Reordenar imagens","Definir capa","Inserir Reels e YouTube"]} />} />
+              <Route path="/configuracoes" element={<AdvertiserComingSoon title="Configurações" subtitle="Conta e notificações" icon={Settings} items={["Alterar senha","Preferências de notificação","Privacidade"]} />} />
             </Route>
           </Routes>
         </AuthProvider>
