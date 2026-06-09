@@ -69,7 +69,7 @@ export default function AdvertiserLayout() {
         </div>
 
         <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
-          {NAV.map(({ to, label, icon: Icon, soon }) => (
+          {NAV.map(({ to, label, icon: Icon }) => (
             <NavLink key={to} to={to} end onClick={() => setOpen(false)}
               className={({ isActive }) => cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition",
@@ -77,7 +77,6 @@ export default function AdvertiserLayout() {
               )}>
               <Icon className="w-4 h-4 shrink-0" />
               <span className="truncate flex-1">{label}</span>
-              {soon && <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">em breve</span>}
             </NavLink>
           ))}
         </nav>
