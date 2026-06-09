@@ -66,7 +66,7 @@ const dictionaries: Record<Lang, Dict> = {
     "home.portalKicker": "Ilha Grande Portal",
     "home.portalTitle": "Everything on the island in one place",
     "home.portalSubtitle": "Choose where to start exploring.",
-    "home.learnMore": "Learn more",
+    "home.learnMore": "Learn more about Ilha Grande",
     "home.itinerariesKicker": "Ready-made itineraries",
     "home.itinerariesTitle": "Not sure where to start?",
     "home.itinerariesText": "We have itineraries for 1, 2 or 3 days, family, couple, adventure and budget. Pick yours and go stress-free.",
