@@ -327,6 +327,11 @@ export function normalizeApifyJSON(raw: string): ApifyImportResult {
     is_featured: false,
   };
 
-  return { ok: true, data };
+  if (!photos.length) warnings.push("Nenhuma foto válida encontrada no JSON.");
+  if (!full_description) warnings.push("Descrição vazia — pousada será publicada sem texto descritivo.");
+  if (rating == null) warnings.push("Avaliação ('rating') não informada.");
+  if (!address) warnings.push("Endereço não informado.");
+
+  return { ok: true, data, warnings };
 }
 
