@@ -3,6 +3,7 @@ import { Search, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { useState } from "react";
 import hero from "@/assets/hero-ilha.jpg";
 import { Button } from "@/components/ui/button";
+import EstacaoExperience from "@/components/EstacaoExperience";
 
 import SEO from "@/components/SEO";
 import PlanejeViagem from "@/components/PlanejeViagem";
@@ -137,6 +138,9 @@ const Home = () => {
           ))}
         </div>
       </section>
+
+      {/* ESTAÇÃO ILHA GRANDE EXPERIENCE — Agência Oficial */}
+      <EstacaoExperience />
 
       {/* CTA ROTEIROS */}
       <section className="container py-12">
