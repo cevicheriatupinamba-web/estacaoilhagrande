@@ -139,6 +139,9 @@ const Home = () => {
         </div>
       </section>
 
+      {/* ESTAÇÃO ILHA GRANDE EXPERIENCE — Agência Oficial */}
+      <EstacaoExperience />
+
       {/* CTA ROTEIROS */}
       <section className="container py-12">
         <div className="relative overflow-hidden rounded-3xl gradient-forest text-forest-foreground p-10 md:p-14">
