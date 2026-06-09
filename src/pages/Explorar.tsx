@@ -16,11 +16,29 @@ const Explorar = () => {
   const [q, setQ] = useState(initialQ);
 
   const filtered = useMemo(() => {
-    return places.filter(p => {
-      if (cat !== "all" && p.category !== cat) return false;
-      if (q && !(`${p.name} ${p.shortDescription} ${p.location}`.toLowerCase().includes(q.toLowerCase()))) return false;
-      return true;
-    });
+    const term = q.trim().toLowerCase();
+    return places
+      .filter(p => {
+        if (cat !== "all" && p.category !== cat) return false;
+        if (!term) return true;
+        const haystack = [
+          p.name,
+          p.shortDescription,
+          p.fullDescription,
+          p.location,
+          p.category,
+          ...(p.tags ?? []),
+          ...(p.tips ?? []),
+        ].join(" ").toLowerCase();
+        return haystack.includes(term);
+      })
+      .sort((a, b) => {
+        // Premium → destaque (rating ≥ 4.8) → restantes
+        const ap = a.premium ? 0 : a.rating >= 4.8 ? 1 : 2;
+        const bp = b.premium ? 0 : b.rating >= 4.8 ? 1 : 2;
+        if (ap !== bp) return ap - bp;
+        return b.rating - a.rating;
+      });
   }, [cat, q]);
 
   const setCategory = (k: CategoryKey | "all") => {

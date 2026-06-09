@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import logoAsset from "@/assets/logo-estacao-ilha-grande.png.asset.json";
 import SEO from "@/components/SEO";
+import GoogleSignInButton from "@/components/GoogleSignInButton";
+import { Home } from "lucide-react";
 
 interface Props { mode: "login" | "signup" }
 

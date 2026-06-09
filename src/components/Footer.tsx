@@ -53,8 +53,13 @@ const Footer = () => (
         </ul>
       </div>
     </div>
-    <div className="border-t border-border py-5 text-center text-xs text-muted-foreground">
-      © {new Date().getFullYear()} Estação Ilha Grande — Feito com 🌊 para Ilha Grande
+    <div className="border-t border-border py-5 text-center text-xs text-muted-foreground space-y-1">
+      <div>© {new Date().getFullYear()} Estação Ilha Grande — Feito com 🌊 para Ilha Grande</div>
+      <div>
+        <a href="https://voeegoogle.lovable.app" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-smooth">
+          Voee Certificada Google
+        </a>
+      </div>
     </div>
   </footer>
 );

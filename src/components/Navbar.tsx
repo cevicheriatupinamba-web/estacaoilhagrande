@@ -1,6 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Menu, X, Heart, User, LogOut } from "lucide-react";
+import { Menu, X, Heart, User, LogOut, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
@@ -12,6 +12,7 @@ import logo from "@/assets/logo-estacao-ilha-grande.png.asset.json";
 const useNavItems = () => {
   const { t } = useLanguage();
   return [
+    { to: "/", label: "Início" },
     { to: "/explorar", label: t("nav.explore") },
     { to: "/hospedagem", label: t("nav.lodging") },
     { to: "/onde-comer", label: t("nav.eat") },
