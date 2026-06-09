@@ -9,19 +9,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
 
-interface NavItem { to: string; label: string; icon: any; soon?: boolean }
+interface NavItem { to: string; label: string; icon: any }
 
+// Only modules with real backend functionality are exposed. Future phases:
+// /minhas-metricas, /minhas-avaliacoes, /minhas-reservas, /promocoes,
+// /cupons, /fotos, /configuracoes — hidden until the data layer ships.
 const NAV: NavItem[] = [
   { to: "/dashboard",         label: "Visão geral",       icon: LayoutDashboard },
   { to: "/minha-empresa",     label: "Minha empresa",     icon: Building2 },
-  { to: "/minhas-metricas",   label: "Métricas",          icon: BarChart3, soon: true },
   { to: "/minha-assinatura",  label: "Assinatura",        icon: CreditCard },
-  { to: "/minhas-avaliacoes", label: "Avaliações",        icon: Star, soon: true },
-  { to: "/minhas-reservas",   label: "Reservas",          icon: CalendarRange, soon: true },
-  { to: "/promocoes",         label: "Promoções",         icon: Megaphone, soon: true },
-  { to: "/cupons",            label: "Cupons",            icon: Ticket, soon: true },
-  { to: "/fotos",             label: "Fotos & mídia",     icon: ImageIcon, soon: true },
-  { to: "/configuracoes",     label: "Configurações",     icon: Settings, soon: true },
 ];
 
 export default function AdvertiserLayout() {
