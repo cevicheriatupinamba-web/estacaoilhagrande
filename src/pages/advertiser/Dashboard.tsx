@@ -199,6 +199,57 @@ export default function AdvertiserDashboard() {
         })}
       </div>
 
+      {/* WhatsApp conversion card */}
+      {waStats && (
+        <div className="rounded-2xl bg-gradient-to-br from-emerald-50 via-card to-amber-50 dark:from-emerald-950/30 dark:via-card dark:to-amber-950/20 border border-emerald-200/60 dark:border-emerald-900/40 p-5 shadow-soft">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white grid place-items-center">
+                <MessageCircle className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-display font-bold">Conversão WhatsApp</h3>
+                <p className="text-xs text-muted-foreground">Seu principal indicador de ROI</p>
+              </div>
+            </div>
+            <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/40 px-2 py-1 rounded-full">
+              {PERIOD_LABEL[period]}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div>
+              <div className="text-[11px] text-muted-foreground uppercase">Cliques WhatsApp</div>
+              <div className="text-2xl font-display font-bold tabular-nums text-emerald-700 dark:text-emerald-300">
+                {fmt(waStats.whatsapp_clicks ?? 0)}
+              </div>
+            </div>
+            <div>
+              <div className="text-[11px] text-muted-foreground uppercase">Visualizações</div>
+              <div className="text-2xl font-display font-bold tabular-nums">{fmt(waStats.views ?? 0)}</div>
+            </div>
+            <div>
+              <div className="text-[11px] text-muted-foreground uppercase flex items-center gap-1">
+                <Target className="w-3 h-3" /> Taxa de conversão
+              </div>
+              <div className="text-2xl font-display font-bold tabular-nums text-amber-700 dark:text-amber-300">
+                {Number(waStats.conversion_rate ?? 0).toFixed(1)}%
+              </div>
+            </div>
+            <div>
+              <div className="text-[11px] text-muted-foreground uppercase flex items-center gap-1">
+                <Trophy className="w-3 h-3" /> Ranking na categoria
+              </div>
+              <div className="text-2xl font-display font-bold tabular-nums">
+                {waStats.category_rank ? `${waStats.category_rank}º` : "—"}
+                <span className="text-sm font-normal text-muted-foreground">
+                  {waStats.category_size ? ` de ${waStats.category_size}` : ""}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Charts */}
       <div className="grid lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 rounded-2xl bg-card border border-border p-5 shadow-soft">
