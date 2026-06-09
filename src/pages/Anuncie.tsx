@@ -414,16 +414,15 @@ const Anuncie = () => {
             </div>
             <h1 className="font-display font-bold text-3xl md:text-4xl">Cadastro enviado com sucesso!</h1>
             <p className="text-muted-foreground text-lg">
-              Agora nossa equipe vai receber suas informações pelo WhatsApp e entrar em contato
-              para finalizar seu anúncio na Estação Ilha Grande.
+              Nossa equipe recebeu suas informações e entrará em contato pelo WhatsApp.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
               <Button asChild variant="hero" size="lg">
-                <a href={waLink(form)} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="w-5 h-5" /> Falar novamente no WhatsApp
+                <a href={finalWaLink || waLink(form)} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="w-5 h-5" /> Falar no WhatsApp
                 </a>
               </Button>
-              <Button variant="outline" size="lg" onClick={() => { setSent(false); setForm(initial); }}>
+              <Button variant="outline" size="lg" onClick={() => { setSent(false); setForm(initial); setPhotos([]); setPhotoPreviews([]); setVideos([]); setFinalWaLink(""); }}>
                 Enviar outro cadastro
               </Button>
             </div>
