@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -55,7 +55,7 @@ import AdminContent from "./pages/admin/Content";
 import AdminActivity from "./pages/admin/ActivityLog";
 import AdminRoles from "./pages/admin/Roles";
 import ComingSoon from "./pages/admin/ComingSoon";
-import { CreditCard, DollarSign, Star, Map as MapIcon, Search as SearchIcon, BarChart3, LifeBuoy, Megaphone, TrendingUp } from "lucide-react";
+import { CreditCard, DollarSign, Star, Map as MapIcon, Search as SearchIcon, BarChart3, LifeBuoy, Megaphone, TrendingUp, Settings } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -177,6 +177,13 @@ const App = () => (
             {/* Admin platform (own layout, no public navbar/footer) */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="anunciantes" element={<AdminCRM />} />
+              <Route path="assinaturas" element={<ComingSoon title="Assinaturas" subtitle="Centro de assinaturas e renovações" icon={CreditCard} items={["Tabela de planos por anunciante", "Alertas automáticos de renovação (30/15/7/3/1 dias)", "Integração com pagamentos"]} />} />
+              <Route path="financeiro" element={<ComingSoon title="Financeiro" subtitle="Receita, MRR/ARR, inadimplência" icon={DollarSign} items={["Receita bruta e líquida", "Gráficos de crescimento", "Receita por plano e categoria"]} />} />
+              <Route path="solicitacoes" element={<AdminLeads />} />
+              <Route path="conteudo" element={<AdminContent />} />
+              <Route path="configuracoes" element={<ComingSoon title="Configurações" subtitle="Parâmetros centrais da administração" icon={Settings} items={["Preferências operacionais", "Dados institucionais", "Regras de acesso e governança"]} />} />
               <Route path="crm" element={<AdminCRM />} />
               <Route path="leads" element={<AdminLeads />} />
               <Route path="content" element={<AdminContent />} />
@@ -191,6 +198,7 @@ const App = () => (
               <Route path="support" element={<ComingSoon title="Suporte" subtitle="Central de tickets entre plataforma e anunciantes" icon={LifeBuoy} items={["Tickets abertos, em andamento e resolvidos", "Conversas encadeadas", "SLA e categorização"]} />} />
               <Route path="marketing" element={<ComingSoon title="Marketing" subtitle="Cupons, campanhas e destaques patrocinados" icon={Megaphone} items={["Cupons e promoções", "Campanhas patrocinadas", "Tracking de cliques e conversões"]} />} />
               <Route path="growth" element={<ComingSoon title="Crescimento" subtitle="Evolução de usuários, anunciantes e receita" icon={TrendingUp} items={["Cohort analysis", "Crescimento de leads e reservas", "Análise de tendências"]} />} />
+              <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>
           </Routes>
         </AuthProvider>

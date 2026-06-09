@@ -1,6 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Menu, X, Heart, User, LogOut, Home } from "lucide-react";
+import { Menu, X, Heart, User, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
@@ -61,7 +61,7 @@ const Navbar = () => {
               </Button>
               <Button variant="ghost" size="sm" onClick={() => nav("/painel-anunciante")}>{t("nav.myAds")}</Button>
               {isAdmin && (
-                <Button variant="ghost" size="sm" onClick={() => nav("/admin")}>{t("nav.admin")}</Button>
+                <Button variant="ghost" size="sm" onClick={() => nav("/admin")}>Painel Admin</Button>
               )}
               <Button variant="ghost" size="sm" onClick={() => nav("/perfil")}>
                 <User className="w-4 h-4 mr-1" /> {displayName}
@@ -102,7 +102,8 @@ const Navbar = () => {
                   <Button variant="outline" onClick={() => { nav("/favoritos"); setOpen(false); }}>
                     <Heart className="w-4 h-4 mr-2" /> {t("nav.favorites")}
                   </Button>
-                  {isAdmin && <Button variant="outline" onClick={() => { nav("/admin"); setOpen(false); }}>{t("nav.admin")}</Button>}
+                  <Button variant="outline" onClick={() => { nav("/painel-anunciante"); setOpen(false); }}>{t("nav.myAds")}</Button>
+                  {isAdmin && <Button variant="outline" onClick={() => { nav("/admin"); setOpen(false); }}><Shield className="w-4 h-4 mr-2" /> Painel Admin</Button>}
                   <Button variant="ghost" onClick={() => { logout(); setOpen(false); nav("/"); }}>{t("nav.logout")}</Button>
                 </>
               ) : (

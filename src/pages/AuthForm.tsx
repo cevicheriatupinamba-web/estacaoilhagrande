@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,7 @@ const AuthForm = ({ mode }: Props) => {
   const { login, signup } = useAuth();
   const { toast } = useToast();
   const nav = useNavigate();
+  const loc = useLocation();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [submitting, setSubmitting] = useState(false);
 
@@ -31,7 +32,8 @@ const AuthForm = ({ mode }: Props) => {
       return;
     }
     toast({ title: mode === "login" ? "Bem-vindo!" : "Conta criada!" });
-    nav("/");
+    const from = (loc.state as { from?: { pathname?: string } } | null)?.from?.pathname;
+    nav(mode === "login" && from ? from : "/");
   };
 
   return (

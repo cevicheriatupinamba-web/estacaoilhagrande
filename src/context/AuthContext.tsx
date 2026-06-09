@@ -35,19 +35,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setLoading(true);
       setSession(newSession);
       setUser(newSession?.user ?? null);
       if (newSession?.user) {
-        setTimeout(() => loadRoles(newSession.user.id), 0);
+        setTimeout(async () => {
+          await loadRoles(newSession.user.id);
+          setLoading(false);
+        }, 0);
       } else {
         setRoles([]);
+        setLoading(false);
       }
     });
 
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
-      if (data.session?.user) loadRoles(data.session.user.id);
+      if (data.session?.user) await loadRoles(data.session.user.id);
+      else setRoles([]);
       setLoading(false);
     });
 
@@ -58,6 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data, error } = await supabase
       .from("user_roles").select("role").eq("user_id", userId);
     if (!error && data) setRoles(data.map(r => r.role as AppRole));
+    else setRoles([]);
   };
 
   const isAdmin = roles.includes("admin") || roles.includes("super_admin");

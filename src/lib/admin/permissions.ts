@@ -40,6 +40,7 @@ export type Module =
   | "marketing"
   | "growth"
   | "roles"
+  | "settings"
   | "activity";
 
 export const MODULE_ACCESS: Record<Module, AppRole[]> = {
@@ -57,6 +58,7 @@ export const MODULE_ACCESS: Record<Module, AppRole[]> = {
   marketing:     ["super_admin", "admin", "content_manager"],
   growth:        ["super_admin", "admin", "financial_manager"],
   roles:         ["super_admin"],
+  settings:      ["super_admin", "admin"],
   activity:      ["super_admin", "admin"],
 };
 
