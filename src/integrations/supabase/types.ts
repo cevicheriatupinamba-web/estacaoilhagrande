@@ -14,6 +14,120 @@ export type Database = {
   }
   public: {
     Tables: {
+      accommodations: {
+        Row: {
+          address: string | null
+          amenities: Json
+          category: string | null
+          checkin_time: string | null
+          checkout_time: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          created_by: string | null
+          full_description: string | null
+          house_rules: Json
+          id: string
+          instagram: string | null
+          is_featured: boolean
+          latitude: number | null
+          location: string | null
+          longitude: number | null
+          name: string
+          neighborhood: string | null
+          photos: Json
+          rating: number | null
+          review_count: number | null
+          rooms: Json
+          seo_description: string | null
+          seo_keywords: string | null
+          seo_title: string | null
+          short_description: string | null
+          slug: string
+          source_platform: string | null
+          source_url: string | null
+          state: string | null
+          status: string
+          updated_at: string
+          website: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          address?: string | null
+          amenities?: Json
+          category?: string | null
+          checkin_time?: string | null
+          checkout_time?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          full_description?: string | null
+          house_rules?: Json
+          id?: string
+          instagram?: string | null
+          is_featured?: boolean
+          latitude?: number | null
+          location?: string | null
+          longitude?: number | null
+          name: string
+          neighborhood?: string | null
+          photos?: Json
+          rating?: number | null
+          review_count?: number | null
+          rooms?: Json
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
+          short_description?: string | null
+          slug: string
+          source_platform?: string | null
+          source_url?: string | null
+          state?: string | null
+          status?: string
+          updated_at?: string
+          website?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          address?: string | null
+          amenities?: Json
+          category?: string | null
+          checkin_time?: string | null
+          checkout_time?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          full_description?: string | null
+          house_rules?: Json
+          id?: string
+          instagram?: string | null
+          is_featured?: boolean
+          latitude?: number | null
+          location?: string | null
+          longitude?: number | null
+          name?: string
+          neighborhood?: string | null
+          photos?: Json
+          rating?: number | null
+          review_count?: number | null
+          rooms?: Json
+          seo_description?: string | null
+          seo_keywords?: string | null
+          seo_title?: string | null
+          short_description?: string | null
+          slug?: string
+          source_platform?: string | null
+          source_url?: string | null
+          state?: string | null
+          status?: string
+          updated_at?: string
+          website?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       activity_logs: {
         Row: {
           action: string
