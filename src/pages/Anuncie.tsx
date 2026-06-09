@@ -169,7 +169,7 @@ const planoLabel = (k: PlanKey) => {
   return `${p.name} — ${p.price}${p.period}`;
 };
 
-const buildMessage = (f: Form) => `Olá, quero anunciar meu negócio na Estação Ilha Grande.
+const buildMessage = (f: Form, photoUrls: string[] = [], videoUrls: string[] = []) => `Olá, quero anunciar meu negócio na Estação Ilha Grande.
 
 *PLANO ESCOLHIDO:* ${planoLabel(f.plano)}
 
@@ -199,14 +199,17 @@ Faixa de preço: ${f.faixaPreco || "-"}
 Serviços/produtos oferecidos: ${f.servicos || "-"}
 Link de reserva: ${f.reservaLink || "-"}
 
-*MÍDIAS*
-Estou ciente de que enviarei fotos e vídeos pelo WhatsApp após este cadastro.
+*MÍDIAS ENVIADAS*
+Fotos enviadas: ${photoUrls.length}
+Vídeos enviados: ${videoUrls.length}
+${photoUrls.length ? `\nLinks das fotos:\n${photoUrls.map((u, i) => `${i + 1}. ${u}`).join("\n")}` : ""}
+${videoUrls.length ? `\nLinks dos vídeos:\n${videoUrls.map((u, i) => `${i + 1}. ${u}`).join("\n")}` : ""}
 
 *AUTORIZAÇÃO*
 Confirmo que autorizo a criação do anúncio no portal Estação Ilha Grande.`;
 
-const waLink = (f: Form) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage(f))}`;
+const waLink = (f: Form, photoUrls: string[] = [], videoUrls: string[] = []) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage(f, photoUrls, videoUrls))}`;
 
 /* -------------------- Componente -------------------- */
 const Anuncie = () => {
