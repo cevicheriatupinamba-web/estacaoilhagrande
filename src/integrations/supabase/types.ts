@@ -446,6 +446,7 @@ export type Database = {
           extras: Json
           featured: boolean
           id: string
+          imported_at: string | null
           instagram: string | null
           latitude: number | null
           logo_url: string | null
@@ -463,6 +464,9 @@ export type Database = {
           services: string[]
           short_description: string | null
           slug: string
+          source_platform: string | null
+          source_type: string | null
+          source_url: string | null
           status: Database["public"]["Enums"]["listing_status"]
           subcategory: string | null
           updated_at: string
@@ -481,6 +485,7 @@ export type Database = {
           extras?: Json
           featured?: boolean
           id?: string
+          imported_at?: string | null
           instagram?: string | null
           latitude?: number | null
           logo_url?: string | null
@@ -498,6 +503,9 @@ export type Database = {
           services?: string[]
           short_description?: string | null
           slug: string
+          source_platform?: string | null
+          source_type?: string | null
+          source_url?: string | null
           status?: Database["public"]["Enums"]["listing_status"]
           subcategory?: string | null
           updated_at?: string
@@ -516,6 +524,7 @@ export type Database = {
           extras?: Json
           featured?: boolean
           id?: string
+          imported_at?: string | null
           instagram?: string | null
           latitude?: number | null
           logo_url?: string | null
@@ -533,6 +542,9 @@ export type Database = {
           services?: string[]
           short_description?: string | null
           slug?: string
+          source_platform?: string | null
+          source_type?: string | null
+          source_url?: string | null
           status?: Database["public"]["Enums"]["listing_status"]
           subcategory?: string | null
           updated_at?: string

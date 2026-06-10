@@ -17,6 +17,7 @@ import DbListingCard from "@/components/DbListingCard";
 import { trackListingEvent } from "@/lib/advertiser/tracking";
 import WhatsAppLeadModal from "@/components/WhatsAppLeadModal";
 import { sanitizeWhatsappNumber } from "@/lib/whatsapp";
+import AdminEditFAB from "@/components/admin/AdminEditFAB";
 
 const CATEGORY_PATH: Record<string, string> = {
   hospedagem: "/hospedagem",
@@ -387,6 +388,7 @@ const ListagemDetalhe = () => {
           context={{ kind: "listing", label: l.name, category: l.category }}
         />
       )}
+      <AdminEditFAB source="listings" id={l?.id} />
     </>
   );
 };
