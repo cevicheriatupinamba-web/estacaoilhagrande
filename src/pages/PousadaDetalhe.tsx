@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { AGENCY_WHATSAPP_DEFAULT, buildWhatsappUrl, sanitizeWhatsappNumber } from "@/lib/whatsapp";
+import AdminEditFAB from "@/components/admin/AdminEditFAB";
 
 function iconForAmenity(name: string) {
   const n = name.toLowerCase();
@@ -249,6 +250,7 @@ export default function PousadaDetalhe() {
           </a>
         </Button>
       </div>
+      <AdminEditFAB source="accommodations" id={p?.id} />
     </div>
   );
 }
