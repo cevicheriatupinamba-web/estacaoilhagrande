@@ -60,6 +60,7 @@ import AdminPlans from "./pages/admin/Plans";
 import AdminSettings from "./pages/admin/Settings";
 import AdminUsers from "./pages/admin/Users";
 import ImportarPousada from "./pages/admin/ImportarPousada";
+import EditarAnuncios from "./pages/admin/EditarAnuncios";
 import AdminFinanceiro from "./pages/admin/Financeiro";
 import PousadaDetalhe from "./pages/PousadaDetalhe";
 import Faturas from "./pages/advertiser/Faturas";
@@ -206,6 +207,7 @@ const App = () => (
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="usuarios" element={<AdminUsers />} />
               <Route path="importar-pousada" element={<ImportarPousada />} />
+              <Route path="editar-anuncios" element={<EditarAnuncios />} />
               <Route path="anunciantes" element={<AdminCRM />} />
               <Route path="financeiro" element={<AdminFinanceiro />} />
               <Route path="solicitacoes" element={<AdminLeads />} />
