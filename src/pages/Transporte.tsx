@@ -3,6 +3,7 @@ import { ExternalLink, MessageCircle, Clock, Ship, ArrowRight, MapPin } from "lu
 import SEO from "@/components/SEO";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Disclaimer from "@/components/Disclaimer";
+import SafeImage, { SafeImageFallback } from "@/components/SafeImage";
 import { TRANSPORT_IMAGES } from "@/lib/curatedImages";
 
 const FAQS = [
