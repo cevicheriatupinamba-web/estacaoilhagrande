@@ -87,6 +87,7 @@ const App = () => (
       <BrowserRouter>
         <LanguageProvider>
         <AuthProvider>
+          <GlobalSEOInjector />
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Home />} />
