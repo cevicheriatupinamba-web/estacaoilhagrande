@@ -174,10 +174,12 @@ const Transporte = () => (
               className="relative h-52 overflow-hidden block"
               aria-label={it.imageAlt}
             >
-              <img
+              <SafeImage
                 src={it.image}
                 alt={it.imageAlt}
-                loading="lazy"
+                fallback={it.fallback}
+                width={800}
+                height={520}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-background/90 backdrop-blur text-foreground inline-flex items-center gap-1">
