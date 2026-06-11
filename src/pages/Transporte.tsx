@@ -20,6 +20,7 @@ interface TransportItem {
   description: string;
   image: string;
   imageAlt: string;
+  fallback: SafeImageFallback;
   officialUrl?: string;
   whatsapp?: string;
 }
