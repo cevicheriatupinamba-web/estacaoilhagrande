@@ -140,9 +140,11 @@ const Transporte = () => (
     <Breadcrumbs items={[{ name: "Como chegar em Ilha Grande", path: "/como-chegar-em-ilha-grande" }]} />
 
     <section className="relative h-[44vh] min-h-[320px] overflow-hidden">
-      <img
+      <SafeImage
         src={TRANSPORT_IMAGES.hero}
         alt="Vista aérea de Ilha Grande com barcos e mar cristalino"
+        fallback="ilha"
+        loading="eager"
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/40 to-foreground/80" />
