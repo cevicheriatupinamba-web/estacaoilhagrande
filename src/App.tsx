@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
+import GlobalSEOInjector from "@/components/GlobalSEOInjector";
 import Home from "./pages/Home";
 import Explorar from "./pages/Explorar";
 import LugarDetalhe from "./pages/LugarDetalhe";
