@@ -35,6 +35,7 @@ const ITEMS: TransportItem[] = [
     description: "Travessia oficial mais econômica entre Angra dos Reis e Ilha Grande. Saídas diárias com horários fixos publicados pela concessionária.",
     image: TRANSPORT_IMAGES.ferry,
     imageAlt: "Barca de travessia para Ilha Grande no cais de Angra dos Reis",
+    fallback: "ferry",
     officialUrl: "https://www.grupoccr.com.br/barcas/",
     whatsapp: WA_CENTRAL,
   },
@@ -45,6 +46,7 @@ const ITEMS: TransportItem[] = [
     description: "Travessia rápida em catamarã com várias saídas ao longo do dia. Boa opção para quem chega tarde em Angra e quer otimizar tempo.",
     image: TRANSPORT_IMAGES.catamara,
     imageAlt: "Catamarã rápido para travessia até Ilha Grande",
+    fallback: "catamara",
     whatsapp: WA_CENTRAL,
   },
   {
@@ -54,6 +56,7 @@ const ITEMS: TransportItem[] = [
     description: "Saídas frequentes do cais de Conceição de Jacareí — o ponto mais próximo do Rio de Janeiro. Forma mais rápida de chegar à ilha.",
     image: TRANSPORT_IMAGES.flexboat,
     imageAlt: "Flexboat de travessia rápida para Ilha Grande",
+    fallback: "flexboat",
     whatsapp: WA_CENTRAL,
   },
   {
@@ -63,6 +66,7 @@ const ITEMS: TransportItem[] = [
     description: "Cais alternativo à beira da BR-101, mais próximo do Rio. Tem estacionamento privado e saídas constantes de lanchas para o Abraão.",
     image: TRANSPORT_IMAGES.conceicao,
     imageAlt: "Cais de embarque de Conceição de Jacareí para Ilha Grande",
+    fallback: "pier",
     whatsapp: WA_CENTRAL,
   },
   {
@@ -72,6 +76,7 @@ const ITEMS: TransportItem[] = [
     description: "Principal porto de saída, com barcas, catamarãs e escunas. Conta com infraestrutura completa de estacionamento e terminais cobertos.",
     image: TRANSPORT_IMAGES.angra,
     imageAlt: "Porto de Angra dos Reis com embarcações para Ilha Grande",
+    fallback: "boat",
     whatsapp: WA_CENTRAL,
   },
   {
@@ -81,6 +86,7 @@ const ITEMS: TransportItem[] = [
     description: "Saída interessante para quem vem do Rio pela BR-101. Barca CCR oficial sai pela manhã e retorna ao final do dia.",
     image: TRANSPORT_IMAGES.mangaratiba,
     imageAlt: "Terminal de barcas de Mangaratiba para Ilha Grande",
+    fallback: "ferry",
     officialUrl: "https://www.grupoccr.com.br/barcas/",
     whatsapp: WA_CENTRAL,
   },
@@ -91,6 +97,7 @@ const ITEMS: TransportItem[] = [
     description: "Escunas tradicionais que combinam travessia e passeio entre as ilhas, com paradas em piscinas naturais. Indicado para day-use.",
     image: TRANSPORT_IMAGES.escuna,
     imageAlt: "Escuna turística navegando entre as ilhas de Ilha Grande",
+    fallback: "escuna",
     whatsapp: WA_CENTRAL,
   },
   {
@@ -100,6 +107,7 @@ const ITEMS: TransportItem[] = [
     description: "Transporte local entre as praias da ilha — única forma de chegar a Lagoa Azul, Saco do Céu e enseadas sem trilha demorada.",
     image: TRANSPORT_IMAGES.taxiboat,
     imageAlt: "Táxi-boat ancorado em praia de Ilha Grande",
+    fallback: "taxiboat",
     whatsapp: WA_CENTRAL,
   },
   {
@@ -109,6 +117,7 @@ const ITEMS: TransportItem[] = [
     description: "Vans e carros executivos com saída direta de hotéis, aeroportos e rodoviárias do Rio até o cais de embarque. Reserva no WhatsApp.",
     image: TRANSPORT_IMAGES.vanTransfer,
     imageAlt: "Van executiva de transfer turístico para Ilha Grande",
+    fallback: "van",
     whatsapp: WA_CENTRAL,
   },
 ];
