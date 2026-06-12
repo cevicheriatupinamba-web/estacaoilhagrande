@@ -62,6 +62,7 @@ import AdminSettings from "./pages/admin/Settings";
 import AdminUsers from "./pages/admin/Users";
 import ImportarPousada from "./pages/admin/ImportarPousada";
 import EditarAnuncios from "./pages/admin/EditarAnuncios";
+import EditarSite from "./pages/admin/EditarSite";
 import AdminFinanceiro from "./pages/admin/Financeiro";
 import PousadaDetalhe from "./pages/PousadaDetalhe";
 import Faturas from "./pages/advertiser/Faturas";
@@ -210,6 +211,7 @@ const App = () => (
               <Route path="usuarios" element={<AdminUsers />} />
               <Route path="importar-pousada" element={<ImportarPousada />} />
               <Route path="editar-anuncios" element={<EditarAnuncios />} />
+              <Route path="editar-site" element={<EditarSite />} />
               <Route path="anunciantes" element={<AdminCRM />} />
               <Route path="financeiro" element={<AdminFinanceiro />} />
               <Route path="solicitacoes" element={<AdminLeads />} />
