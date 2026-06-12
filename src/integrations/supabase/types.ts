@@ -555,6 +555,145 @@ export type Database = {
         }
         Relationships: []
       }
+      page_content: {
+        Row: {
+          content_key: string
+          content_type: string
+          content_value: Json | null
+          created_at: string
+          id: string
+          page_id: string
+          updated_at: string
+        }
+        Insert: {
+          content_key: string
+          content_type?: string
+          content_value?: Json | null
+          created_at?: string
+          id?: string
+          page_id: string
+          updated_at?: string
+        }
+        Update: {
+          content_key?: string
+          content_type?: string
+          content_value?: Json | null
+          created_at?: string
+          id?: string
+          page_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "page_content_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      page_sections: {
+        Row: {
+          button_link: string | null
+          button_text: string | null
+          content: string | null
+          created_at: string
+          extra: Json
+          id: string
+          image_url: string | null
+          is_visible: boolean
+          kind: string
+          page_id: string
+          section_key: string
+          sort_order: number
+          subtitle: string | null
+          title: string | null
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          button_link?: string | null
+          button_text?: string | null
+          content?: string | null
+          created_at?: string
+          extra?: Json
+          id?: string
+          image_url?: string | null
+          is_visible?: boolean
+          kind?: string
+          page_id: string
+          section_key: string
+          sort_order?: number
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          button_link?: string | null
+          button_text?: string | null
+          content?: string | null
+          created_at?: string
+          extra?: Json
+          id?: string
+          image_url?: string | null
+          is_visible?: boolean
+          kind?: string
+          page_id?: string
+          section_key?: string
+          sort_order?: number
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "page_sections_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pages: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_system: boolean
+          slug: string
+          sort_order: number
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_system?: boolean
+          slug: string
+          sort_order?: number
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_system?: boolean
+          slug?: string
+          sort_order?: number
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       plans: {
         Row: {
           active: boolean
