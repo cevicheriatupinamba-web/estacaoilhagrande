@@ -4,9 +4,9 @@ import { useState } from "react";
 import hero from "@/assets/hero-ilha.jpg";
 import { Button } from "@/components/ui/button";
 import EstacaoExperience from "@/components/EstacaoExperience";
+import DestinosDestaque from "@/components/DestinosDestaque";
 
 import SEO from "@/components/SEO";
-import PlanejeViagem from "@/components/PlanejeViagem";
 import { themedImage } from "@/lib/images";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -89,8 +89,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* HUB: Planeje sua viagem */}
-      <PlanejeViagem />
+      {/* DESTINOS EM DESTAQUE — cards horizontais premium */}
+      <DestinosDestaque />
 
       {/* PORTAL: cinematic category cards */}
       <section className="container py-20">
