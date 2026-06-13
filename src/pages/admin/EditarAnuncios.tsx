@@ -81,6 +81,7 @@ export default function EditarAnuncios() {
   const [fSource, setFSource] = useState<"all" | Source>("all");
   const [fStatus, setFStatus] = useState<string>("all");
   const [fCategory, setFCategory] = useState<string>("all");
+  const [fSubcategory, setFSubcategory] = useState<string>("all");
   const [fPlatform, setFPlatform] = useState<string>("all");
   const [editing, setEditing] = useState<Row | null>(null);
   const [search] = useSearchParams();
@@ -101,7 +102,7 @@ export default function EditarAnuncios() {
     }));
     const ar: Row[] = ((a.data as any[]) || []).map((x) => ({
       id: x.id, source: "accommodations", name: x.name, slug: x.slug,
-      category: x.category || "Pousada", status: x.status,
+      category: x.category || "Pousada", subcategory: x.subcategory, status: x.status,
       plan: null, featured: x.is_featured, cover: pickCoverAcc(x),
       source_platform: x.source_platform, source_type: null,
       source_url: x.source_url, imported_at: null,
@@ -131,6 +132,7 @@ export default function EditarAnuncios() {
     if (fSource !== "all" && r.source !== fSource) return false;
     if (fStatus !== "all" && r.status !== fStatus) return false;
     if (fCategory !== "all" && String(r.category).toLowerCase() !== fCategory) return false;
+    if (fSubcategory !== "all" && String(r.subcategory ?? "").toLowerCase() !== fSubcategory) return false;
     if (fPlatform !== "all") {
       const p = (r.source_platform || "").toLowerCase();
       if (fPlatform === "manual" && p) return false;
@@ -138,11 +140,11 @@ export default function EditarAnuncios() {
     }
     if (q) {
       const s = q.toLowerCase();
-      const hay = `${r.name} ${r.slug} ${r.category} ${r.source_platform ?? ""}`.toLowerCase();
+      const hay = `${r.name} ${r.slug} ${r.category} ${r.subcategory ?? ""} ${r.source_platform ?? ""}`.toLowerCase();
       if (!hay.includes(s)) return false;
     }
     return true;
-  }), [rows, q, fSource, fStatus, fCategory, fPlatform]);
+  }), [rows, q, fSource, fStatus, fCategory, fSubcategory, fPlatform]);
 
   async function togglePublish(r: Row) {
     const next =
@@ -173,6 +175,11 @@ export default function EditarAnuncios() {
     rows.forEach((r) => s.add(String(r.category).toLowerCase()));
     return Array.from(s).sort();
   }, [rows]);
+  const subcategoryOptions = useMemo(() => {
+    const s = new Set<string>();
+    rows.forEach((r) => { if (r.subcategory) s.add(String(r.subcategory).toLowerCase()); });
+    return Array.from(s).sort();
+  }, [rows]);
 
   return (
     <div>
@@ -201,6 +208,10 @@ export default function EditarAnuncios() {
         <select value={fCategory} onChange={(e) => setFCategory(e.target.value)} className="h-10 px-3 rounded-lg border border-input bg-background text-sm">
           <option value="all">Categoria</option>
           {categoryOptions.map((c) => <option key={c} value={c}>{c}</option>)}
+        </select>
+        <select value={fSubcategory} onChange={(e) => setFSubcategory(e.target.value)} className="h-10 px-3 rounded-lg border border-input bg-background text-sm">
+          <option value="all">Subcategoria</option>
+          {subcategoryOptions.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
         <select value={fStatus} onChange={(e) => setFStatus(e.target.value)} className="h-10 px-3 rounded-lg border border-input bg-background text-sm">
           <option value="all">Status</option>
