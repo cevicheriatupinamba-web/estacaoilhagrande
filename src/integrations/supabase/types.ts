@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           address: string | null
           amenities: Json
+          business_type: string | null
           category: string | null
           checkin_time: string | null
           checkout_time: string | null
@@ -39,6 +40,7 @@ export type Database = {
           rating: number | null
           review_count: number | null
           rooms: Json
+          segment: string | null
           seo_description: string | null
           seo_keywords: string | null
           seo_title: string | null
@@ -48,6 +50,7 @@ export type Database = {
           source_url: string | null
           state: string | null
           status: string
+          subcategory: string | null
           updated_at: string
           website: string | null
           whatsapp: string | null
@@ -55,6 +58,7 @@ export type Database = {
         Insert: {
           address?: string | null
           amenities?: Json
+          business_type?: string | null
           category?: string | null
           checkin_time?: string | null
           checkout_time?: string | null
@@ -76,6 +80,7 @@ export type Database = {
           rating?: number | null
           review_count?: number | null
           rooms?: Json
+          segment?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
           seo_title?: string | null
@@ -85,6 +90,7 @@ export type Database = {
           source_url?: string | null
           state?: string | null
           status?: string
+          subcategory?: string | null
           updated_at?: string
           website?: string | null
           whatsapp?: string | null
@@ -92,6 +98,7 @@ export type Database = {
         Update: {
           address?: string | null
           amenities?: Json
+          business_type?: string | null
           category?: string | null
           checkin_time?: string | null
           checkout_time?: string | null
@@ -113,6 +120,7 @@ export type Database = {
           rating?: number | null
           review_count?: number | null
           rooms?: Json
+          segment?: string | null
           seo_description?: string | null
           seo_keywords?: string | null
           seo_title?: string | null
@@ -122,6 +130,7 @@ export type Database = {
           source_url?: string | null
           state?: string | null
           status?: string
+          subcategory?: string | null
           updated_at?: string
           website?: string | null
           whatsapp?: string | null
