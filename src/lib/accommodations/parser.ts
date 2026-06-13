@@ -9,6 +9,9 @@ export type AccommodationDraft = {
   name: string;
   slug?: string;
   category?: string;
+  subcategory?: string;
+  business_type?: string;
+  segment?: string;
   source_url?: string;
   source_platform?: string;
   location?: string;
