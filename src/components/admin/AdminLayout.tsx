@@ -4,6 +4,7 @@ import { canAccess, Module, ROLE_LABEL, ROLE_COLOR, AppRole } from "@/lib/admin/
 import {
   LayoutDashboard, Users, MessageSquare,
   FileText, Shield, Activity, Menu, X, LogOut, Home, Settings, Mail, Package, UserCog, BedDouble, DollarSign, Pencil, LayoutTemplate,
+  Image as ImageIcon, Database, Menu as MenuIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
