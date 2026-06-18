@@ -226,6 +226,9 @@ const App = () => (
               <Route path="planos" element={<AdminPlans />} />
               <Route path="configuracoes" element={<AdminSettings />} />
               <Route path="auditoria" element={<AdminActivity />} />
+              <Route path="backup" element={<AdminBackup />} />
+              <Route path="banners" element={<AdminBanners />} />
+              <Route path="menus" element={<AdminMenus />} />
               {/* legacy aliases */}
               <Route path="crm" element={<Navigate to="/admin/anunciantes" replace />} />
               <Route path="leads" element={<Navigate to="/admin/solicitacoes" replace />} />
