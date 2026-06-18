@@ -21,6 +21,8 @@ const NAV: NavItem[] = [
   { to: "/admin/anunciantes",       label: "Anunciantes",       icon: Users,           module: "crm" },
   { to: "/admin/financeiro",        label: "Financeiro",        icon: DollarSign,      module: "financial" },
   { to: "/admin/editar-site",       label: "Editar Site",       icon: LayoutTemplate,  module: "content" },
+  { to: "/admin/banners",           label: "Banners",           icon: ImageIcon,       module: "content" },
+  { to: "/admin/menus",             label: "Menus",             icon: MenuIcon,        module: "content" },
   { to: "/admin/editar-anuncios",   label: "Editar Anúncios",   icon: Pencil,          module: "accommodations" },
   { to: "/admin/importar-estabelecimento", label: "Importar Estabelecimento", icon: BedDouble, module: "accommodations" },
   { to: "/admin/solicitacoes",      label: "Solicitações",      icon: MessageSquare,   module: "leads" },
