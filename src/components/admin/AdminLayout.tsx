@@ -29,6 +29,7 @@ const NAV: NavItem[] = [
   { to: "/admin/conteudo",          label: "Conteúdo",          icon: FileText,        module: "content" },
   { to: "/admin/planos",            label: "Planos",            icon: Package,         module: "plans" },
   { to: "/admin/configuracoes",     label: "Configurações",     icon: Settings,        module: "settings" },
+  { to: "/admin/backup",            label: "Backup",            icon: Database,        module: "settings" },
   { to: "/admin/auditoria",         label: "Auditoria",         icon: Activity,        module: "activity" },
 ];
 
