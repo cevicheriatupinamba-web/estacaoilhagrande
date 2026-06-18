@@ -209,6 +209,48 @@ export type Database = {
         }
         Relationships: []
       }
+      backup_snapshots: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          kind: string
+          name: string
+          notes: string | null
+          payload: Json | null
+          rows_count: number | null
+          size_bytes: number | null
+          status: string
+          tables_count: number | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind?: string
+          name: string
+          notes?: string | null
+          payload?: Json | null
+          rows_count?: number | null
+          size_bytes?: number | null
+          status?: string
+          tables_count?: number | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind?: string
+          name?: string
+          notes?: string | null
+          payload?: Json | null
+          rows_count?: number | null
+          size_bytes?: number | null
+          status?: string
+          tables_count?: number | null
+        }
+        Relationships: []
+      }
       blog_categories: {
         Row: {
           created_at: string
@@ -295,6 +337,104 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "blog_categories"
             referencedColumns: ["slug"]
+          },
+        ]
+      }
+      cms_banners: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          cta_label: string | null
+          ends_at: string | null
+          id: string
+          image_url: string
+          link_url: string | null
+          position: string
+          sort_order: number
+          starts_at: string | null
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          cta_label?: string | null
+          ends_at?: string | null
+          id?: string
+          image_url: string
+          link_url?: string | null
+          position?: string
+          sort_order?: number
+          starts_at?: string | null
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          cta_label?: string | null
+          ends_at?: string | null
+          id?: string
+          image_url?: string
+          link_url?: string | null
+          position?: string
+          sort_order?: number
+          starts_at?: string | null
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cms_menu_items: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          label: string
+          location: string
+          open_in_new_tab: boolean
+          parent_id: string | null
+          sort_order: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          label: string
+          location?: string
+          open_in_new_tab?: boolean
+          parent_id?: string | null
+          sort_order?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          label?: string
+          location?: string
+          open_in_new_tab?: boolean
+          parent_id?: string | null
+          sort_order?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_menu_items_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "cms_menu_items"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1093,6 +1233,10 @@ export type Database = {
           total_paid: number
           trial_end: string
         }[]
+      }
+      create_backup_snapshot: {
+        Args: { _kind?: string; _name: string }
+        Returns: string
       }
       create_invite: {
         Args: {

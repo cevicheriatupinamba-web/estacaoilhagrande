@@ -65,6 +65,9 @@ import ImportarEstabelecimento from "./pages/admin/ImportarEstabelecimento";
 import EditarAnuncios from "./pages/admin/EditarAnuncios";
 import EditarSite from "./pages/admin/EditarSite";
 import AdminFinanceiro from "./pages/admin/Financeiro";
+import AdminBackup from "./pages/admin/Backup";
+import AdminBanners from "./pages/admin/Banners";
+import AdminMenus from "./pages/admin/Menus";
 import PousadaDetalhe from "./pages/PousadaDetalhe";
 import Faturas from "./pages/advertiser/Faturas";
 import InviteAccept from "./pages/InviteAccept";
@@ -223,6 +226,9 @@ const App = () => (
               <Route path="planos" element={<AdminPlans />} />
               <Route path="configuracoes" element={<AdminSettings />} />
               <Route path="auditoria" element={<AdminActivity />} />
+              <Route path="backup" element={<AdminBackup />} />
+              <Route path="banners" element={<AdminBanners />} />
+              <Route path="menus" element={<AdminMenus />} />
               {/* legacy aliases */}
               <Route path="crm" element={<Navigate to="/admin/anunciantes" replace />} />
               <Route path="leads" element={<Navigate to="/admin/solicitacoes" replace />} />

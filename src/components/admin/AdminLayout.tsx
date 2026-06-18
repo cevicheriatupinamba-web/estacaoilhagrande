@@ -4,6 +4,7 @@ import { canAccess, Module, ROLE_LABEL, ROLE_COLOR, AppRole } from "@/lib/admin/
 import {
   LayoutDashboard, Users, MessageSquare,
   FileText, Shield, Activity, Menu, X, LogOut, Home, Settings, Mail, Package, UserCog, BedDouble, DollarSign, Pencil, LayoutTemplate,
+  Image as ImageIcon, Database, Menu as MenuIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -20,12 +21,15 @@ const NAV: NavItem[] = [
   { to: "/admin/anunciantes",       label: "Anunciantes",       icon: Users,           module: "crm" },
   { to: "/admin/financeiro",        label: "Financeiro",        icon: DollarSign,      module: "financial" },
   { to: "/admin/editar-site",       label: "Editar Site",       icon: LayoutTemplate,  module: "content" },
+  { to: "/admin/banners",           label: "Banners",           icon: ImageIcon,       module: "content" },
+  { to: "/admin/menus",             label: "Menus",             icon: MenuIcon,        module: "content" },
   { to: "/admin/editar-anuncios",   label: "Editar Anúncios",   icon: Pencil,          module: "accommodations" },
   { to: "/admin/importar-estabelecimento", label: "Importar Estabelecimento", icon: BedDouble, module: "accommodations" },
   { to: "/admin/solicitacoes",      label: "Solicitações",      icon: MessageSquare,   module: "leads" },
   { to: "/admin/conteudo",          label: "Conteúdo",          icon: FileText,        module: "content" },
   { to: "/admin/planos",            label: "Planos",            icon: Package,         module: "plans" },
   { to: "/admin/configuracoes",     label: "Configurações",     icon: Settings,        module: "settings" },
+  { to: "/admin/backup",            label: "Backup",            icon: Database,        module: "settings" },
   { to: "/admin/auditoria",         label: "Auditoria",         icon: Activity,        module: "activity" },
 ];
 
